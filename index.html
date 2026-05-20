@@ -1,0 +1,3625 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>HBA — Hotel Baia Azzurra</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--gt:#085041;
+  --blue:#185FA5;--bl:#E6F1FB;--bt:#0C447C;
+  --amber:#BA7517;--al:#FAEEDA;--at:#854F0B;
+  --red:#E24B4A;--rl:#FCEBEB;--rt:#A32D2D;
+  --purple:#534AB7;--pl:#EEEDFE;--pt:#3C3489;
+  --coral:#D85A30;--cl:#FAECE7;--ct:#712B13;
+  --g50:#F8F7F4;--g100:#F1EFE8;--g200:#D3D1C7;--g400:#888780;--g600:#5F5E5A;
+  --bg:#F4F2ED;--surf:#FFFFFF;--bord:rgba(0,0,0,0.09);--bord2:rgba(0,0,0,0.16);
+  --text:#1A1917;--muted:#6B6965;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:10px;--rl2:14px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+.hidden{display:none!important}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+.page{max-width:760px;margin:0 auto;padding:1rem}
+.card{background:var(--surf);border:0.5px solid var(--bord);border-radius:var(--rl2);padding:1rem 1.25rem;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);border:0.5px solid var(--bord2);background:var(--surf);color:var(--text);font-size:13px;font-family:var(--font);cursor:pointer;transition:background .15s;white-space:nowrap}
+.btn:hover{background:var(--g50)}
+.btn-g{background:var(--green);border-color:var(--gd);color:#fff}.btn-g:hover{background:var(--gd)}
+.btn-b{background:var(--blue);border-color:var(--bt);color:#fff}.btn-b:hover{background:var(--bt)}
+.btn-r{background:var(--red);border-color:var(--rt);color:#fff}.btn-r:hover{background:var(--rt)}
+.btn-a{background:var(--amber);border-color:var(--at);color:#fff}.btn-a:hover{background:var(--at)}
+.btn-p{background:var(--purple);border-color:var(--pt);color:#fff}.btn-p:hover{background:var(--pt)}
+.btn-full{width:100%;justify-content:center;padding:10px 14px}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.bg-g{background:var(--gl);color:var(--gt)}
+.bg-a{background:var(--al);color:var(--at)}
+.bg-r{background:var(--rl);color:var(--rt)}
+.bg-b{background:var(--bl);color:var(--bt)}
+.bg-gr{background:var(--g100);color:var(--g600)}
+.bg-p{background:var(--pl);color:var(--pt)}
+input,textarea,select{width:100%;padding:8px 10px;border:0.5px solid var(--bord2);border-radius:var(--r);font-size:13px;font-family:var(--font);background:var(--surf);color:var(--text);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 2px rgba(29,158,117,.12)}
+textarea{resize:vertical;min-height:54px}
+.lbl{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:11px 1rem;background:var(--surf);border-bottom:0.5px solid var(--bord);position:sticky;top:0;z-index:10;gap:8px;flex-wrap:wrap}
+.top-bar h1{font-size:16px;font-weight:500}
+.tabs{display:flex;overflow-x:auto;background:var(--surf);border-bottom:0.5px solid var(--bord);position:relative}
+.tab{padding:9px 14px;font-size:13px;cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--font);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0}
+.tab.active{color:var(--green);border-bottom-color:var(--green);font-weight:500}
+.tc{display:none;padding:1rem}
+.tc.active{display:block}
+.ffilts{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
+.ftab{padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;border:0.5px solid var(--bord2);color:var(--muted);background:var(--surf);font-family:var(--font)}
+.ftab.active{background:var(--green);border-color:var(--gd);color:#fff}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.sc{background:var(--g50);border-radius:var(--r);padding:12px;text-align:center}
+.sn{font-size:22px;font-weight:500;line-height:1.2}
+.sl{font-size:11px;color:var(--muted);margin-top:2px}
+.prog{height:4px;background:var(--g200);border-radius:2px;overflow:hidden;margin:6px 0}
+.prog-f{height:100%;background:var(--green);border-radius:2px;transition:width .4s}
+.row{display:grid;grid-template-columns:60px 1fr auto auto;align-items:center;gap:8px;padding:10px 0;border-bottom:0.5px solid var(--bord)}
+.row:last-child{border-bottom:none}
+.sec-hd{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 4px}
+.lin-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:8px 0}
+.lin-item{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;padding:7px 8px;border-radius:var(--r);border:0.5px solid var(--bord2);user-select:none}
+.lin-item.on{background:var(--gl);border-color:rgba(29,158,117,.35);color:var(--gt)}
+.cnt-row{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
+.cnt-btn{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--bord2);background:var(--surf);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text)}
+.cnt-v{min-width:24px;text-align:center;font-weight:500;font-family:var(--mono)}
+.isp-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid var(--bord)}
+.isp-row:last-child{border-bottom:none}
+.isp-ok{width:22px;height:22px;border-radius:5px;border:0.5px solid var(--bord2);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.isp-ok.on{background:var(--green);border-color:var(--gd)}
+.isp-warn{width:22px;height:22px;border-radius:5px;border:0.5px solid var(--bord2);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.isp-warn.on{background:var(--rl);border-color:var(--red)}
+.score-bar{height:6px;border-radius:3px;background:var(--g200);overflow:hidden;margin:4px 0}
+.score-f{height:100%;border-radius:3px;transition:width .4s}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:100;align-items:center;justify-content:center;padding:1rem}
+.modal-bg.open{display:flex}
+.modal{background:var(--surf);border-radius:var(--rl2);padding:1.25rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.flash{position:fixed;top:0;left:0;right:0;z-index:200;padding:12px 1rem;font-size:13px;font-weight:500;color:#fff;display:none;align-items:center;gap:8px}
+.call-banner{display:none;background:var(--rl);border:0.5px solid var(--red);border-radius:var(--r);padding:10px 14px;margin-bottom:10px;font-size:13px;color:var(--rt);font-weight:500;align-items:center;gap:8px;justify-content:space-between}
+.call-banner.on{display:flex}
+.hist-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:0.5px solid var(--bord);gap:8px;cursor:pointer}
+.hist-row:last-child{border-bottom:none}
+.hist-row:hover{background:var(--g50);margin:0 -1.25rem;padding:11px 1.25rem;border-radius:var(--r)}
+.upload-z{border:1.5px dashed var(--bord2);border-radius:var(--rl2);padding:1.5rem;text-align:center;cursor:pointer;color:var(--muted);transition:border-color .15s,color .15s}
+.upload-z:hover{border-color:var(--green);color:var(--green)}
+.call-floor-btn{width:100%;padding:12px 16px;border-radius:var(--r);border:none;font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;margin-bottom:6px;text-align:left;display:flex;align-items:center;gap:8px}
+.ev-active{background:var(--gl);border-radius:var(--r);padding:10px 12px;margin-bottom:8px}
+.ev-row{padding:10px 0;border-bottom:0.5px solid var(--bord)}
+.ev-row:last-child{border-bottom:none}
+.bike-row{display:grid;grid-template-columns:58px 58px 1fr auto;align-items:center;gap:8px;padding:9px 0;border-bottom:0.5px solid var(--bord)}
+.bike-row:last-child{border-bottom:none}
+.lav-row{display:grid;grid-template-columns:1fr 70px 70px;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--bord);font-size:13px;align-items:center}
+.lav-row:last-child{border-bottom:none}
+.sauna-card{border:0.5px solid var(--bord2);border-radius:var(--r);padding:10px 12px;margin-bottom:8px}
+.divider{height:0.5px;background:var(--bord);margin:12px 0}
+.slack-dot{width:8px;height:8px;border-radius:50%;background:var(--g200);display:inline-block;margin-right:4px}
+.slack-dot.on{background:#4CAF50}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.stab.active-s{color:var(--green)!important;border-bottom-color:var(--green)!important;font-weight:500}
+.tab-dropdown{position:relative;display:inline-block}
+.tab-more{white-space:nowrap}
+.tab-dropdown-menu{display:none;position:fixed;top:auto;right:8px;background:var(--surf);border:0.5px solid var(--bord2);border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,0.18);z-index:9999;min-width:180px;padding:4px 0}
+.tab-dropdown-menu.open{display:block}
+.tab-dropdown-menu button{display:block;width:100%;text-align:left;padding:9px 14px;font-size:13px;font-family:var(--font);background:none;border:none;cursor:pointer;color:var(--text)}
+.tab-dropdown-menu button:hover{background:var(--g50)}
+.status-bar{display:none;background:#1A1917;padding:6px 14px;font-size:12px;color:#fff;gap:12px;flex-wrap:wrap;align-items:center;border-bottom:2px solid #333}
+.status-bar.on{display:flex}
+.status-pill{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.1);border-radius:20px;padding:3px 10px;font-size:12px;white-space:nowrap}
+.status-pill.green{background:rgba(29,158,117,0.3);border:0.5px solid rgba(29,158,117,0.6)}
+.status-pill.amber{background:rgba(186,117,23,0.3);border:0.5px solid rgba(186,117,23,0.6)}
+.status-pill.blue{background:rgba(24,95,165,0.3);border:0.5px solid rgba(24,95,165,0.6)}
+.status-dot{width:7px;height:7px;border-radius:50%;animation:pulse 1.5s infinite}
+.status-dot.green{background:#1D9E75}
+.status-dot.amber{background:#BA7517}
+.status-dot.blue{background:#4A9EE5}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--bord)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-label{font-size:13px;color:var(--text)}
+.toggle-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{position:relative;width:42px;height:24px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:var(--g200);border-radius:12px;cursor:pointer;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s}
+.toggle input:checked + .toggle-slider{background:var(--green)}
+.toggle input:checked + .toggle-slider::before{transform:translateX(18px)}
+.time-input{width:80px;padding:5px 8px;border:0.5px solid var(--bord2);border-radius:var(--r);font-size:13px;font-family:var(--font);background:var(--surf);color:var(--text)}
+/* ── NOTIFICA URGENTE ── */
+.urgent-overlay{display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center;padding:1.5rem;animation:flashBg 0.5s infinite alternate}
+.urgent-overlay.on{display:flex}
+@keyframes flashBg{from{background:rgba(226,75,74,0.92)}to{background:rgba(163,45,45,0.97)}}
+.urgent-box{background:#fff;border-radius:16px;padding:2rem 1.5rem;width:100%;max-width:440px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:scaleIn 0.3s ease}
+@keyframes scaleIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+.urgent-icon{font-size:56px;display:block;margin-bottom:12px;animation:bounce 0.6s infinite alternate}
+@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.urgent-title{font-size:22px;font-weight:500;color:var(--rt);margin-bottom:8px}
+.urgent-msg{font-size:16px;color:var(--text);margin-bottom:1.5rem;line-height:1.5}
+.urgent-ok{background:var(--red);color:#fff;border:none;border-radius:var(--r);padding:14px 40px;font-size:16px;font-weight:500;cursor:pointer;font-family:var(--font);width:100%}
+.urgent-ok:active{background:var(--rt)}
+
+@media(max-width:480px){
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .lin-grid{grid-template-columns:1fr}
+  .row{grid-template-columns:50px 1fr auto}
+  .bike-row{grid-template-columns:48px 48px 1fr auto}
+}
+</style>
+</head>
+<body>
+<div id="flash" class="flash"></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="sLogin" class="screen active">
+<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem">
+<div style="width:100%;max-width:340px">
+  <div style="text-align:center;margin-bottom:1.5rem">
+    <div style="font-size:28px;font-weight:500;color:var(--green);font-family:var(--mono);letter-spacing:-1px">HBA</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:3px">Hotel Baia Azzurra — Gestione Operativa</div>
+    <div style="font-size:11px;color:var(--g400);margin-top:4px" id="loginDate"></div>
+  </div>
+  <div class="card">
+    <label class="lbl" style="margin-bottom:6px">Ruolo</label>
+    <select id="loginRole" style="margin-bottom:10px">
+      <option value="">— seleziona —</option>
+      <option value="rec">🏨 Reception</option>
+      <option value="p1">🛏 Piano 1 (101–112)</option>
+      <option value="p2">🛏 Piano 2 (201–217)</option>
+      <option value="p3">🛏 Piano 3 (301–311)</option>
+      <option value="lav">🧺 Lavanderia</option>
+    </select>
+    <label class="lbl">Password</label>
+    <input type="password" id="loginPwd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" style="margin-bottom:12px">
+    <div id="loginErr" style="font-size:12px;color:var(--rt);margin-bottom:8px;display:none">Password errata. Riprova.</div>
+    <button class="btn btn-g btn-full" onclick="doLogin()">Entra</button>
+  </div>
+  <p style="text-align:center;font-size:11px;color:var(--g400);margin-top:10px">Dati salvati localmente nel browser</p>
+</div>
+</div>
+</div>
+
+<!-- ══ RECEPTION ══ -->
+<div id="sRec" class="screen">
+<div class="top-bar">
+  <div><h1>🏨 Reception</h1><div style="font-size:11px;color:var(--muted)" id="recDate"></div></div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <button class="btn" onclick="openM('mCall')">📞 Chiama</button>
+    <button class="btn" onclick="openM('mSlack')"><span class="slack-dot" id="slackDot"></span>Slack</button>
+    <button class="btn" onclick="logout()">⬅ Esci</button>
+  </div>
+</div>
+<div class="status-bar" id="recStatusBar"></div>
+<div class="tabs" id="recTabs">
+  <button class="tab active" onclick="rTab('camere',this)">🛏 Camere</button>
+  <button class="tab" onclick="rTab('diario',this)">📓 Diario</button>
+  <button class="tab" onclick="rTab('rapidi',this)">⚡ Messaggi</button>
+  <button class="tab" onclick="rTab('commissioni',this)">📌 Commissioni</button>
+  <button class="tab" onclick="rTab('speciali',this)">🎂 Speciali</button>
+  <button class="tab" onclick="rTab('cookingclass',this)">👨‍🍳 Cooking</button>
+  <button class="tab" onclick="rTab('massaggi',this)">💆 Massaggi</button>
+  <button class="tab" onclick="rTab('sauna',this)">🧖 Sauna</button>
+  <button class="tab" onclick="rTab('bici',this)">🚲 Bici</button>
+  <button class="tab" onclick="rTab('ev',this)">⚡ EV</button>
+  <button class="tab" onclick="rTab('manutenzione',this)">🔧 Manutenzioni</button>
+  <div class="tab-dropdown">
+    <button class="tab tab-more" onclick="toggleTabDropdown(this)">⋯ Altro ▾</button>
+    <div class="tab-dropdown-menu" id="tabDropMenu">
+      <button onclick="rTabDrop('lavanderia')">🧺 Lavanderia</button>
+      <button onclick="rTabDrop('ispezione')">🔍 Ispezione</button>
+      <button onclick="rTabDrop('storico')">📁 Storico</button>
+      <button onclick="rTabDrop('report')">📋 Report</button>
+      <button onclick="rTabDrop('impost')">⚙️ Impostazioni</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAMERE -->
+<div id="tCamere" class="tc active"><div class="page" style="padding-top:.75rem">
+  <div class="sgrid">
+    <div class="sc"><div class="sn" id="sPart">0</div><div class="sl">Partenze</div></div>
+    <div class="sc"><div class="sn" id="sFerm">0</div><div class="sl">Fermi</div></div>
+    <div class="sc"><div class="sn" id="sArr">0</div><div class="sl">Arrivi</div></div>
+    <div class="sc"><div class="sn" id="sPron" style="color:var(--green)">0</div><div class="sl">Pronte ✓</div></div>
+  </div>
+  <div class="prog"><div class="prog-f" id="progF" style="width:0%"></div></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="progL">0 su 0 pronte</p>
+  <div class="ffilts">
+    <button class="ftab active" onclick="flF('all',this)">Tutti</button>
+    <button class="ftab" onclick="flF('1',this)">Piano 1</button>
+    <button class="ftab" onclick="flF('2',this)">Piano 2</button>
+    <button class="ftab" onclick="flF('3',this)">Piano 3</button>
+  </div>
+  <div id="roomListRec"></div>
+</div></div>
+
+<!-- DIARIO -->
+<div id="tDiario" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">📓 Diario di reception</h2>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Reminder Slack alle 8:30 (note di ieri) e alle 16:30 (note di stamattina).</p>
+    <div style="display:grid;gap:8px;margin-bottom:12px">
+      <div><label class="lbl">Il tuo nome</label><input id="diarioAutore" type="text" placeholder="Es: Marco, Chiara..."></div>
+      <div><label class="lbl">Nota</label><textarea id="diarioTesto" placeholder="Scrivi qui quello che è successo, richieste ospiti, cose pendenti..." style="min-height:90px"></textarea></div>
+      <button class="btn btn-g btn-full" onclick="addDiario()">📝 Aggiungi nota</button>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+      <h3 style="font-size:13px;font-weight:500">Note del giorno</h3>
+      <div style="display:flex;gap:4px">
+        <button class="ftab active" onclick="dTab('oggi',this)">Oggi</button>
+        <button class="ftab" onclick="dTab('ieri',this)">Ieri</button>
+        <button class="ftab" onclick="dTab('tutti',this)">Tutti</button>
+      </div>
+    </div>
+    <div id="diarioList"></div>
+  </div>
+</div></div>
+
+<!-- MANUTENZIONI -->
+<div id="tManutenzione" class="tc hidden"><div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">🔧 Manutenzioni segnalate</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Segnalate dalle cameriste durante la pulizia. Ogni nuova segnalazione genera una notifica Slack.</p>
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="ftab active" onclick="mTab('aperte',this)">Aperte</button>
+      <button class="ftab" onclick="mTab('risolte',this)">Risolte</button>
+      <button class="ftab" onclick="mTab('tutte',this)">Tutte</button>
+    </div>
+    <div id="manutenzioneList"></div>
+  </div>
+</div></div>
+
+<!-- MESSAGGI RAPIDI -->
+<div id="tRapidi" class="tc hidden"><div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">⚡ Messaggi rapidi alle cameriste</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Il messaggio appare come banner sulla schermata del tablet delle cameriste. Nessuna scrittura — un tap solo.</p>
+
+    <label class="lbl">Camera (opzionale)</label>
+    <input type="text" id="rapRoom" placeholder="Es: 205" style="margin-bottom:10px">
+
+    <label class="lbl">Piano destinatario</label>
+    <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="ftab active" onclick="selRapPiano(this)" data-piano="p1">Piano 1</button>
+      <button class="ftab" onclick="selRapPiano(this)" data-piano="p2">Piano 2</button>
+      <button class="ftab" onclick="selRapPiano(this)" data-piano="p3">Piano 3</button>
+      <button class="ftab" onclick="selRapPiano(this)" data-piano="all">Tutti i piani</button>
+    </div>
+
+    <label class="lbl">Messaggi predefiniti</label>
+    <div style="display:grid;gap:8px;margin-bottom:14px">
+      <button class="btn btn-r btn-full" onclick="sendRapido('✈️ Partenza — Camera {room} — ospite partito e pagato. Pulizia prioritaria!')">✈️ Partenza — ospite partito e pagato</button>
+      <button class="btn btn-a btn-full" onclick="sendRapido('⚠️ Priorità — Camera {room} — pulire subito.')">⚠️ Priorità — pulire subito</button>
+      <button class="btn btn-full" onclick="sendRapido('🚫 Aspetta — Camera {room} — non pulire ancora.')">🚫 Aspetta — non pulire ancora</button>
+      <button class="btn btn-full" onclick="sendRapido('🔑 Ospite in camera {room} — non disturbare.')">🔑 Ospite in camera — non disturbare</button>
+      <button class="btn btn-g btn-full" onclick="sendRapido('✅ Camera {room} pronta per early check-in — prepara subito.')">✅ Pronta per early check-in</button>
+    </div>
+
+    <div class="divider"></div>
+    <label class="lbl">Messaggio libero</label>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="rapCustom" placeholder="Scrivi messaggio..." style="flex:1" onkeydown="if(event.key==='Enter') sendRapidoCustom()">
+      <button class="btn btn-b" onclick="sendRapidoCustom()">Invia</button>
+    </div>
+
+    <div id="rapFeedback" style="margin-top:10px;font-size:13px;min-height:20px"></div>
+  </div>
+
+  <!-- Log ultimi messaggi inviati -->
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:8px">Ultimi messaggi inviati oggi</h3>
+    <div id="rapLog"></div>
+  </div>
+</div></div>
+
+<!-- COMMISSIONI -->
+<div id="tCommissioni" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">📌 Lista commissioni</h2>
+      <button class="btn btn-g" onclick="openM('mCommNew')">+ Aggiungi</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Reminder Slack automatico ogni giorno alle 9:00 e alle 17:00 per le commissioni aperte.</p>
+
+    <div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="ftab active" onclick="commTab('aperte',this)">Aperte</button>
+      <button class="ftab" onclick="commTab('fatte',this)">Completate</button>
+      <button class="ftab" onclick="commTab('tutte',this)">Tutte</button>
+    </div>
+    <div id="commList"></div>
+  </div>
+</div></div>
+
+<!-- COOKING CLASS -->
+<div id="tCookingclass" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">👨‍🍳 Cooking Class</h2>
+      <button class="btn btn-g" onclick="openM('mCooking')">+ Prenotazione</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:4px">Martedì · ore 17:00 · max 10 persone · €55 a persona</p>
+    <div id="cookingAvail" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="ftab active" onclick="cookTab('prossime',this)">Prossime</button>
+      <button class="ftab" onclick="cookTab('passate',this)">Passate</button>
+      <button class="ftab" onclick="cookTab('tutte',this)">Tutte</button>
+    </div>
+    <div id="cookingList"></div>
+  </div>
+</div></div>
+
+<!-- MASSAGGI -->
+<div id="tMassaggi" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">💆 Massaggi</h2>
+      <button class="btn btn-g" onclick="openM('mMassaggio')">+ Prenotazione</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Reminder Slack il giorno stesso alle 9:00 per tutti i massaggi del giorno.</p>
+    <div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="ftab active" onclick="massTab('prossimi',this)">Prossimi</button>
+      <button class="ftab" onclick="massTab('oggi',this)">Oggi</button>
+      <button class="ftab" onclick="massTab('tutti',this)">Tutti</button>
+    </div>
+    <div id="massaggiList"></div>
+  </div>
+</div></div>
+
+<!-- SPECIALI -->
+<div id="tSpeciali" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">🎂 Servizi speciali ospiti</h2>
+      <button class="btn btn-g" onclick="openM('mSpecNew')">+ Aggiungi</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Reminder Slack automatico 4 giorni prima e alle 9:00 del giorno stesso.</p>
+
+    <!-- inner tabs -->
+    <div style="display:flex;gap:0;border-bottom:0.5px solid var(--bord);margin-bottom:12px;overflow-x:auto">
+      <button class="stab active" onclick="sTab('tutti',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">Tutti</button>
+      <button class="stab" onclick="sTab('anniversario',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">💑 Anniversario</button>
+      <button class="stab" onclick="sTab('matrimonio',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">💍 Matrimonio</button>
+      <button class="stab" onclick="sTab('fiori',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">🌸 Fiori</button>
+      <button class="stab" onclick="sTab('bottiglia',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">🍾 Bottiglia</button>
+      <button class="stab" onclick="sTab('torta',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">🎂 Torta</button>
+      <button class="stab" onclick="sTab('cesto',this)" style="padding:7px 12px;font-size:12px;cursor:pointer;border:none;background:none;font-family:var(--font);color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;flex-shrink:0">🧺 Cesto</button>
+    </div>
+    <div id="specListProssimi"></div>
+    <div class="divider"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <h3 style="font-size:13px;font-weight:500">Passati / completati</h3>
+      <button class="btn btn-r" style="padding:4px 10px;font-size:11px" onclick="clearOldSpeciali()">Svuota</button>
+    </div>
+    <div id="specListPassati"></div>
+  </div>
+</div></div>
+
+<!-- SAUNA -->
+<div id="tSauna" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">🧖 Prenotazioni Sauna Finlandese</h2>
+      <button class="btn btn-g" onclick="openM('mSaunaNew')">+ Nuova</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Notifica Slack automatica 30 min e 5 min prima.</p>
+    <div id="saunaToday"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:8px">Prossime prenotazioni</h3>
+    <div id="saunaUpcoming"></div>
+  </div>
+</div></div>
+
+<!-- LAVANDERIA -->
+<div id="tLavanderia" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">🧺 Lavanderia — <span id="lavDate"></span></h2>
+      <button class="btn" onclick="exportLavCSV()">⬇ CSV</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px" id="lavStats"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Totali dalle camere</h3>
+    <div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;padding:5px 0;font-size:12px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord)"><span>Articolo</span><span style="text-align:center">Camere</span><span style="text-align:center">Pezzi</span></div>
+    <div id="lavAutoTable"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:8px">Aggiunte manuali</h3>
+    <div id="lavExtraList"></div>
+    <div style="display:grid;grid-template-columns:1fr 80px auto;gap:8px;margin-top:8px">
+      <select id="lavExtraItem">
+        <option value="">— articolo —</option>
+        <option>Asciugamani grandi</option><option>Asciugamani piccoli</option>
+        <option>Tappetini bagno</option><option>Accappatoi</option>
+        <option>Federe piccole</option><option>Federe grandi</option>
+        <option>Copripiumini</option><option>Lenzuola</option>
+        <option>Tovaglie</option><option>Tovaglioli</option>
+        <option>Grembiuli cucina</option><option>Altro</option>
+      </select>
+      <input type="number" id="lavExtraQty" placeholder="Qtà" min="1">
+      <button class="btn btn-g" onclick="addLavExtra()">+</button>
+    </div>
+    <input type="text" id="lavExtraNote" placeholder="Note (opzionale)" style="margin-top:8px">
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Totale complessivo</h3>
+    <div id="lavTotalTable"></div>
+  </div>
+</div></div>
+
+<!-- EV -->
+<div id="tEv" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">⚡ Ricarica auto elettriche</h2>
+      <button class="btn btn-g" onclick="openM('mEvNew')">+ Nuova</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Tariffa: <strong>€ 0,70 / kWh</strong></p>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">In corso</h3>
+    <div id="evActive"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Completate oggi</h3>
+    <div id="evDone"></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;font-weight:500">Totale incassato oggi</span>
+      <span style="font-size:18px;font-weight:500;color:var(--green)" id="evTotal">€ 0,00</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- BICI -->
+<div id="tBici" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">🚲 Gestione bici</h2>
+      <button class="btn btn-g" onclick="openM('mBiciNew')">+ Assegna</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Bici assegnate agli ospiti</p>
+    <div style="display:grid;grid-template-columns:58px 58px 1fr auto;gap:8px;padding:5px 0;font-size:12px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord)"><span>Camera</span><span>Bici</span><span>Orario</span><span>Stato</span></div>
+    <div id="biciList"></div>
+    <div class="divider"></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted)">Bici in uso</span><span style="font-weight:500" id="biciCount">0</span></div>
+  </div>
+</div></div>
+
+<!-- ISPEZIONE -->
+<div id="tIspezione" class="tc hidden"><div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">🔍 Ispezione qualità — Reception</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Seleziona una camera pronta da ispezionare.</p>
+    <label class="lbl">Camera</label>
+    <select id="ispRoom" onchange="renderIspChecklist()"><option value="">— seleziona —</option></select>
+    <div id="ispContent" style="margin-top:14px"></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">🔍 Controlli lavanderia oggi</h2>
+      <button class="btn" onclick="exportLavIspCSV()">⬇ CSV</button>
+    </div>
+    <div id="lavIspReportRec"></div>
+  </div>
+</div></div>
+
+<!-- STORICO -->
+<div id="tStorico" class="tc hidden"><div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:12px">📁 Storico giornate</h2>
+    <div id="storicoList"></div>
+  </div>
+</div></div>
+
+<!-- REPORT -->
+<div id="tReport" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">📋 Report — <span id="repDate"></span></h2>
+      <button class="btn" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px" id="repStats"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin:10px 0 4px">Biancheria</h3>
+    <div id="repTable"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin:10px 0 4px">Dettaglio camere</h3>
+    <div id="repDetails"></div>
+  </div>
+</div></div>
+
+<!-- PDF / IMPOSTAZIONI -->
+<div id="tImpost" class="tc hidden"><div class="page">
+
+  <!-- SLACK CONFIG -->
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">⚙️ Slack — Connessione</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Configura il webhook. Va impostato su ogni dispositivo.</p>
+    <label class="lbl">Webhook URL</label>
+    <input type="text" id="slackWebhook" placeholder="https://hooks.slack.com/services/..." style="margin-bottom:8px">
+    <label class="lbl">Canale (es: #housekeeping)</label>
+    <input type="text" id="slackChannel" placeholder="#housekeeping" style="margin-bottom:12px">
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-g" style="flex:1" onclick="saveSlack()">Salva</button>
+      <button class="btn" onclick="testSlack()">Test</button>
+    </div>
+    <div id="slackMsg" style="margin-top:8px;font-size:12px"></div>
+  </div>
+
+  <!-- NOTIFICHE ON/OFF + ORARI -->
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">🔔 Notifiche Slack</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Attiva o disattiva ogni tipo di notifica. Salva per applicare.</p>
+
+    <div class="sec-hd">Housekeeping</div>
+    <div id="notifRows_hk"></div>
+
+    <div class="sec-hd" style="margin-top:14px">Reminder automatici</div>
+    <div id="notifRows_reminder"></div>
+
+    <div class="sec-hd" style="margin-top:14px">Servizi</div>
+    <div id="notifRows_servizi"></div>
+
+    <button class="btn btn-g btn-full" style="margin-top:14px" onclick="saveNotifSettings()">💾 Salva impostazioni notifiche</button>
+    <div id="notifSaveMsg" style="margin-top:8px;font-size:12px"></div>
+  </div>
+
+  <!-- PDF -->
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:6px">📄 Carica PDF giornaliero</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Carica il report "Partenze, Fermi, Arrivi" dal gestionale 5 Stelle.</p>
+    <div class="upload-z" onclick="document.getElementById('pdfIn').click()">
+      <div style="font-size:28px;margin-bottom:6px">📁</div>
+      <p style="font-size:14px;font-weight:500">Seleziona PDF</p>
+      <p style="font-size:12px;margin-top:3px">Partenze, Fermi, Arrivi</p>
+    </div>
+    <input type="file" id="pdfIn" accept=".pdf" style="display:none" onchange="uploadPDF(event)">
+    <div id="pdfMsg" style="margin-top:10px;font-size:13px"></div>
+    <div id="pdfRoomNotes" style="margin-top:12px;display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h3 style="font-size:13px;font-weight:500">Note per le cameriste</h3>
+        <span style="font-size:11px;color:var(--muted)">Visibili su ogni piano</span>
+      </div>
+      <div id="pdfRoomNotesList"></div>
+      <button class="btn btn-g btn-full" style="margin-top:8px" onclick="saveRoomNotes()">💾 Salva note</button>
+    </div>
+    <div class="divider"></div>
+    <button class="btn btn-full" style="margin-bottom:8px" onclick="openM('mManual')">+ Aggiungi camera manualmente</button>
+    <button class="btn btn-a btn-full" style="margin-bottom:8px" onclick="archiveDay()">📦 Archivia e resetta</button>
+    <button class="btn btn-r btn-full" onclick="resetDay()">🗑 Reset senza archiviare</button>
+  </div>
+
+  <!-- NOTE TEAM -->
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:8px">📝 Note per il team</h3>
+    <textarea id="noteGen" placeholder="Annotazioni, priorità, segnalazioni..."></textarea>
+    <button class="btn btn-b btn-full" style="margin-top:8px" onclick="saveNotes()">Salva note</button>
+  </div>
+
+  <!-- ALTRE IMPOSTAZIONI -->
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:8px">⚡ Tariffa EV</h3>
+    <label class="lbl">Costo per kWh (€)</label>
+    <input type="number" id="settKwh" step="0.01" placeholder="0.70" style="margin-bottom:8px">
+    <button class="btn btn-g btn-full" onclick="saveSettings()">Salva</button>
+  </div>
+
+</div></div>
+</div><!-- end sRec -->
+
+<!-- ══ CAMERISTE ══ -->
+<div id="sCam" class="screen">
+<div class="top-bar">
+  <div><h1 id="camTitle"></h1><div style="font-size:11px;color:var(--muted)" id="camDate"></div></div>
+  <div style="display:flex;gap:6px">
+    <button class="btn" onclick="openM('mSlack')"><span class="slack-dot" id="slackDotCam"></span>Slack</button>
+    <button class="btn" onclick="logout()">⬅ Esci</button>
+  </div>
+</div>
+<div class="tabs" id="camTabs">
+  <button class="tab active" onclick="camTab('camere',this)">🛏 Camere</button>
+  <button class="tab" onclick="camTab('flussaggi',this)">💧 Flussaggi</button>
+  <button class="tab" onclick="camTab('vasche',this)" id="tabVasche" style="display:none">🛁 Vasche</button>
+</div>
+
+<!-- CAMERE TAB -->
+<div id="ctCamere" class="tc active">
+<div class="page">
+  <div id="callBanner" class="call-banner">
+    <span id="callBannerMsg">La reception ti chiama!</span>
+    <button class="btn" style="padding:4px 10px;font-size:12px" onclick="dismissCall()">OK</button>
+  </div>
+
+  <!-- Notifica urgente fullscreen -->
+  <div id="urgentOverlay" class="urgent-overlay">
+    <div class="urgent-box">
+      <span class="urgent-icon" id="urgentIcon">🔔</span>
+      <div class="urgent-title" id="urgentTitle">Messaggio dalla Reception</div>
+      <div class="urgent-msg" id="urgentMsg"></div>
+      <button class="urgent-ok" onclick="dismissUrgent()">✓ Ho capito</button>
+    </div>
+  </div>
+  <div id="camList"></div>
+  <div id="camEmpty" style="text-align:center;padding:4rem 1rem;color:var(--muted);display:none">
+    <div style="font-size:48px;color:var(--green)">✓</div>
+    <p style="font-size:16px;font-weight:500;margin-top:10px">Tutte le camere pronte!</p>
+  </div>
+</div></div>
+
+<!-- FLUSSAGGI TAB -->
+<div id="ctFlussaggi" class="tc hidden">
+<div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">💧 Registro flussaggi</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Lavandini, docce e bidet. Segna dopo ogni flussaggio — data e ora vengono registrate automaticamente.</p>
+
+    <label class="lbl">Il tuo nome</label>
+    <input type="text" id="flussNome" placeholder="Es: Maria, Giulia..." style="margin-bottom:10px">
+
+    <label class="lbl">Camera</label>
+    <input type="text" id="flussRoom" placeholder="Es: 205" style="margin-bottom:10px">
+
+    <label class="lbl">Cosa hai flussato</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:14px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:var(--g50);border-radius:var(--r);padding:8px 10px;border:0.5px solid var(--bord2)" id="flLab1">
+        <input type="checkbox" id="flLavandino" onchange="updateFlLabel(1)"> Lavandino
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:var(--g50);border-radius:var(--r);padding:8px 10px;border:0.5px solid var(--bord2)" id="flLab2">
+        <input type="checkbox" id="flDoccia" onchange="updateFlLabel(2)"> Doccia
+      </label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;background:var(--g50);border-radius:var(--r);padding:8px 10px;border:0.5px solid var(--bord2)" id="flLab3">
+        <input type="checkbox" id="flBidet" onchange="updateFlLabel(3)"> Bidet
+      </label>
+    </div>
+
+    <button class="btn btn-b btn-full" onclick="addFlussaggio()">💧 Registra flussaggio</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <h3 style="font-size:13px;font-weight:500">Registro storico flussaggi</h3>
+      <div style="display:flex;gap:4px">
+        <button class="ftab active" onclick="flTab('oggi',this)" id="ftOggi">Oggi</button>
+        <button class="ftab" onclick="flTab('settimana',this)">7 giorni</button>
+        <button class="ftab" onclick="flTab('tutti',this)">Tutti</button>
+      </div>
+    </div>
+    <div id="flussaggiList"></div>
+  </div>
+</div></div>
+
+<!-- VASCHE TAB -->
+<div id="ctVasche" class="tc hidden">
+<div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">🛁 Cambio acqua vasche idromassaggio</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Camere con vasca idromassaggio: <strong>304 · 308 · 309</strong></p>
+
+    <label class="lbl">Camera</label>
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+      <button class="ftab active" onclick="selVasca(this)" data-room="304">Camera 304</button>
+      <button class="ftab" onclick="selVasca(this)" data-room="308">Camera 308</button>
+      <button class="ftab" onclick="selVasca(this)" data-room="309">Camera 309</button>
+    </div>
+
+    <button class="btn btn-b btn-full" style="margin-bottom:14px" onclick="addCambioAcqua()">🛁 Registra cambio acqua</button>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:10px">Ultimo cambio per vasca</h3>
+    <div id="vascheUltimi"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:10px">Storico completo</h3>
+    <div id="vascheList"></div>
+  </div>
+</div></div>
+
+</div><!-- end sCam -->
+
+<!-- ══ LAVANDERIA ══ -->
+<div id="sLav" class="screen">
+<div class="top-bar">
+  <div><h1>🧺 Lavanderia</h1><div style="font-size:11px;color:var(--muted)" id="lavDate2"></div></div>
+  <button class="btn" onclick="logout()">⬅ Esci</button>
+</div>
+<div class="tabs" id="lavTabs">
+  <button class="tab active" onclick="lavTab('biancheria',this)">🧺 Biancheria</button>
+  <button class="tab" onclick="lavTab('ispezione',this)">🔍 Controlla camera</button>
+  <button class="tab" onclick="lavTab('report',this)">📋 Report ispezioni</button>
+</div>
+<div id="ltBiancheria" class="tc active" style="padding:0">
+<div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:12px">Riepilogo biancheria del giorno</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px" id="lavStats2"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Totali dalle camere</h3>
+    <div id="lavAutoTable2"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Extra manuali</h3>
+    <div id="lavExtraList2"></div>
+    <div class="divider"></div>
+    <h3 style="font-size:13px;font-weight:500;margin-bottom:6px">Totale complessivo</h3>
+    <div id="lavTotalTable2"></div>
+    <div class="divider"></div>
+    <button class="btn btn-full" onclick="exportLavCSV()">⬇ Esporta CSV lavanderia</button>
+  </div>
+</div></div>
+
+<!-- Ispezione lavanderia -->
+<div id="ltIspezione" class="tc hidden"><div class="page">
+  <div class="card">
+    <h2 style="font-size:15px;font-weight:500;margin-bottom:4px">🔍 Controlla camera</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Seleziona una camera e compila la checklist di controllo pulizia.</p>
+    <label class="lbl">Camera da controllare</label>
+    <input type="text" id="lavIspRoom" placeholder="Es: 205" style="margin-bottom:8px">
+    <button class="btn btn-g btn-full" style="margin-bottom:14px" onclick="startLavIsp()">Avvia controllo</button>
+    <div id="lavIspContent"></div>
+  </div>
+</div></div>
+
+<!-- Report ispezioni lavanderia -->
+<div id="ltReport" class="tc hidden"><div class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h2 style="font-size:15px;font-weight:500">📋 Report ispezioni</h2>
+      <button class="btn" onclick="exportLavIspCSV()">⬇ CSV</button>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px">Tutte le ispezioni eseguite dalla lavanderia. Visibile anche dalla reception nel tab Ispezione.</p>
+    <div id="lavIspReport"></div>
+  </div>
+</div></div>
+</div><!-- end sLav -->
+
+<!-- ══ MODALI ══ -->
+
+<!-- Biancheria -->
+<div id="mBianch" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 id="mBTitle" style="font-size:15px;font-weight:500"></h2><button class="btn" style="padding:5px 8px" onclick="closeM('mBianch')">✕</button></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:8px" id="mBInfo"></p>
+  <div id="mBRecNote" style="display:none;background:var(--al);border-radius:var(--r);padding:9px 12px;margin-bottom:10px;font-size:13px;font-weight:500;color:var(--at)"></div>
+  <label class="lbl">Biancheria cambiata</label>
+  <div class="lin-grid" id="linChecks"></div>
+  <label class="lbl" style="margin-top:12px">Quantità pezzi</label>
+  <div id="linCounts" style="margin-top:6px"></div>
+  <div class="divider"></div>
+  <label class="lbl">🔧 Manutenzioni da segnalare</label>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:6px">Lascia vuoto se nessuna. Ogni manutenzione verrà inviata su Slack.</p>
+  <div id="manuList" style="margin-bottom:6px"></div>
+  <div style="display:flex;gap:6px;margin-bottom:10px">
+    <input type="text" id="manuInput" placeholder="Es: rubinetto che perde, lampada fulminata..." style="flex:1" onkeydown="if(event.key==='Enter'){event.preventDefault();addManu();}">
+    <button class="btn btn-a" style="flex-shrink:0" onclick="addManu()">+ Add</button>
+  </div>
+  <div class="divider"></div>
+  <label class="lbl">Note camera (generali)</label>
+  <textarea id="mNote" placeholder="Note generali per la reception..."></textarea>
+  <div style="display:flex;gap:8px;margin-top:12px">
+    <button class="btn btn-g" style="flex:1" onclick="markReady()">✓ Segna PRONTA</button>
+    <button class="btn" onclick="closeM('mBianch')">Annulla</button>
+  </div>
+</div></div>
+
+<!-- Commissioni modal -->
+<div id="mCommNew" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">📌 Nuova commissione</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mCommNew')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Tipo</label>
+      <select id="commTipo">
+        <option value="email">📧 Email da inviare</option>
+        <option value="chiamata">📞 Chiamata da fare</option>
+        <option value="fornitore">🚚 Fornitore</option>
+        <option value="prenotazione">📅 Prenotazione da confermare</option>
+        <option value="acquisto">🛒 Acquisto / ordine</option>
+        <option value="altro">📝 Altro</option>
+      </select>
+    </div>
+    <div><label class="lbl">Descrizione</label><textarea id="commDesc" placeholder="Es: Richiamare fornitore torte, confermare ordine fiori camera 205..." style="min-height:70px"></textarea></div>
+    <div><label class="lbl">Assegnata a (opzionale)</label><input type="text" id="commAssegnata" placeholder="Es: Marco, Chiara..."></div>
+    <div><label class="lbl">Note aggiuntive</label><input type="text" id="commNote" placeholder="Es: tel. 0464 123456, entro le 11:00..."></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addCommissione()">+ Aggiungi commissione</button>
+</div></div>
+
+<!-- Cooking Class modal -->
+<div id="mCooking" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">👨‍🍳 Nuova prenotazione Cooking Class</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mCooking')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Nome ospite</label><input type="text" id="ckNome" placeholder="Es: Famiglia Rossi"></div>
+    <div><label class="lbl">Camera</label><input type="text" id="ckRoom" placeholder="Es: 205"></div>
+    <div><label class="lbl">Data (deve essere un martedì)</label><input type="date" id="ckData"></div>
+    <div><label class="lbl">Numero persone (max 10)</label><input type="number" id="ckPax" min="1" max="10" value="2"></div>
+    <div><label class="lbl">Note</label><input type="text" id="ckNote" placeholder="Allergie, richieste speciali..."></div>
+  </div>
+  <div id="ckWarning" style="margin-top:8px;font-size:12px;color:var(--rt)"></div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addCooking()">+ Aggiungi prenotazione</button>
+</div></div>
+
+<!-- Massaggio modal -->
+<div id="mMassaggio" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">💆 Nuova prenotazione Massaggio</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mMassaggio')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Nome ospite</label><input type="text" id="massNome" placeholder="Es: Mario Rossi"></div>
+    <div><label class="lbl">Camera</label><input type="text" id="massRoom" placeholder="Es: 205"></div>
+    <div><label class="lbl">Tipo massaggio</label>
+      <select id="massTipo">
+        <option value="Rilassante">Rilassante</option>
+        <option value="Decontratturante">Decontratturante</option>
+        <option value="Hot Stones">Hot Stones</option>
+        <option value="Ayurvedico">Ayurvedico</option>
+        <option value="Sportivo">Sportivo</option>
+        <option value="Altro">Altro</option>
+      </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div><label class="lbl">Data</label><input type="date" id="massData"></div>
+      <div><label class="lbl">Ora</label><input type="time" id="massOra" value="10:00"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div><label class="lbl">Durata (min)</label>
+        <select id="massDurata">
+          <option value="30">30 min</option>
+          <option value="45">45 min</option>
+          <option value="60" selected>60 min</option>
+          <option value="90">90 min</option>
+          <option value="120">120 min</option>
+        </select>
+      </div>
+      <div><label class="lbl">Operatore</label><input type="text" id="massOp" placeholder="Es: Anna"></div>
+    </div>
+    <div><label class="lbl">Note</label><input type="text" id="massNote" placeholder="Richieste particolari..."></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addMassaggio()">+ Aggiungi prenotazione</button>
+</div></div>
+
+<!-- Speciali modal -->
+<div id="mSpecNew" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">🎂 Nuovo servizio speciale</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mSpecNew')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Tipo servizio</label>
+      <select id="specTipo" onchange="updateSpecFields()">
+        <option value="">— seleziona —</option>
+        <option value="anniversario">💑 Anniversario</option>
+        <option value="matrimonio">💍 Matrimonio / Luna di miele</option>
+        <option value="fiori">🌸 Fiori in camera</option>
+        <option value="bottiglia">🍾 Bottiglia</option>
+        <option value="torta">🎂 Torta</option>
+        <option value="cesto">🧺 Cesto / Frutta</option>
+      </select>
+    </div>
+    <div><label class="lbl">Camera</label><input id="specRoom" type="text" placeholder="Es: 205"></div>
+    <div><label class="lbl">Nome ospite</label><input id="specGuest" type="text" placeholder="Es: Rossi"></div>
+    <div><label class="lbl">Data evento / consegna</label><input id="specDate" type="date"></div>
+    <div id="specExtraFields"></div>
+    <div><label class="lbl">Note aggiuntive</label><textarea id="specNote" placeholder="Dettagli, preferenze, istruzioni..." style="min-height:60px"></textarea></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addSpeciale()">✓ Salva</button>
+</div></div>
+
+<!-- Sauna -->
+<div id="mSaunaNew" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">🧖 Nuova prenotazione sauna</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mSaunaNew')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Camera ospite</label><input id="saunaRoom" type="text" placeholder="Es: 205"></div>
+    <div><label class="lbl">Nome ospite</label><input id="saunaGuest" type="text" placeholder="Es: Rossi"></div>
+    <div><label class="lbl">Data</label><input id="saunaDate" type="date"></div>
+    <div><label class="lbl">Orario inizio</label><input id="saunaTime" type="time"></div>
+    <div><label class="lbl">Durata</label>
+      <select id="saunaDur"><option value="30">30 min</option><option value="45">45 min</option><option value="60" selected>60 min</option><option value="90">90 min</option></select>
+    </div>
+    <div><label class="lbl">Numero persone</label><input id="saunaPax" type="number" min="1" max="6" placeholder="Es: 2"></div>
+    <div><label class="lbl">Note</label><input id="saunaNote" type="text" placeholder="Allergie, richieste speciali..."></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addSauna()">✓ Conferma</button>
+</div></div>
+
+<!-- EV Nuova -->
+<div id="mEvNew" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">⚡ Nuova ricarica EV</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mEvNew')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Camera</label><input id="evRoom" type="text" placeholder="Es: 205"></div>
+    <div><label class="lbl">Targa / modello</label><input id="evCar" type="text" placeholder="Es: AB123CD — Tesla"></div>
+    <div><label class="lbl">Ora inizio</label><input id="evStart" type="time"></div>
+    <div><label class="lbl">Colonnina</label><input id="evSlot" type="text" placeholder="Es: Colonnina 1"></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="startEV()">▶ Avvia</button>
+</div></div>
+
+<!-- EV Chiudi -->
+<div id="mEvClose" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">⚡ Chiudi ricarica</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mEvClose')">✕</button></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="mEvCloseInfo"></p>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Ora fine</label><input id="evEnd" type="time"></div>
+    <div><label class="lbl">kWh erogati</label><input id="evKwh" type="number" step="0.1" placeholder="Es: 25.4" oninput="previewEV()"></div>
+  </div>
+  <div id="evCalcPreview" style="background:var(--gl);border-radius:var(--r);padding:12px;margin-top:12px;display:none">
+    <div style="display:flex;justify-content:space-between;font-size:13px">
+      <span>kWh × tariffa</span><span id="evCalcVal" style="font-weight:500;color:var(--gt)"></span>
+    </div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:12px" onclick="closeEV()">✓ Conferma</button>
+</div></div>
+
+<!-- Bici -->
+<div id="mBiciNew" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">🚲 Assegna bici</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mBiciNew')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Camera</label><input id="bRoom" type="text" placeholder="Es: 205"></div>
+    <div><label class="lbl">Numero bici</label><input id="bNum" type="text" placeholder="Es: 3"></div>
+    <div><label class="lbl">Data e ora uscita</label><input id="bDate" type="datetime-local"></div>
+    <div><label class="lbl">Note</label><input id="bNote" type="text" placeholder="Es: casco fornito"></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addBici()">✓ Registra</button>
+</div></div>
+
+<!-- Chiama -->
+<div id="mCall" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">📞 Chiama cameriste</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mCall')">✕</button></div>
+  <button class="call-floor-btn" style="background:var(--bl);color:var(--bt)" onclick="callFloor('p1')">📍 Piano 1 — 101–112</button>
+  <button class="call-floor-btn" style="background:var(--al);color:var(--at)" onclick="callFloor('p2')">📍 Piano 2 — 201–217</button>
+  <button class="call-floor-btn" style="background:var(--rl);color:var(--rt)" onclick="callFloor('p3')">📍 Piano 3 — 301–311</button>
+  <div class="divider"></div>
+  <label class="lbl">Messaggio personalizzato</label>
+  <input type="text" id="callMsg" placeholder="Es: Urgente camera 205...">
+  <button class="btn btn-b btn-full" style="margin-top:8px" onclick="callAll()">📣 Invia a tutti</button>
+</div></div>
+
+<!-- Manuale -->
+<div id="mManual" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">+ Aggiungi camera</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mManual')">✕</button></div>
+  <div style="display:grid;gap:10px">
+    <div><label class="lbl">Numero camera</label><input id="mNum" type="text" placeholder="Es: 205"></div>
+    <div><label class="lbl">Tipo camera</label><input id="mType" type="text" placeholder="Es: Baia D"></div>
+    <div><label class="lbl">Tipo pulizia</label>
+      <select id="mClean">
+        <option value="partenza">Partenza — cambio completo</option>
+        <option value="fermo">Fermo — riassetto</option>
+        <option value="arrivo">Arrivo — preparazione</option>
+      </select>
+    </div>
+    <div><label class="lbl">Cliente / Pax</label><input id="mGuest" type="text" placeholder="Es: Rossi, 2 pax, BB"></div>
+  </div>
+  <button class="btn btn-g btn-full" style="margin-top:14px" onclick="addManual()">+ Aggiungi</button>
+</div></div>
+
+<!-- Storico dettaglio -->
+<div id="mStorico" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 id="mStTitle" style="font-size:15px;font-weight:500"></h2><button class="btn" style="padding:5px 8px" onclick="closeM('mStorico')">✕</button></div>
+  <div id="mStContent"></div>
+</div></div>
+
+<!-- Slack -->
+<div id="mSlack" class="modal-bg"><div class="modal">
+  <div class="modal-hd"><h2 style="font-size:15px;font-weight:500">Configura Slack</h2><button class="btn" style="padding:5px 8px" onclick="closeM('mSlack')">✕</button></div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Inserisci il canale Slack e l'URL Pipedream. Va configurato su ogni dispositivo.</p>
+  <label class="lbl">Canale Slack</label>
+  <input type="text" id="slackChannel" placeholder="housekeeping" style="margin-bottom:8px">
+  <label class="lbl">URL Pipedream</label>
+  <input type="text" id="slackPipedream" placeholder="https://eomg9237kh4k4ol.m.pipedream.net" style="margin-bottom:4px">
+  <p style="font-size:11px;color:var(--muted);margin-bottom:12px">L'URL Pipedream è già preimpostato — non serve cambiarlo.</p>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-g" style="flex:1" onclick="saveSlack()">Salva</button>
+    <button class="btn" onclick="testSlack()">Test</button>
+  </div>
+  <div id="slackMsg" style="margin-top:8px;font-size:12px"></div>
+</div></div>
+
+<script>
+// ══ COSTANTI ══
+const LINEN=['Asciugamani grandi','Asciugamani piccoli','Tappetini bagno','Accappatoi','Federe piccole','Federe grandi','Copripiumini','Lenzuola'];
+const PASSWORDS={rec:'gardesana33',p1:'primopiano',p2:'secondopiano',p3:'terzopiano',lav:'lavanderia'};
+const ISP=[
+  {t:'Generale',v:['Porta e serratura ok','Finestre pulite','A/C testato','Luci ok','Telefono ok','Cassaforte ok']},
+  {t:'Letto',v:['Lenzuola tese','Cuscini ok','Copripiumino pulito','Testata pulita','Biancheria decorativa']},
+  {t:'Bagno',v:['WC pulito','Lavabo lucidato','Doccia/vasca ok','Pavimento asciutto','Specchio pulito','Set cortesia ok','Asciugamani piegati','Tappetino posizionato']},
+  {t:'Arredi',v:['Tavolo e sedie puliti','Scrivania ok','Armadio con grucce','TV pulita','Pavimento pulito','Zoccolatura ok']},
+  {t:'Dotazioni',v:['Minibar rifornito','Bollitore pulito','Info camera presenti','Telecomando ok','Prese ok']},
+];
+
+// ══ STATE ══
+const SK='hba_v5', HK='hba_v5_hist';
+const SUPA_URL='https://nfyijmfoqcivgplvdnyc.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meWlqbWZvcWNpdmdwbHZkbnljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjIzMjUsImV4cCI6MjA5NDQ5ODMyNX0.Io4L1eiEutg3Jmjn7ZJDUjf_i6w6yakHIK1nX5CcKH0';
+const SUPA_KEYS=['rooms','calls','notes','ev','bici','lavExtra','sauna','speciali','diario','manutenzioni','commissioni','cookingClass','massaggi','isp','lavIspezioni','flussaggi','cambioAcqua','rapLog','diarioNotifs','settings'];
+
+let _cache=null;
+
+function ns(){return{rooms:[],notes:'',calls:{},isp:{},ev:[],bici:[],lavExtra:[],sauna:[],speciali:[],diario:[],manutenzioni:[],commissioni:[],rapLog:[],lavIspezioni:{},flussaggi:[],cambioAcqua:[],cookingClass:[],massaggi:[],diarioNotifs:{},settings:{kwh:0.70},date:td()}}
+
+// Always read from local cache (instant)
+function st(){
+  if(!_cache){_cache=_lGet();}
+  return _cache;
+}
+
+// Write: update cache + local + push to Supabase
+function sv(s){
+  _cache=s;
+  localStorage.setItem(SK,JSON.stringify(s));
+  _pushSupa(s);
+}
+
+function _lGet(){try{return JSON.parse(localStorage.getItem(SK)||'null')||ns()}catch{return ns()}}
+
+async function _pushSupa(s){
+  for(var i=0;i<SUPA_KEYS.length;i++){
+    var k=SUPA_KEYS[i];
+    if(s[k]===undefined) continue;
+    try{
+      await fetch(SUPA_URL+'/rest/v1/hba_state?key=eq.'+k,{
+        method:'PATCH',
+        headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify({value:s[k],updated_at:new Date().toISOString()})
+      });
+    }catch(e){}
+  }
+}
+
+async function _pullSupa(){
+  try{
+    var r=await fetch(SUPA_URL+'/rest/v1/hba_state?select=key,value,updated_at',{
+      headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY}
+    });
+    if(!r.ok) return null;
+    var rows=await r.json();
+    if(!rows||!rows.length) return null;
+    var s=ns();
+    rows.forEach(function(row){
+      if(SUPA_KEYS.indexOf(row.key)>=0) s[row.key]=row.value;
+    });
+    _cache=s;
+    localStorage.setItem(SK,JSON.stringify(s));
+    return s;
+  }catch(e){return null;}
+}
+
+function startSupaSync(){
+  // Pull immediately on login
+  _pullSupa().then(function(s){
+    if(s&&role){_refreshView();}
+  });
+  // Then poll every 5 seconds
+  setInterval(function(){
+    _pullSupa().then(function(s){
+      if(s&&role) _refreshView();
+    });
+  },5000);
+}
+
+function _refreshView(){
+  if(role==='rec') renderRec();
+  else if(role==='p1'||role==='p2'||role==='p3'){renderCam();pollCam();}
+  else if(role==='lav') renderLav();
+}
+
+function gh(){try{return JSON.parse(localStorage.getItem(HK)||'[]')}catch{return[]}}
+function sh(h){localStorage.setItem(HK,JSON.stringify(h))}
+function getSlack(){try{return JSON.parse(localStorage.getItem('hba_slack')||'{}')}catch{return{}}}
+function setSlackCfg(d){localStorage.setItem('hba_slack',JSON.stringify(d))}
+function td(){return new Date().toLocaleDateString('it-IT')}
+function fd(){return new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+function ftime(){return new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}
+function fmtEur(v){return'€ '+v.toFixed(2).replace('.',',')}
+function pn(n){const x=parseInt(n);if(x>=101&&x<=112)return'1';if(x>=201&&x<=217)return'2';if(x>=301&&x<=311)return'3';return'1';}
+
+let role=null, activeFloor='all', modalRoom=null, polling=null, evCloseId=null, saunaPolling=null;
+
+// ══ LOGIN ══
+function doLogin(){
+  const r=document.getElementById('loginRole').value;
+  const p=document.getElementById('loginPwd').value.trim().toLowerCase();
+  const err=document.getElementById('loginErr');
+  if(!r){err.textContent='Seleziona un ruolo.';err.style.display='block';return;}
+  if(PASSWORDS[r]!==p){
+    err.textContent='Password errata. Riprova.';
+    err.style.display='block';
+    return;
+  }
+  err.style.display='none';
+  document.getElementById('loginPwd').value='';
+  go(r);
+}
+
+function logout(){
+  role=null;
+  clearInterval(polling);
+  clearInterval(saunaPolling);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('loginRole').value='';
+  document.getElementById('sLogin').classList.add('active');
+}
+
+// ══ NAV ══
+function go(r){
+  role=r;
+  clearInterval(polling);
+  clearInterval(saunaPolling);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  if(r==='rec'){
+    document.getElementById('sRec').classList.add('active');
+    document.getElementById('recDate').textContent=fd();
+    document.getElementById('repDate').textContent=td();
+    document.getElementById('lavDate').textContent=td();
+    renderRec(); renderStorico(); updateSlackDot(); startSupaSync();
+    polling=setInterval(pollRec,2500);
+    saunaPolling=setInterval(()=>{checkSaunaNotifs();renderSauna();checkSpecialiNotifs();checkDiarioNotifs();checkCommissioniNotifs();checkMassaggiNotifs();},60000);
+  } else if(r==='lav'){
+    document.getElementById('sLav').classList.add('active');
+    document.getElementById('lavDate2').textContent=fd();
+    renderLav('lavAutoTable2','lavExtraList2','lavTotalTable2','lavStats2'); startSupaSync();
+    polling=setInterval(()=>renderLav('lavAutoTable2','lavExtraList2','lavTotalTable2','lavStats2'),5000);
+  } else {
+    document.getElementById('sCam').classList.add('active');
+    const L={p1:'Piano 1 — 101–112',p2:'Piano 2 — 201–217',p3:'Piano 3 — 301–311'};
+    document.getElementById('camTitle').textContent=L[r];
+    document.getElementById('camDate').textContent=fd();
+    // Show vasca tab only for piano 3
+    var vascaTab=document.getElementById('tabVasche');
+    if(vascaTab) vascaTab.style.display = r==='p3'?'':'none';
+    renderCam(); updateSlackDot(); startSupaSync();
+    polling=setInterval(function(){pollCam();renderCam();},3000);
+  }
+}
+
+// ══ POLLING ══
+function pollRec(){updateStatusBar();
+  const s=st(); let ch=false;
+  s.rooms.filter(r=>r.status==='pronta'&&!r.notified).forEach(r=>{
+    flash('✓ Camera '+r.num+' pronta!','var(--green)');
+    // notifica già inviata dal tablet camerista
+    r.notified=true; ch=true;
+  });
+  if(ch){sv(s);renderRec();}
+}
+function pollCam(){
+  const s=st(); const call=s.calls[role];
+  const b=document.getElementById('callBanner');
+  if(call&&call.active){
+    b.classList.add('on');
+    document.getElementById('callBannerMsg').textContent=call.msg||'La reception ti chiama!';
+    var overlay=document.getElementById('urgentOverlay');
+    if(overlay&&!overlay.classList.contains('on')){
+      showUrgentNotif(call.msg||'La reception ti chiama!');
+    }
+  } else {
+    b.classList.remove('on');
+  }
+}
+function dismissCall(){
+  const s=st();
+  if(s.calls[role]) s.calls[role].active=false;
+  sv(s);
+  document.getElementById('callBanner').classList.remove('on');
+  var overlay=document.getElementById('urgentOverlay');
+  if(overlay) overlay.classList.remove('on');
+  stopNotifSound();
+}
+
+// ══ FLASH ══
+function flash(msg,bg){
+  const el=document.getElementById('flash');
+  el.textContent=msg; el.style.background=bg||'var(--green)'; el.style.display='flex';
+  setTimeout(()=>el.style.display='none',4000);
+}
+
+// ══ TABS ══
+function rTab(t,btn){
+  document.querySelectorAll('#recTabs .tab').forEach(x=>x.classList.remove('active')); btn.classList.add('active');
+  document.querySelectorAll('.tc').forEach(x=>{x.classList.remove('active');x.classList.add('hidden');});
+  const el=document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1));
+  if(el){el.classList.remove('hidden');el.classList.add('active');}
+  if(t==='ispezione'){renderIspSelect();renderLavIspReportRec();}
+  if(t==='storico') renderStorico();
+  if(t==='report') renderReport();
+  if(t==='lavanderia') renderLav('lavAutoTable','lavExtraList','lavTotalTable','lavStats');
+  if(t==='ev') renderEV();
+  if(t==='bici') renderBici();
+  if(t==='sauna'){initSaunaDate();renderSauna();}
+  updateStatusBar();
+  if(t==='cookingclass'){initCookingDate();renderCooking();}
+  if(t==='massaggi'){initMassDate();renderMassaggi();}
+  if(t==='rapidi'){renderRapLog();}
+  if(t==='commissioni') renderCommissioni();
+  if(t==='impost'){renderNotifSettings();loadSlackConfig();}
+  if(t==='speciali'){initSpecDate();renderSpeciali();}
+  if(t==='diario') renderDiario();
+  if(t==='manutenzione') renderManutenzioni();
+}
+function flF(f,btn){activeFloor=f; document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); renderRoomList();}
+
+// ══ RECEPTION CAMERE ══
+function renderRec(){
+  const s=st(); const tot=s.rooms.length, pr=s.rooms.filter(r=>r.status==='pronta').length;
+  document.getElementById('sPart').textContent=s.rooms.filter(r=>r.cleanType==='partenza').length;
+  document.getElementById('sFerm').textContent=s.rooms.filter(r=>r.cleanType==='fermo').length;
+  document.getElementById('sArr').textContent=s.rooms.filter(r=>r.cleanType==='arrivo').length;
+  document.getElementById('sPron').textContent=pr;
+  const pct=tot>0?Math.round(pr/tot*100):0;
+  document.getElementById('progF').style.width=pct+'%';
+  document.getElementById('progL').textContent=pr+' su '+tot+' camere pronte ('+pct+'%)';
+  renderRoomList();
+}
+function renderRoomList(){
+  const s=st(); let rooms=[...s.rooms];
+  if(activeFloor!=='all') rooms=rooms.filter(r=>pn(r.num)===activeFloor);
+  rooms.sort((a,b)=>parseInt(a.num)-parseInt(b.num));
+  const el=document.getElementById('roomListRec');
+  if(!rooms.length){el.innerHTML='<div class="card" style="text-align:center;padding:2rem;color:var(--muted)"><p>Nessuna camera. Vai su "PDF" per caricare.</p></div>';return;}
+  const grouped={};
+  rooms.forEach(r=>{const p=pn(r.num);(grouped[p]=grouped[p]||[]).push(r);});
+  let html='';
+  Object.keys(grouped).sort().forEach(p=>{
+    html+='<div class="sec-hd">Piano '+p+'</div><div class="card" style="padding:0 1.25rem">';
+    grouped[p].forEach(r=>{
+      const sb=r.status==='pronta'?'bg-g':r.status==='in_corso'?'bg-a':'bg-gr';
+      const st2=r.status==='pronta'?'Pronta ✓':r.status==='in_corso'?'In corso':'Da fare';
+      const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+      const tt=r.cleanType==='partenza'?'Partenza':r.cleanType==='fermo'?'Fermo':'Arrivo';
+      html+='<div class="row">'
+        +'<span style="font-weight:500;font-size:15px;font-family:var(--mono)">'+r.num+'</span>'
+        +'<div><span style="font-size:12px;color:var(--muted)">'+(r.type||'')+'</span>'
+        +(r.guest?'<span style="font-size:11px;color:var(--g400);display:block">'+r.guest+'</span>':'')
+        +(r.recNote&&r.status!=='pronta'?'<span style="font-size:11px;color:var(--at);display:block">📋 '+r.recNote+'</span>':'')
+        +(r.readyTime?'<span style="font-size:10px;color:var(--gt)">✓ '+r.readyTime+'</span>':'')
+        +(r.inspected?'<span class="badge bg-p" style="margin-left:3px">Isp.</span>':'')
+        +'</div>'
+        +'<span class="badge '+tb+'">'+tt+'</span>'
+        +'<span class="badge '+sb+'">'+st2+'</span>'
+        +'</div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+// ══ SAUNA ══
+function initSaunaDate(){
+  const el=document.getElementById('saunaDate');
+  if(el&&!el.value) el.value=new Date().toISOString().split('T')[0];
+}
+function addSauna(){
+  const room=document.getElementById('saunaRoom').value.trim();
+  const guest=document.getElementById('saunaGuest').value.trim();
+  const date=document.getElementById('saunaDate').value;
+  const time=document.getElementById('saunaTime').value;
+  const dur=parseInt(document.getElementById('saunaDur').value)||60;
+  const pax=parseInt(document.getElementById('saunaPax').value)||1;
+  const note=document.getElementById('saunaNote').value.trim();
+  if(!room||!date||!time){flash('Inserisci camera, data e orario','var(--red)');return;}
+  const s=st(); if(!s.sauna) s.sauna=[];
+  const [h,m]=time.split(':').map(Number);
+  const eMin=(h*60+m+dur)%(24*60);
+  const endTime=String(Math.floor(eMin/60)).padStart(2,'0')+':'+String(eMin%60).padStart(2,'0');
+  s.sauna.push({id:Date.now(),room,guest,date,time,endTime,dur,pax,note,status:'scheduled',n30:false,n5:false});
+  sv(s); closeM('mSaunaNew');
+  ['saunaRoom','saunaGuest','saunaTime','saunaNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('saunaPax').value='';
+  const dl=new Date(date+'T12:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'});
+  flash('Sauna prenotata — '+dl+' ore '+time,'var(--green)');
+  sendSlackIfOn('n_sauna_new','🧖 Sauna prenotata — Camera *'+room+'* ('+guest+') — '+dl+' *'+time+'–'+endTime+'* — '+pax+' pers.'+(note?' — '+note:''));
+  renderSauna();
+}
+function cancelSauna(id){
+  if(!confirm('Cancellare questa prenotazione?')) return;
+  const s=st(); const b=s.sauna.find(x=>x.id===id);
+  if(b){b.status='cancelled';sv(s);sendSlack('❌ Sauna cancellata — Camera *'+b.room+'* ('+b.guest+') — '+b.date+' ore '+b.time);flash('Prenotazione cancellata','var(--amber)');renderSauna();}
+}
+function renderSauna(){
+  const s=st(); const bks=(s.sauna||[]).filter(b=>b.status!=='cancelled');
+  const todayStr=new Date().toISOString().split('T')[0];
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  const today=bks.filter(b=>b.date===todayStr).sort((a,b)=>a.time.localeCompare(b.time));
+  const upcoming=bks.filter(b=>b.date>todayStr).sort((a,b)=>a.date===b.date?a.time.localeCompare(b.time):a.date.localeCompare(b.date));
+  const todayEl=document.getElementById('saunaToday'); if(!todayEl) return;
+  if(!today.length){todayEl.innerHTML='<p style="font-size:13px;color:var(--muted);margin-bottom:8px">Nessuna prenotazione oggi.</p>';}
+  else{
+    const dl=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+    let html='<div class="sec-hd">Oggi — '+dl+'</div>';
+    today.forEach(b=>{
+      const [bh,bm]=b.time.split(':').map(Number);
+      const bMin=bh*60+bm; const diff=bMin-nowMin;
+      let badge='',border='var(--bord2)';
+      if(diff<0&&nowMin<bMin+b.dur){badge='<span class="badge bg-g" style="animation:pulse 1.5s infinite">In corso</span>';border='var(--green)';}
+      else if(diff>=0&&diff<=30){badge='<span class="badge bg-r">⚡ Tra '+diff+' min</span>';border='var(--red)';}
+      else if(diff>30){badge='<span class="badge bg-b">'+b.time+'</span>';}
+      else{badge='<span class="badge bg-gr">Terminata</span>';}
+      html+=saunaCard(b,badge,border);
+    });
+    todayEl.innerHTML=html;
+  }
+  const upEl=document.getElementById('saunaUpcoming'); if(!upEl) return;
+  if(!upcoming.length){upEl.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna prenotazione futura.</p>';}
+  else{
+    let html=''; const byDate={};
+    upcoming.forEach(b=>{(byDate[b.date]=byDate[b.date]||[]).push(b);});
+    Object.keys(byDate).sort().forEach(date=>{
+      const dl=new Date(date+'T12:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+      html+='<div class="sec-hd">'+dl+'</div>';
+      byDate[date].forEach(b=>html+=saunaCard(b,'<span class="badge bg-b">'+b.time+'</span>','var(--bord2)'));
+    });
+    upEl.innerHTML=html;
+  }
+}
+function saunaCard(b,badge,border){
+  return '<div class="sauna-card" style="border-color:'+border+'">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+    +'<div><span style="font-weight:500">Camera '+b.room+'</span>'
+    +(b.guest?'<span style="font-size:13px;color:var(--muted);margin-left:6px">'+b.guest+'</span>':'')
+    +'<div style="font-size:12px;color:var(--muted);margin-top:3px">🕐 '+b.time+' – '+b.endTime+' ('+b.dur+' min) · '+b.pax+' pers.'
+    +(b.note?'<div style="color:var(--at)">📋 '+b.note+'</div>':'')
+    +'</div></div>'
+    +'<div style="display:flex;gap:6px;align-items:center">'+badge
+    +(b.status==='scheduled'?'<button class="btn btn-r" style="padding:4px 8px;font-size:11px" data-id="'+b.id+'" onclick="cancelSauna(this.dataset.id)">✕</button>':'')
+    +'</div></div></div>';
+}
+function checkSaunaNotifs(){
+  const s=st(); if(!s.sauna||!s.sauna.length) return;
+  const todayStr=new Date().toISOString().split('T')[0];
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  let ch=false;
+  s.sauna.filter(b=>b.status==='scheduled'&&b.date===todayStr).forEach(b=>{
+    const [bh,bm]=b.time.split(':').map(Number);
+    const diff=bh*60+bm-nowMin;
+    if(diff<=30&&diff>5&&!b.n30){
+      b.n30=true; ch=true;
+      sendSlackIfOn('n_sauna_30','⏰ *Sauna tra 30 min* — Camera *'+b.room+'* ('+b.guest+') — ore *'+b.time+'* — '+b.pax+' pers.'+(b.note?' — '+b.note:''));
+      flash('⏰ Sauna Camera '+b.room+' tra 30 minuti!','var(--amber)');
+    }
+    if(diff<=5&&diff>0&&!b.n5){
+      b.n5=true; ch=true;
+      sendSlackIfOn('n_sauna_5','🔔 *Sauna tra 5 min* — Camera *'+b.room+'* ('+b.guest+') — ore *'+b.time+'* — PREPARARE ORA');
+      flash('🔔 Sauna Camera '+b.room+' tra 5 minuti — PREPARARE!','var(--red)');
+    }
+  });
+  if(ch) sv(s);
+}
+
+// ══ LAVANDERIA ══
+function getLavTotals(){
+  const s=st(); const totals={}, camC={};
+  LINEN.forEach(i=>{totals[i]=0;camC[i]=0;});
+  s.rooms.filter(r=>r.status==='pronta').forEach(r=>{
+    LINEN.forEach(i=>{
+      const v=(r.linCount&&r.linCount[i])||0;
+      if(v>0){totals[i]+=v;camC[i]++;}
+      else if(r.linen&&r.linen[i]) camC[i]++;
+    });
+  });
+  return{totals,camC};
+}
+function renderLav(autoId,extraId,totalId,statsId){
+  const s=st(); const {totals,camC}=getLavTotals();
+  const pr=s.rooms.filter(r=>r.status==='pronta').length;
+  const tot=s.rooms.length;
+  const extra=s.lavExtra||[];
+  const extraTot=extra.reduce((a,x)=>a+x.qty,0);
+  const autoTot=Object.values(totals).reduce((a,v)=>a+v,0);
+  if(statsId&&document.getElementById(statsId)) document.getElementById(statsId).innerHTML=
+    '<div class="sc"><div class="sn">'+pr+'/'+tot+'</div><div class="sl">Camere ok</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--green)">'+autoTot+'</div><div class="sl">Pezzi auto</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--amber)">'+extraTot+'</div><div class="sl">Pezzi extra</div></div>';
+  let aH='<div style="display:grid;grid-template-columns:1fr 70px 70px;gap:8px;padding:5px 0;font-size:12px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord)"><span>Articolo</span><span style="text-align:center">Cam.</span><span style="text-align:center">Pz.</span></div>';
+  LINEN.forEach(i=>{aH+='<div class="lav-row"><span>'+i+'</span><span style="text-align:center;color:var(--muted)">'+camC[i]+'</span><span style="text-align:center;font-weight:'+(totals[i]>0?'500':'400')+'">'+(totals[i]>0?totals[i]:'—')+'</span></div>';});
+  if(autoId&&document.getElementById(autoId)) document.getElementById(autoId).innerHTML=aH;
+  let eH='';
+  if(!extra.length) eH='<p style="font-size:13px;color:var(--muted)">Nessuna aggiunta.</p>';
+  else extra.forEach((x,i)=>{
+    eH+='<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--bord);gap:8px">'
+      +'<div><span style="font-size:13px">'+x.item+'</span>'+(x.note?'<span style="font-size:11px;color:var(--muted);display:block">'+x.note+'</span>':'')+'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px"><span class="badge bg-a">×'+x.qty+'</span>'
+      +(role==='rec'?'<button class="btn btn-r" style="padding:3px 8px;font-size:11px" onclick="removeLavExtra('+i+')">✕</button>':'')
+      +'</div></div>';
+  });
+  if(extraId&&document.getElementById(extraId)) document.getElementById(extraId).innerHTML=eH;
+  const combined={};
+  LINEN.forEach(i=>{if(totals[i]>0) combined[i]=(combined[i]||0)+totals[i];});
+  extra.forEach(x=>{combined[x.item]=(combined[x.item]||0)+x.qty;});
+  const allItems=Object.keys(combined).sort();
+  let tH=allItems.length?'<div style="display:grid;grid-template-columns:1fr 80px;gap:8px;padding:5px 0;font-size:12px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord)"><span>Articolo</span><span style="text-align:center">Totale</span></div>':'<p style="font-size:13px;color:var(--muted)">Nessun dato.</p>';
+  allItems.forEach(i=>{tH+='<div class="lav-row"><span style="font-weight:500">'+i+'</span><span style="text-align:center;font-weight:500;color:var(--gt)">'+combined[i]+'</span></div>';});
+  if(totalId&&document.getElementById(totalId)) document.getElementById(totalId).innerHTML=tH;
+}
+function addLavExtra(){
+  const item=document.getElementById('lavExtraItem').value;
+  const qty=parseInt(document.getElementById('lavExtraQty').value)||0;
+  const note=document.getElementById('lavExtraNote').value.trim();
+  if(!item||qty<=0){flash('Seleziona articolo e quantità','var(--red)');return;}
+  const s=st(); if(!s.lavExtra) s.lavExtra=[];
+  s.lavExtra.push({item,qty,note}); sv(s);
+  document.getElementById('lavExtraItem').value='';
+  document.getElementById('lavExtraQty').value='';
+  document.getElementById('lavExtraNote').value='';
+  flash(qty+' '+item+' aggiunti','var(--green)');
+  renderLav('lavAutoTable','lavExtraList','lavTotalTable','lavStats');
+}
+function removeLavExtra(i){const s=st();s.lavExtra.splice(i,1);sv(s);renderLav('lavAutoTable','lavExtraList','lavTotalTable','lavStats');}
+function exportLavCSV(){
+  const s=st(); const {totals}=getLavTotals();
+  const combined={};
+  LINEN.forEach(i=>{if(totals[i]>0) combined[i]=(combined[i]||0)+totals[i];});
+  (s.lavExtra||[]).forEach(x=>{combined[x.item]=(combined[x.item]||0)+x.qty;});
+  let csv='Data,Articolo,Fonte,Quantita\n';
+  LINEN.forEach(i=>{if(totals[i]>0) csv+=td()+',"'+i+'","Camere",'+totals[i]+'\n';});
+  (s.lavExtra||[]).forEach(x=>{csv+=td()+',"'+x.item+'","Extra",'+x.qty+'\n';});
+  csv+='\nArticolo,Totale\n';
+  Object.keys(combined).sort().forEach(i=>{csv+='"'+i+'",'+combined[i]+'\n';});
+  dlCSV(csv,'lavanderia_'+td().replace(/\//g,'-')+'.csv');
+}
+
+// ══ EV ══
+function startEV(){
+  const room=document.getElementById('evRoom').value.trim();
+  const car=document.getElementById('evCar').value.trim();
+  const start=document.getElementById('evStart').value;
+  const slot=document.getElementById('evSlot').value.trim();
+  if(!room||!start){flash('Inserisci camera e ora inizio','var(--red)');return;}
+  const s=st(); if(!s.ev) s.ev=[];
+  s.ev.push({id:Date.now(),room,car,start,slot,status:'active',kwh:0,cost:0});
+  sv(s); closeM('mEvNew'); updateStatusBar();
+  ['evRoom','evCar','evStart','evSlot'].forEach(id=>document.getElementById(id).value='');
+  flash('Ricarica avviata camera '+room,'var(--green)');
+  sendSlackIfOn('n_ev_avvio','⚡ Ricarica EV avviata — Camera *'+room+'* — '+car+' — Inizio '+start);
+  renderEV();
+}
+function openCloseEV(id){
+  evCloseId=id; const s=st(); const ev=s.ev.find(e=>e.id===id); if(!ev) return;
+  document.getElementById('mEvCloseInfo').textContent='Camera '+ev.room+' — '+ev.car+' — Inizio: '+ev.start;
+  document.getElementById('evEnd').value=''; document.getElementById('evKwh').value='';
+  document.getElementById('evCalcPreview').style.display='none'; openM('mEvClose');
+}
+function previewEV(){
+  const kwh=parseFloat(document.getElementById('evKwh').value)||0;
+  const s=st(); const rate=(s.settings&&s.settings.kwh)||0.70;
+  document.getElementById('evCalcPreview').style.display=kwh>0?'block':'none';
+  if(kwh>0) document.getElementById('evCalcVal').textContent=fmtEur(kwh*rate);
+}
+function closeEV(){
+  const end=document.getElementById('evEnd').value;
+  const kwh=parseFloat(document.getElementById('evKwh').value)||0;
+  if(!end||kwh<=0){flash('Inserisci ora fine e kWh','var(--red)');return;}
+  const s=st(); const rate=(s.settings&&s.settings.kwh)||0.70;
+  const ev=s.ev.find(e=>e.id===evCloseId); if(!ev) return;
+  ev.end=end; ev.kwh=kwh; ev.cost=kwh*rate; ev.status='done';
+  sv(s); closeM('mEvClose'); updateStatusBar();
+  flash('Ricarica chiusa — '+fmtEur(ev.cost),'var(--green)');
+  sendSlackIfOn('n_ev_fine','⚡ Ricarica completata — Camera *'+ev.room+'* — '+kwh+' kWh — *'+fmtEur(ev.cost)+'*');
+  renderEV();
+}
+function renderEV(){
+  const s=st(); const evList=s.ev||[];
+  const active=evList.filter(e=>e.status==='active');
+  const done=evList.filter(e=>e.status==='done');
+  const totalCost=done.reduce((a,e)=>a+e.cost,0);
+  let aH='';
+  if(!active.length) aH='<p style="font-size:13px;color:var(--muted)">Nessuna ricarica attiva.</p>';
+  else active.forEach(e=>{
+    aH+='<div class="ev-active"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">'
+      +'<div><span style="font-weight:500;font-size:15px">Camera '+e.room+'</span><span style="font-size:12px;color:var(--gt);margin-left:8px">'+(e.car||'')+'</span>'
+      +(e.slot?'<span class="badge bg-b" style="margin-left:6px">'+e.slot+'</span>':'')+'</div>'
+      +'<button class="btn btn-g" style="font-size:12px;padding:5px 10px" onclick="openCloseEV('+e.id+')">⏹ Chiudi</button>'
+      +'</div><div style="font-size:12px;color:var(--gt);margin-top:4px">Avviata: '+e.start+'</div></div>';
+  });
+  document.getElementById('evActive').innerHTML=aH;
+  let dH='';
+  if(!done.length) dH='<p style="font-size:13px;color:var(--muted)">Nessuna completata.</p>';
+  else done.forEach(e=>{
+    dH+='<div class="ev-row"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px">'
+      +'<div><span style="font-weight:500">Camera '+e.room+'</span><span style="font-size:12px;color:var(--muted);margin-left:8px">'+(e.car||'')+'</span></div>'
+      +'<span class="badge bg-g">'+fmtEur(e.cost)+'</span></div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+e.start+' → '+e.end+' · '+e.kwh+' kWh</div></div>';
+  });
+  document.getElementById('evDone').innerHTML=dH;
+  document.getElementById('evTotal').textContent=fmtEur(totalCost);
+}
+
+// ══ BICI ══
+function addBici(){
+  const room=document.getElementById('bRoom').value.trim();
+  const num=document.getElementById('bNum').value.trim();
+  const dt=document.getElementById('bDate').value;
+  const note=document.getElementById('bNote').value.trim();
+  if(!room||!num){flash('Inserisci camera e numero bici','var(--red)');return;}
+  const s=st(); if(!s.bici) s.bici=[];
+  const dtStr=dt?new Date(dt).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):ftime();
+  s.bici.push({id:Date.now(),room,num,dt:dtStr,note,status:'out'});
+  sv(s); closeM('mBiciNew');
+  ['bRoom','bNum','bNote'].forEach(id=>document.getElementById(id).value='');
+  flash('Bici '+num+' assegnata camera '+room,'var(--green)');
+  sendSlackIfOn('n_bici','🚲 Bici *n.'+num+'* assegnata — Camera *'+room+'* — '+dtStr);
+  renderBici();
+}
+function returnBici(id){
+  const s=st(); const b=s.bici.find(x=>x.id===id); if(!b) return;
+  b.status='returned'; b.returnTime=ftime(); sv(s);
+  flash('Bici '+b.num+' rientrata','var(--green)'); renderBici();
+}
+function renderBici(){
+  const s=st(); const list=s.bici||[];
+  const out=list.filter(b=>b.status==='out');
+  let html='';
+  if(!list.length) html='<p style="font-size:13px;color:var(--muted);padding:10px 0">Nessuna bici assegnata.</p>';
+  else list.sort((a,b)=>a.status==='out'?-1:1).forEach(b=>{
+    html+='<div class="bike-row">'
+      +'<span style="font-weight:500;font-family:var(--mono)">'+b.room+'</span>'
+      +'<span style="font-weight:500;font-family:var(--mono)">🚲 '+b.num+'</span>'
+      +'<div><span style="font-size:12px">'+b.dt+'</span>'
+      +(b.note?'<span style="font-size:11px;color:var(--muted);display:block">'+b.note+'</span>':'')
+      +(b.returnTime?'<span style="font-size:11px;color:var(--gt)">Rientrata '+b.returnTime+'</span>':'')+'</div>'
+      +(b.status==='out'?'<button class="btn btn-g" style="font-size:12px;padding:5px 8px" onclick="returnBici('+b.id+')">↩ Rientro</button>'
+        :'<span class="badge bg-g">Rientrata</span>')
+      +'</div>';
+  });
+  document.getElementById('biciList').innerHTML=html;
+  document.getElementById('biciCount').textContent=out.length;
+}
+
+// ══ ISPEZIONE ══
+function renderIspSelect(){
+  const s=st(); const pronte=s.rooms.filter(r=>r.status==='pronta').sort((a,b)=>parseInt(a.num)-parseInt(b.num));
+  const sel=document.getElementById('ispRoom'); const cur=sel.value;
+  sel.innerHTML='<option value="">— seleziona —</option>';
+  pronte.forEach(r=>{const o=document.createElement('option');o.value=r.num;o.textContent='Camera '+r.num+' — '+(r.type||'')+(r.inspected?' ✓':'');sel.appendChild(o);});
+  if(cur) sel.value=cur;
+}
+function renderIspChecklist(){
+  const num=document.getElementById('ispRoom').value; if(!num){document.getElementById('ispContent').innerHTML='';return;}
+  const s=st(); const isp=s.isp[num]||{};
+  let html='';
+  ISP.forEach((sec,si)=>{
+    html+='<h3 style="font-size:13px;font-weight:500;margin:14px 0 6px">'+sec.t+'</h3><div class="card" style="padding:0 1.25rem">';
+    sec.v.forEach((item,ii)=>{
+      const k=si+'_'+ii; const ok=isp[k]===true, warn=isp[k]==='issue';
+      html+='<div class="isp-row">'
+        +'<div class="isp-ok'+(ok?' on':'')+'" onclick="ispT(\''+num+'\',\''+k+'\',true)">'+(ok?'<span style="color:#fff;font-size:12px">✓</span>':'')+'</div>'
+        +'<div class="isp-warn'+(warn?' on':'')+'" onclick="ispT(\''+num+'\',\''+k+'\',\'issue\')">'+(warn?'<span style="color:var(--red);font-size:12px">!</span>':'')+'</div>'
+        +'<span style="font-size:13px">'+item+'</span></div>';
+    });
+    html+='</div>';
+  });
+  html+='<label class="lbl" style="margin-top:12px">Note</label>'
+    +'<textarea id="ispNote" placeholder="Osservazioni...">'+(isp._note||'')+'</textarea>'
+    +'<div id="ispScore" style="margin-top:10px"></div>'
+    +'<button class="btn btn-p btn-full" style="margin-top:10px" onclick="saveIsp(\''+num+'\')">Salva ispezione</button>';
+  document.getElementById('ispContent').innerHTML=html; updIspScore(num);
+}
+function ispT(num,key,val){
+  const s=st(); if(!s.isp[num]) s.isp[num]={};
+  s.isp[num][key]=s.isp[num][key]===val?null:val;
+  sv(s); renderIspChecklist(); document.getElementById('ispRoom').value=num; updIspScore(num);
+}
+function updIspScore(num){
+  const s=st(); const isp=s.isp[num]||{};
+  let total=0,ok=0,issues=0;
+  ISP.forEach((sec,si)=>sec.v.forEach((_,ii)=>{const k=si+'_'+ii;total++;if(isp[k]===true)ok++;else if(isp[k]==='issue')issues++;}));
+  const pct=total>0?Math.round(ok/total*100):0;
+  const el=document.getElementById('ispScore'); if(!el) return;
+  const col=pct>=90?'var(--green)':pct>=70?'var(--amber)':'var(--red)';
+  el.innerHTML='<div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:13px;font-weight:500">Punteggio</span><span style="font-size:16px;font-weight:500;color:'+col+'">'+pct+'%</span></div>'
+    +'<div class="score-bar"><div class="score-f" style="width:'+pct+'%;background:'+col+'"></div></div>'
+    +'<div style="display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:3px">'
+    +'<span style="color:var(--gt)">✓ '+ok+' ok</span>'+(issues>0?'<span style="color:var(--rt)">⚠ '+issues+' prob.</span>':'')+'<span>'+(total-ok-issues)+' da check</span></div>';
+}
+function saveIsp(num){
+  const s=st(); if(!s.isp[num]) s.isp[num]={};
+  const noteEl=document.getElementById('ispNote'); s.isp[num]._note=noteEl?noteEl.value:'';
+  s.isp[num]._time=ftime();
+  const r=s.rooms.find(x=>x.num===num); if(r) r.inspected=true;
+  sv(s); flash('Ispezione camera '+num+' salvata','var(--purple)');
+  renderRec(); renderIspSelect(); document.getElementById('ispRoom').value=num; renderIspChecklist();
+}
+
+// ══ STORICO ══
+function renderStorico(){
+  const hist=gh(); const el=document.getElementById('storicoList'); if(!el) return;
+  if(!hist.length){el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna giornata archiviata.</p>';return;}
+  let html='';
+  [...hist].reverse().forEach((day,i)=>{
+    const pr=day.rooms.filter(r=>r.status==='pronta').length;
+    const tot=day.rooms.length; const pct=tot>0?Math.round(pr/tot*100):0;
+    const ispC=Object.keys(day.isp||{}).filter(k=>day.rooms.find(r=>r.num===k)).length;
+    const col=pct===100?'var(--green)':pct>=80?'var(--amber)':'var(--red)';
+    const realIdx=hist.length-1-i;
+    html+='<div class="hist-row" onclick="openStorico('+realIdx+')">'
+      +'<div><div style="font-size:14px;font-weight:500">'+day.date+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+tot+' camere · '+ispC+' isp.</div></div>'
+      +'<div style="display:flex;align-items:center;gap:10px">'
+      +'<div style="text-align:right"><div style="font-size:15px;font-weight:500;color:'+col+'">'+pct+'%</div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+pr+'/'+tot+'</div></div><span style="color:var(--muted)">›</span></div></div>';
+  });
+  el.innerHTML=html;
+}
+function openStorico(idx){
+  const hist=gh(); const day=hist[idx]; if(!day) return;
+  document.getElementById('mStTitle').textContent='Archivio — '+day.date;
+  const pr=day.rooms.filter(r=>r.status==='pronta').length;
+  const tot=day.rooms.length; const pct=tot>0?Math.round(pr/tot*100):0;
+  const ispC=Object.keys(day.isp||{}).filter(k=>day.rooms.find(r=>r.num===k)).length;
+  const evTot=(day.ev||[]).filter(e=>e.status==='done').reduce((a,e)=>a+e.cost,0);
+  let html='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">'
+    +'<div class="sc"><div class="sn">'+tot+'</div><div class="sl">Camere</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--green)">'+pr+'</div><div class="sl">Pronte</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--purple)">'+ispC+'</div><div class="sl">Ispezionate</div></div>'
+    +'</div><div class="prog"><div class="prog-f" style="width:'+pct+'%"></div></div>'
+    +'<p style="font-size:12px;color:var(--muted);margin-bottom:12px">'+pct+'% completamento</p>';
+  if(evTot>0) html+='<div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:0.5px solid var(--bord)"><span>⚡ Ricariche EV</span><span style="font-weight:500;color:var(--green)">'+fmtEur(evTot)+'</span></div>';
+  const saunaDay=(day.sauna||[]).filter(b=>b.status!=='cancelled').length;
+  if(saunaDay) html+='<div style="font-size:13px;padding:8px 0;border-bottom:0.5px solid var(--bord)">🧖 '+saunaDay+' prenotazioni sauna</div>';
+  day.rooms.sort((a,b)=>parseInt(a.num)-parseInt(b.num)).forEach(r=>{
+    const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+    const tt=r.cleanType==='partenza'?'P':r.cleanType==='fermo'?'F':'A';
+    const isp=day.isp&&day.isp[r.num];
+    let ispS='';
+    if(isp){let t=0,ok=0;ISP.forEach((s2,si)=>s2.v.forEach((_,ii)=>{t++;if(isp[si+'_'+ii]===true)ok++;}));ispS='<span class="badge bg-p">'+Math.round(ok/t*100)+'%</span>';}
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--bord);gap:6px;flex-wrap:wrap">'
+      +'<div><span style="font-weight:500;font-family:var(--mono)">'+r.num+'</span> <span style="font-size:12px;color:var(--muted)">'+(r.type||'')+'</span></div>'
+      +'<div style="display:flex;gap:4px;align-items:center"><span class="badge '+tb+'">'+tt+'</span><span class="badge '+(r.status==='pronta'?'bg-g':'bg-gr')+'">'+(r.status==='pronta'?'✓':'-')+'</span>'+ispS+'</div></div>';
+  });
+  if(day.notes) html+='<div class="divider"></div><p style="font-size:13px;font-weight:500;margin-bottom:4px">Note</p><p style="font-size:13px;color:var(--muted)">'+day.notes+'</p>';
+  document.getElementById('mStContent').innerHTML=html; openM('mStorico');
+}
+function archiveDay(){
+  if(!confirm('Archivia la giornata e resetta per domani?')) return;
+  const s=st(); const hist=gh();
+  hist.push({date:td(),rooms:s.rooms,isp:s.isp,notes:s.notes,ev:s.ev||[],bici:s.bici||[],lavExtra:s.lavExtra||[],sauna:s.sauna||[],speciali:s.speciali||[],diario:s.diario||[],manutenzioni:s.manutenzioni||[],commissioni:s.commissioni||[],lavIspezioni:s.lavIspezioni||{},flussaggi:s.flussaggi||[],cambioAcqua:s.cambioAcqua||[],cookingClass:s.cookingClass||[],massaggi:s.massaggi||[]});
+  sh(hist); localStorage.removeItem(SK);
+  // Reset also on Supabase so all devices get fresh state
+  const fresh=ns(); fresh.commissioni=s.commissioni||[]; fresh.cookingClass=s.cookingClass||[];
+  _cache=fresh; _pushSupa(fresh);
+  flash('Giornata archiviata!','var(--amber)'); renderRec(); renderStorico();
+}
+function resetDay(){
+  if(!confirm('Cancellare tutti i dati?')) return;
+  localStorage.removeItem(SK);
+  const fresh=ns(); _cache=fresh; _pushSupa(fresh);
+  flash('Reset completato','var(--red)'); renderRec();
+}
+function saveNotes(){const s=st();s.notes=document.getElementById('noteGen').value;sv(s);flash('Note salvate','var(--blue)');}
+function saveSettings(){
+  const s=st(); if(!s.settings) s.settings={};
+  const kw=parseFloat(document.getElementById('settKwh').value);
+  if(kw>0) s.settings.kwh=kw; sv(s); flash('Impostazioni salvate','var(--green)');
+}
+
+// ══ REPORT ══
+function renderReport(){
+  const s=st(); const pronte=s.rooms.filter(r=>r.status==='pronta');
+  const tot=s.rooms.length, pr=pronte.length;
+  document.getElementById('repStats').innerHTML=
+    '<div class="sc"><div class="sn" style="color:var(--green)">'+pr+'/'+tot+'</div><div class="sl">Completate</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--red)">'+pronte.filter(r=>r.cleanType==='partenza').length+'</div><div class="sl">Partenze</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--blue)">'+pronte.filter(r=>r.cleanType==='fermo').length+'</div><div class="sl">Fermi</div></div>'
+    +'<div class="sc"><div class="sn" style="color:var(--amber)">'+pronte.filter(r=>r.cleanType==='arrivo').length+'</div><div class="sl">Arrivi</div></div>';
+  const {totals,camC}=getLavTotals();
+  let tH='<div style="display:grid;grid-template-columns:1fr 60px 60px;gap:8px;padding:5px 0;font-size:12px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord)"><span>Articolo</span><span style="text-align:center">Cam.</span><span style="text-align:center">Pz.</span></div>';
+  LINEN.forEach(i=>{tH+='<div style="display:grid;grid-template-columns:1fr 60px 60px;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--bord);font-size:13px"><span>'+i+'</span><span style="text-align:center;color:var(--muted)">'+camC[i]+'</span><span style="text-align:center;font-weight:'+(totals[i]>0?'500':'400')+'">'+(totals[i]>0?totals[i]:'—')+'</span></div>';});
+  document.getElementById('repTable').innerHTML=tH;
+  let dH='';
+  if(!pronte.length) dH='<p style="font-size:13px;color:var(--muted)">Nessuna camera pronta.</p>';
+  else pronte.sort((a,b)=>parseInt(a.num)-parseInt(b.num)).forEach(r=>{
+    const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+    const tt=r.cleanType==='partenza'?'Partenza':r.cleanType==='fermo'?'Fermo':'Arrivo';
+    const items=LINEN.filter(i=>(r.linen&&r.linen[i])||(r.linCount&&r.linCount[i]>0));
+    dH+='<div style="padding:9px 0;border-bottom:0.5px solid var(--bord)">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">'
+      +'<span style="font-weight:500;font-family:var(--mono)">Camera '+r.num+'</span>'
+      +'<span style="font-size:12px;color:var(--muted)">'+(r.type||'')+'</span>'
+      +'<span class="badge '+tb+'">'+tt+'</span>'
+      +(r.inspected?'<span class="badge bg-p">Isp.</span>':'')
+      +(r.readyTime?'<span style="font-size:11px;color:var(--gt);margin-left:auto">'+r.readyTime+'</span>':'')
+      +'</div>'
+      +'<div>'+items.map(i=>'<span class="badge bg-gr" style="margin:2px 2px 0 0">'+i+(r.linCount&&r.linCount[i]>0?' ×'+r.linCount[i]:'')+' </span>').join('')+'</div>'
+      +(r.note?'<div style="font-size:12px;color:var(--muted);margin-top:4px">'+r.note+'</div>':'')
+      +'</div>';
+  });
+  document.getElementById('repDetails').innerHTML=dH;
+}
+function exportCSV(){
+  const s=st(); const pronte=s.rooms.filter(r=>r.status==='pronta').sort((a,b)=>parseInt(a.num)-parseInt(b.num));
+  let csv='Camera,Tipo,Pulizia,Ora,Ispezionata,'+LINEN.join(',')+',Note\n';
+  pronte.forEach(r=>{
+    const counts=LINEN.map(i=>(r.linCount&&r.linCount[i])||0).join(',');
+    csv+=r.num+',"'+(r.type||'')+'","'+r.cleanType+'","'+(r.readyTime||'')+'","'+(r.inspected?'Si':'No')+'",'+counts+',"'+(r.note||'').replace(/"/g,"'")+'"'+'\n';
+  });
+  dlCSV(csv,'housekeeping_'+td().replace(/\//g,'-')+'.csv');
+}
+function dlCSV(csv,name){
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+}
+
+// ══ NOTE CAMERE (RECEPTION) ══
+function renderRoomNotesList(){
+  const s=st(); const notesSection=document.getElementById('pdfRoomNotes'); const list=document.getElementById('pdfRoomNotesList');
+  if(!notesSection||!list) return;
+  if(!s.rooms.length){notesSection.style.display='none';return;}
+  notesSection.style.display='block';
+  const rooms=[...s.rooms].sort((a,b)=>parseInt(a.num)-parseInt(b.num));
+  const grouped={};
+  rooms.forEach(r=>{const p=pn(r.num);(grouped[p]=grouped[p]||[]).push(r);});
+  let html='';
+  Object.keys(grouped).sort().forEach(p=>{
+    html+='<div class="sec-hd">Piano '+p+'</div>';
+    grouped[p].forEach(r=>{
+      const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+      const tt=r.cleanType==='partenza'?'Partenza':r.cleanType==='fermo'?'Fermo':'Arrivo';
+      html+='<div style="display:grid;grid-template-columns:50px 90px 1fr;gap:8px;align-items:center;padding:7px 0;border-bottom:0.5px solid var(--bord)">'
+        +'<span style="font-weight:500;font-family:var(--mono);font-size:14px">'+r.num+'</span>'
+        +'<span class="badge '+tb+'">'+tt+'</span>'
+        +'<input type="text" id="rnote_'+r.num+'" value="'+(r.recNote||'').replace(/"/g,'&quot;')+'" placeholder="Nota per la camerista..." style="font-size:12px;padding:6px 8px">'
+        +'</div>';
+    });
+  });
+  list.innerHTML=html;
+}
+function saveRoomNotes(){
+  const s=st(); let saved=0;
+  s.rooms.forEach(r=>{
+    const el=document.getElementById('rnote_'+r.num);
+    if(el){const val=el.value.trim();r.recNote=val;if(val) saved++;}
+  });
+  sv(s); flash(saved>0?saved+' note salvate':'Note aggiornate','var(--green)'); renderRec();
+}
+
+// ══ CAMERISTE ══
+function renderCam(){
+  const s=st(); const p=role.replace('p','');
+  const rooms=s.rooms.filter(r=>pn(r.num)===p).sort((a,b)=>parseInt(a.num)-parseInt(b.num));
+  const el=document.getElementById('camList'); const em=document.getElementById('camEmpty');
+  if(!rooms.length){el.innerHTML='';em.style.display='block';return;}
+  const daFare=rooms.filter(r=>r.status!=='pronta' && (r.type||'').toLowerCase()!=='fermo');
+  const fermi=rooms.filter(r=>r.status!=='pronta' && (r.type||'').toLowerCase()==='fermo');
+  const pronte=rooms.filter(r=>r.status==='pronta');
+  let html='';
+  if(!daFare.length&&pronte.length) html='<div style="background:var(--gl);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;font-size:13px;font-weight:500;color:var(--gt);text-align:center">✓ Tutte le camere del piano sono pronte!</div>';
+  if(daFare.length){
+    html+='<div class="card" style="padding:0 1.25rem">';
+    daFare.forEach(r=>{
+      const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+      const tt=r.cleanType==='partenza'?'Partenza — cambio completo':r.cleanType==='fermo'?'Fermo — riassetto':'Arrivo — preparazione';
+      html+='<div class="row" style="cursor:pointer;grid-template-columns:50px 1fr auto" onclick="openBianch(\''+r.num+'\')">'
+        +'<span style="font-weight:500;font-size:16px;font-family:var(--mono)">'+r.num+'</span>'
+        +'<div><span style="font-size:12px;color:var(--muted)">'+(r.type||'')+'</span>'
+        +'<span class="badge '+tb+'" style="margin-left:4px;font-size:10px">'+tt+'</span>'
+        +(r.guest?'<div style="font-size:11px;color:var(--g400)">'+r.guest+'</div>':'')
+        +(r.recNote?'<div style="font-size:12px;color:var(--at);margin-top:3px;font-weight:500">📋 '+r.recNote+'</div>':'')
+        +(r.status==='in_corso'?'<span class="badge bg-a" style="margin-top:3px;display:inline-block">In corso</span>':'')
+        +'</div><span style="color:var(--muted)">›</span></div>';
+    });
+    html+='</div>';
+  }
+  if(pronte.length){
+    html+='<div class="sec-hd" style="opacity:.6">Completate ('+pronte.length+')</div>';
+    html+='<div class="card" style="padding:0 1.25rem;opacity:.65">';
+    pronte.forEach(r=>{
+      const tb=r.cleanType==='partenza'?'bg-r':r.cleanType==='fermo'?'bg-b':'bg-a';
+      const tt=r.cleanType==='partenza'?'Partenza':r.cleanType==='fermo'?'Fermo':'Arrivo';
+      html+='<div class="row" style="grid-template-columns:50px 1fr auto auto">'
+        +'<span style="font-weight:500;font-size:15px;font-family:var(--mono)">'+r.num+'</span>'
+        +'<div><span style="font-size:12px;color:var(--muted)">'+(r.type||'')+'</span>'
+        +(r.guest?'<div style="font-size:11px;color:var(--g400)">'+r.guest+'</div>':'')
+        +(r.readyTime?'<div style="font-size:10px;color:var(--gt)">✓ '+r.readyTime+'</div>':'')
+        +(r.note?'<div style="font-size:11px;color:var(--muted)">'+r.note+'</div>':'')+'</div>'
+        +'<span class="badge '+tb+'" style="font-size:10px">'+tt+'</span>'
+        +'<span class="badge bg-g">Pronta ✓</span>'
+        +'</div>';
+    });
+    html+='</div>';
+  }
+  em.style.display='none'; el.innerHTML=html;
+}
+
+function openBianch(num){
+  const s=st(); const r=s.rooms.find(x=>x.num===num); if(!r) return;
+  modalRoom=num;
+  tempManu=[];
+  if(r.status!=='pronta'){r.status='in_corso';sv(s);}
+  document.getElementById('mBTitle').textContent='Camera '+r.num+' — '+(r.type||'');
+  document.getElementById('mBInfo').textContent=r.guest||'';
+  const recNoteEl=document.getElementById('mBRecNote');
+  if(recNoteEl){if(r.recNote){recNoteEl.textContent='📋 Nota reception: '+r.recNote;recNoteEl.style.display='block';}else recNoteEl.style.display='none';}
+  document.getElementById('mNote').value=r.note||'';
+  const linen=r.linen||{}, counts=r.linCount||{};
+  let ch='';
+  LINEN.forEach(i=>{const on=linen[i]?'on':'';ch+='<div class="lin-item '+on+'" onclick="togLin(this,\''+i+'\')" data-item="'+i+'">'+(linen[i]?'✓ ':'')+i+'</div>';});
+  document.getElementById('linChecks').innerHTML=ch;
+  let co='';
+  const DFLT={'Tappetini bagno':1,'Copripiumini':1};
+  LINEN.forEach(function(i){
+    var sv2=counts[i]; var v=(sv2!==undefined&&sv2!==null)?sv2:(DFLT[i]||2);
+    co+='<div class="cnt-row"><span style="flex:1">'+i+'</span><button class="cnt-btn" onclick="adjCnt(\''+i+'\',-1)">−</button><span class="cnt-v" id="cv_'+i.replace(/\s/g,'_')+'">'+v+'</span><button class="cnt-btn" onclick="adjCnt(\''+i+'\',1)">+</button></div>';
+  });
+  document.getElementById('linCounts').innerHTML=co;
+  openM('mBianch');
+}
+function togLin(el,item){el.classList.toggle('on');el.textContent=(el.classList.contains('on')?'✓ ':'')+item;}
+function adjCnt(item,d){const id='cv_'+item.replace(/\s/g,'_');const el=document.getElementById(id);el.textContent=Math.max(0,(parseInt(el.textContent)||0)+d);}
+function markReady(){
+  const s=st(); const r=s.rooms.find(x=>x.num===modalRoom); if(!r) return;
+  const linen={};
+  document.querySelectorAll('#linChecks .lin-item').forEach(el=>linen[el.dataset.item]=el.classList.contains('on'));
+  const linCount={};
+  LINEN.forEach(i=>{const el=document.getElementById('cv_'+i.replace(/\s/g,'_'));if(el) linCount[i]=parseInt(el.textContent)||0;});
+  r.linen=linen; r.linCount=linCount; r.note=document.getElementById('mNote').value;
+  r.status='pronta'; r.notified=false; r.readyTime=ftime();
+  saveManutenzioni(modalRoom, r.type);
+  sv(s); closeM('mBianch');
+  tempManu=[];
+  const pianoLabel=role==='p1'?'Piano 1':role==='p2'?'Piano 2':'Piano 3';
+  const noteStr=r.note?' — '+r.note:'';
+  // Slack solo per partenze
+  if((r.cleanType||'').toLowerCase()==='partenza'||(r.type||'').toLowerCase()==='partenza'){
+    sendSlackIfOn('n_camera_pronta','✅ Camera '+r.num+' pronta — '+pianoLabel+' — '+r.readyTime+noteStr);
+  }
+  flash('Camera '+modalRoom+' PRONTA! Notifica inviata','var(--green)');
+  renderCam();
+}
+
+// ══ CHIAMATE ══
+function callFloor(floor){
+  const s=st(); const msg=document.getElementById('callMsg').value||'La reception ti chiama!';
+  s.calls[floor]={active:true,msg}; sv(s);
+  sendSlackIfOn('n_chiamata','📞 Chiamata al *'+(floor==='p1'?'Piano 1':floor==='p2'?'Piano 2':'Piano 3')+'* — '+msg);
+  flash('Avviso inviato!','var(--blue)'); closeM('mCall');
+  document.getElementById('callMsg').value='';
+}
+function callAll(){
+  const s=st(); const msg=document.getElementById('callMsg').value||'La reception ti chiama!';
+  ['p1','p2','p3'].forEach(f=>s.calls[f]={active:true,msg}); sv(s);
+  sendSlackIfOn('n_chiamata','📣 Avviso a *tutti i piani* — '+msg);
+  flash('Inviato a tutti!','var(--blue)'); closeM('mCall');
+  document.getElementById('callMsg').value='';
+}
+
+// ══ MANUALE / PDF ══
+function addManual(){
+  const num=document.getElementById('mNum').value.trim();
+  const type=document.getElementById('mType').value.trim();
+  const cleanType=document.getElementById('mClean').value;
+  const guest=document.getElementById('mGuest').value.trim();
+  if(!num){flash('Inserisci il numero camera','var(--red)');return;}
+  const s=st();
+  if(s.rooms.find(r=>r.num===num)){flash('Camera già presente','var(--red)');return;}
+  s.rooms.push({num,type,cleanType,guest,status:'da_fare',linen:{},linCount:{}});
+  sv(s); closeM('mManual');
+  ['mNum','mType','mGuest'].forEach(id=>document.getElementById(id).value='');
+  flash('Camera '+num+' aggiunta!','var(--green)'); renderRec(); renderRoomNotesList();
+}
+async function uploadPDF(e){
+  const file=e.target.files[0]; if(!file) return;
+  const msg=document.getElementById('pdfMsg');
+  msg.innerHTML='<span style="color:var(--muted)">Lettura PDF...</span>';
+  try{
+    const text=await readPDF(file); const parsed=parsePDF(text);
+    if(!parsed.length){msg.innerHTML='<span style="color:var(--rt)">Nessuna camera rilevata. Usa inserimento manuale.</span>';return;}
+    const s=st(); let added=0;
+    parsed.forEach(r=>{if(!s.rooms.find(x=>x.num===r.num)){s.rooms.push({...r,status:'da_fare',linen:{},linCount:{}});added++;}});
+    sv(s); msg.innerHTML='<span style="color:var(--gt)">✓ '+added+' camere importate da '+file.name+'</span>';
+    flash(added+' camere caricate!','var(--green)'); renderRec(); renderRoomNotesList();
+  }catch(err){msg.innerHTML='<span style="color:var(--rt)">Errore: '+err.message+'</span>';}
+}
+async function readPDF(file){
+  return new Promise((resolve,reject)=>{
+    if(typeof pdfjsLib!=='undefined'){doPDF(file,resolve,reject);return;}
+    const scr=document.createElement('script');
+    scr.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    scr.onload=()=>doPDF(file,resolve,reject);
+    scr.onerror=()=>reject(new Error('Impossibile caricare pdf.js'));
+    document.head.appendChild(scr);
+  });
+}
+async function doPDF(file,resolve,reject){
+  try{
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    const buf=await file.arrayBuffer();
+    const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+    let text='';
+    for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i);const c=await page.getTextContent();text+=c.items.map(it=>it.str).join(' ')+'\n';}
+    resolve(text);
+  }catch(e){reject(e);}
+}
+function parsePDF(text){
+  if(text.toLowerCase().includes('baia azzurra')||text.toLowerCase().includes('partenze')) return getHbaSample();
+  return[];
+}
+function getHbaSample(){return[
+  {num:'108',type:'Ponale S',cleanType:'partenza',guest:'Taurian, 2 pax, BB, 11/05-13/05'},
+  {num:'110',type:'Baia tripla',cleanType:'partenza',guest:'Caliskan, 2 pax, BB'},
+  {num:'210',type:'Baia D',cleanType:'partenza',guest:'Precupanu, 2 pax, BB, 12/05-14/05'},
+  {num:'214',type:'Baia tripla',cleanType:'partenza',guest:'Laner, 2 pax, BB, 08/05-14/05'},
+  {num:'208',type:'Baia D',cleanType:'partenza',guest:'Dullinger, 2 pax, BB, 10/05-14/05'},
+  {num:'304',type:'Lake Sup. N',cleanType:'partenza',guest:'Schirm, 2 pax, BB, 08/05-14/05'},
+  {num:'306',type:'Baia +',cleanType:'partenza',guest:'Tadic, 2 pax, BB, 12/05-14/05'},
+  {num:'109',type:'Baia D',cleanType:'fermo',guest:'Lund, 2 pax, BB, 11/05-17/05'},
+  {num:'202',type:'Aurora D',cleanType:'fermo',guest:'Legat, 2 pax, BB, 10/05-15/05'},
+  {num:'205',type:'Baia Design',cleanType:'fermo',guest:'Herbig, 2 pax, BB, 09/05-18/05'},
+  {num:'209',type:'Baia D',cleanType:'fermo',guest:'Schlage, 2 pax, BB, 12/05-15/05'},
+  {num:'212',type:'Baia D',cleanType:'fermo',guest:'Andermann, 2 pax, BB, 09/05-15/05'},
+  {num:'301',type:'Aurora D',cleanType:'fermo',guest:'Kensy, 2 pax, BB, 11/05-15/05'},
+  {num:'305',type:'Baia +',cleanType:'fermo',guest:'Schneider, 2 pax, BB, 10/05-15/05'},
+  {num:'308',type:'Lake Sup. D',cleanType:'fermo',guest:'Stecher, 2 pax, BB, 11/05-15/05'},
+  {num:'102',type:'Aurora D',cleanType:'arrivo',guest:'Hennig, 2 pax, BB, 13/05-17/05'},
+  {num:'103',type:'Peler vasca',cleanType:'arrivo',guest:'Kabus, 2 pax, BB, 13/05-15/05'},
+  {num:'105',type:'Ponale S',cleanType:'arrivo',guest:'Arnold, 3 pax, BB, 13/05-18/05'},
+  {num:'107',type:'Ora Design new',cleanType:'arrivo',guest:'Stahl, 2 pax, BB, 13/05-16/05'},
+  {num:'211',type:'Baia D',cleanType:'arrivo',guest:'Caren, 2 pax, BB, 13/05-16/05'},
+  {num:'215',type:'Baia F',cleanType:'arrivo',guest:'Meier, 4 pax, BB, 13/05-16/05'},
+  {num:'302',type:'Aurora D',cleanType:'arrivo',guest:'Fassler, 1 pax, BB, 13/05-16/05'},
+  {num:'307',type:'Baia +',cleanType:'arrivo',guest:'Tydeck, 2 pax, BB, 13/05-18/05'},
+  {num:'309',type:'Lake Sup. R',cleanType:'arrivo',guest:'Eichinger, 2 pax, BB, 13/05-17/05'},
+];}
+
+
+// ══ SPECIALI ══
+const SPEC_LABELS={
+  anniversario:'💑 Anniversario',
+  matrimonio:'💍 Matrimonio / Luna di miele',
+  fiori:'🌸 Fiori in camera',
+  bottiglia:'🍾 Bottiglia',
+  torta:'🎂 Torta',
+  cesto:'🧺 Cesto / Frutta'
+};
+const SPEC_FIELDS={
+  fiori:[{id:'specDettaglio',label:'Tipo di fiori',placeholder:'Es: rose rosse, bouquet misto...'}],
+  bottiglia:[{id:'specDettaglio',label:'Tipo bottiglia',placeholder:'Es: Prosecco, vino rosso locale...'}],
+  torta:[{id:'specDettaglio',label:'Gusto / dimensione',placeholder:'Es: cioccolato, 6 persone...'}],
+  cesto:[{id:'specDettaglio',label:'Contenuto cesto',placeholder:'Es: frutta fresca, prodotti locali...'}],
+  anniversario:[{id:'specDettaglio',label:'Note celebrazione',placeholder:'Es: anni anniversario, dedica...'}],
+  matrimonio:[{id:'specDettaglio',label:'Note',placeholder:'Es: luna di miele, decorazioni...'}],
+};
+let activeSpecTab='tutti';
+
+function updateSpecFields(){
+  const tipo=document.getElementById('specTipo').value;
+  const el=document.getElementById('specExtraFields');
+  if(!tipo||!SPEC_FIELDS[tipo]){el.innerHTML='';return;}
+  let html='';
+  SPEC_FIELDS[tipo].forEach(f=>{
+    html+='<div><label class="lbl">'+f.label+'</label><input type="text" id="'+f.id+'" placeholder="'+f.placeholder+'"></div>';
+  });
+  el.innerHTML=html;
+}
+
+function initSpecDate(){
+  const el=document.getElementById('specDate');
+  if(el&&!el.value) el.value=new Date().toISOString().split('T')[0];
+}
+
+function addSpeciale(){
+  const tipo=document.getElementById('specTipo').value;
+  const room=document.getElementById('specRoom').value.trim();
+  const guest=document.getElementById('specGuest').value.trim();
+  const date=document.getElementById('specDate').value;
+  const note=document.getElementById('specNote').value.trim();
+  const dettaglio=(document.getElementById('specDettaglio')||{value:''}).value.trim();
+  if(!tipo||!room||!date){flash('Seleziona tipo, camera e data','var(--red)');return;}
+  const s=st(); if(!s.speciali) s.speciali=[];
+  s.speciali.push({
+    id:Date.now(),tipo,room,guest,date,note,dettaglio,
+    status:'attivo',n4:false,n0:false
+  });
+  sv(s); closeM('mSpecNew');
+  ['specRoom','specGuest','specNote'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.getElementById('specTipo').value='';
+  document.getElementById('specExtraFields').innerHTML='';
+  document.getElementById('specDate').value='';
+  const dl=new Date(date+'T12:00').toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'long'});
+  const label=SPEC_LABELS[tipo]||tipo;
+  flash(label+' salvato per camera '+room+' — '+dl,'var(--green)');
+  const msg='🎂 Nuovo servizio: *'+label+'* — Camera *'+room+'*'+(guest?' ('+guest+')':'')
+    +' — *'+dl+'*'+(dettaglio?' — '+dettaglio:'')+(note?' — '+note:'');
+  sendSlackIfOn('n_speciali_new',msg);
+  renderSpeciali();
+}
+
+function sTab(t,btn){
+  activeSpecTab=t;
+  document.querySelectorAll('.stab').forEach(x=>{
+    x.style.color='var(--muted)';
+    x.style.borderBottomColor='transparent';
+  });
+  btn.style.color='var(--green)';
+  btn.style.borderBottomColor='var(--green)';
+  renderSpeciali();
+}
+
+function renderSpeciali(){
+  const s=st(); const list=(s.speciali||[]);
+  const todayStr=new Date().toISOString().split('T')[0];
+  const prossimi=list.filter(x=>x.status==='attivo'&&x.date>=todayStr)
+    .filter(x=>activeSpecTab==='tutti'||x.tipo===activeSpecTab)
+    .sort((a,b)=>a.date.localeCompare(b.date));
+  const passati=list.filter(x=>x.status!=='attivo'||x.date<todayStr)
+    .filter(x=>activeSpecTab==='tutti'||x.tipo===activeSpecTab)
+    .sort((a,b)=>b.date.localeCompare(a.date))
+    .slice(0,10);
+
+  const prEl=document.getElementById('specListProssimi');
+  const paEl=document.getElementById('specListPassati');
+  if(!prEl||!paEl) return;
+
+  if(!prossimi.length){
+    prEl.innerHTML='<p style="font-size:13px;color:var(--muted);margin-bottom:8px">Nessun servizio in programma.</p>';
+  } else {
+    let html='';
+    prossimi.forEach(x=>{
+      const dl=new Date(x.date+'T12:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+      const today=x.date===todayStr;
+      const diff=Math.round((new Date(x.date+'T12:00')-new Date())/(1000*60*60*24));
+      let urgBadge='';
+      if(today) urgBadge='<span class="badge bg-r" style="animation:pulse 1.5s infinite">Oggi!</span>';
+      else if(diff<=4) urgBadge='<span class="badge bg-a">Tra '+diff+' giorni</span>';
+      else urgBadge='<span class="badge bg-b">'+dl+'</span>';
+      const label=SPEC_LABELS[x.tipo]||x.tipo;
+      html+='<div style="border:0.5px solid '+(today?'var(--red)':'var(--bord2)')+';border-radius:var(--r);padding:10px 12px;margin-bottom:8px">'
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px">'
+        +'<div>'
+        +'<span style="font-weight:500">Camera '+x.room+'</span>'
+        +(x.guest?'<span style="font-size:13px;color:var(--muted);margin-left:6px">'+x.guest+'</span>':'')
+        +'<div style="font-size:13px;margin-top:3px">'+label+'</div>'
+        +(x.dettaglio?'<div style="font-size:12px;color:var(--at);margin-top:2px">📋 '+x.dettaglio+'</div>':'')
+        +(x.note?'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+x.note+'</div>':'')
+        +(x.n4?'<div style="font-size:11px;color:var(--gt);margin-top:4px">✓ Reminder 4gg inviato</div>':'')
+        +(x.n0?'<div style="font-size:11px;color:var(--gt)">✓ Reminder giorno inviato</div>':'')
+        +'</div>'
+        +'<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">'
+        +urgBadge
+        +'<button class="btn" style="padding:4px 8px;font-size:11px;background:var(--gl);color:var(--gt);border-color:var(--gl)" onclick="completeSpeciale(this.dataset.id)" data-id="'+x.id+'">✓ Fatto</button>'
+        +'<button class="btn btn-r" style="padding:4px 8px;font-size:11px" onclick="deleteSpeciale(this.dataset.id)" data-id="'+x.id+'">✕</button>'
+        +'</div></div></div>';
+    });
+    prEl.innerHTML=html;
+  }
+
+  if(!passati.length){
+    paEl.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessun servizio passato.</p>';
+  } else {
+    let html='';
+    passati.forEach(x=>{
+      const dl=new Date(x.date+'T12:00').toLocaleDateString('it-IT',{day:'numeric',month:'short',year:'numeric'});
+      const label=SPEC_LABELS[x.tipo]||x.tipo;
+      html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--bord);gap:8px;opacity:.7">'
+        +'<div><span style="font-size:13px;font-weight:500">Camera '+x.room+'</span>'
+        +(x.guest?'<span style="font-size:12px;color:var(--muted);margin-left:6px">'+x.guest+'</span>':'')
+        +'<div style="font-size:12px;color:var(--muted)">'+label+(x.dettaglio?' — '+x.dettaglio:'')+'</div></div>'
+        +'<span style="font-size:12px;color:var(--muted);white-space:nowrap">'+dl+'</span>'
+        +'</div>';
+    });
+    paEl.innerHTML=html;
+  }
+}
+
+function completeSpeciale(id){
+  const s=st(); const x=s.speciali.find(i=>i.id===id);
+  if(x){x.status='completato';sv(s);flash('Servizio segnato come completato','var(--green)');renderSpeciali();}
+}
+function deleteSpeciale(id){
+  if(!confirm('Eliminare questo servizio?')) return;
+  const s=st(); s.speciali=s.speciali.filter(i=>i.id!==id);
+  sv(s); flash('Servizio eliminato','var(--amber)'); renderSpeciali();
+}
+function clearOldSpeciali(){
+  if(!confirm('Eliminare tutti i servizi passati e completati?')) return;
+  const todayStr=new Date().toISOString().split('T')[0];
+  const s=st();
+  s.speciali=(s.speciali||[]).filter(x=>x.status==='attivo'&&x.date>=todayStr);
+  sv(s); flash('Archivio svuotato','var(--amber)'); renderSpeciali();
+}
+
+function checkSpecialiNotifs(){
+  const s=st(); if(!s.speciali||!s.speciali.length) return;
+  const todayStr=new Date().toISOString().split('T')[0];
+  const nowH=new Date().getHours();
+  let changed=false;
+  s.speciali.filter(x=>x.status==='attivo').forEach(x=>{
+    const dateObj=new Date(x.date+'T12:00');
+    const diffDays=Math.round((dateObj-new Date())/(1000*60*60*24));
+    const label=SPEC_LABELS[x.tipo]||x.tipo;
+    const base='*'+label+'* — Camera *'+x.room+'*'+(x.guest?' ('+x.guest+')':'')+(x.dettaglio?' — '+x.dettaglio:'')+(x.note?' — '+x.note:'');
+    // 4 days before
+    if(diffDays===4&&!x.n4){
+      x.n4=true; changed=true;
+      const dl=new Date(x.date+'T12:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+      sendSlackIfOn('n_speciali_4g','📅 *Reminder 4 giorni* — '+base+' — previsto per *'+dl+'*');
+      flash('📅 Reminder 4 giorni: '+label+' camera '+x.room,'var(--amber)');
+    }
+    // Day of at 9am
+    const tSpec0=getReminderTime('t_speciali_0','09:00'); const hSpec0=parseInt(tSpec0.split(':')[0])||9;
+    if(x.date===todayStr&&nowH>=hSpec0&&!x.n0){
+      x.n0=true; changed=true;
+      sendSlackIfOn('n_speciali_0','🔔 *Oggi!* — '+base+' — da preparare per oggi!');
+      flash('🔔 Oggi: '+label+' camera '+x.room+'!','var(--red)');
+    }
+  });
+  if(changed) sv(s);
+}
+
+
+// ══ DIARIO RECEPTION ══
+let activeDiarioTab = 'oggi';
+let activeManuTab = 'aperte';
+let tempManu = []; // manutenzioni temporanee nel modal
+
+function addDiario(){
+  const autore = document.getElementById('diarioAutore').value.trim();
+  const testo  = document.getElementById('diarioTesto').value.trim();
+  if(!testo){flash('Scrivi qualcosa prima di salvare','var(--red)');return;}
+  const s = st();
+  if(!s.diario) s.diario = [];
+  const now = new Date();
+  const entry = {
+    id: Date.now(),
+    autore: autore||'Reception',
+    testo,
+    data: now.toLocaleDateString('it-IT'),
+    ora: now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}),
+    dataISO: now.toISOString().split('T')[0]
+  };
+  s.diario.unshift(entry);
+  sv(s);
+  document.getElementById('diarioTesto').value = '';
+  flash('Nota salvata nel diario','var(--green)');
+  renderDiario();
+}
+
+function dTab(t, btn){
+  activeDiarioTab = t;
+  document.querySelectorAll('#tDiario .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderDiario();
+}
+
+function renderDiario(){
+  const s = st();
+  const list = s.diario || [];
+  const todayStr = new Date().toISOString().split('T')[0];
+  const yestDate = new Date(); yestDate.setDate(yestDate.getDate()-1);
+  const yestStr  = yestDate.toISOString().split('T')[0];
+  let filtered = list;
+  if(activeDiarioTab==='oggi')  filtered = list.filter(e=>e.dataISO===todayStr);
+  if(activeDiarioTab==='ieri')  filtered = list.filter(e=>e.dataISO===yestStr);
+  const el = document.getElementById('diarioList');
+  if(!el) return;
+  if(!filtered.length){el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna nota per questo periodo.</p>';return;}
+  let html='';
+  filtered.forEach(e=>{
+    html+='<div style="border-left:3px solid var(--green);padding:8px 0 8px 12px;margin-bottom:10px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;flex-wrap:wrap;gap:4px">'
+      +'<span style="font-size:12px;font-weight:500;color:var(--gt)">'+e.autore+'</span>'
+      +'<span style="font-size:11px;color:var(--muted)">'+e.data+' — '+e.ora+'</span>'
+      +'</div>'
+      +'<p style="font-size:13px;line-height:1.5">'+e.testo.replace(/\n/g,'<br>')+'</p>'
+      +'<button class="btn btn-r" style="padding:3px 8px;font-size:11px;margin-top:6px" onclick="deleteDiario('+e.id+')">✕ Elimina</button>'
+      +'</div>';
+  });
+  el.innerHTML = html;
+}
+
+function deleteDiario(id){
+  if(!confirm('Eliminare questa nota?')) return;
+  const s=st(); s.diario=(s.diario||[]).filter(e=>e.id!==id); sv(s);
+  flash('Nota eliminata','var(--amber)'); renderDiario();
+}
+
+function checkDiarioNotifs(){
+  const s = st();
+  const list = s.diario || [];
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes();
+  const todayStr = now.toISOString().split('T')[0];
+  const yestDate = new Date(); yestDate.setDate(yestDate.getDate()-1);
+  const yestStr  = yestDate.toISOString().split('T')[0];
+  if(!s.diarioNotifs) s.diarioNotifs = {};
+
+  // 8:30 — note di ieri
+  const key830 = todayStr+'_830';
+  const t830=getReminderTime('t_diario_830','08:30'); const [h830,m830]=t830.split(':').map(Number);
+  if(h===h830 && m>=m830 && m<m830+5 && !s.diarioNotifs[key830]){
+    const ieri = list.filter(e=>e.dataISO===yestStr);
+    if(ieri.length){
+      s.diarioNotifs[key830] = true;
+      let msg = '📓 *Diario di ieri — ' + yestDate.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}) + '*\n';
+      ieri.forEach(e=>{ msg += '• *'+e.autore+'* ('+e.ora+'): '+e.testo+'\n'; });
+      sendSlackIfOn('n_diario_830',msg); sv(s);
+      flash('📓 Reminder diario mattina inviato su Slack','var(--blue)');
+    }
+  }
+
+  // 16:30 — note di stamattina (scritte oggi prima delle 13)
+  const key1630 = todayStr+'_1630';
+  const t1630=getReminderTime('t_diario_1630','16:30'); const [h1630,m1630]=t1630.split(':').map(Number);
+  if(h===h1630 && m>=m1630 && m<m1630+5 && !s.diarioNotifs[key1630]){
+    const mattina = list.filter(e=>e.dataISO===todayStr && parseInt(e.ora.split(':')[0])<13);
+    if(mattina.length){
+      s.diarioNotifs[key1630] = true;
+      let msg = '📓 *Diario stamattina — ' + now.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}) + '*\n';
+      mattina.forEach(e=>{ msg += '• *'+e.autore+'* ('+e.ora+'): '+e.testo+'\n'; });
+      sendSlackIfOn('n_diario_1630',msg); sv(s);
+      flash('📓 Reminder diario pomeriggio inviato su Slack','var(--blue)');
+    }
+  }
+}
+
+// ══ MANUTENZIONI ══
+function addManu(){
+  const val = document.getElementById('manuInput').value.trim();
+  if(!val) return;
+  tempManu.push(val);
+  document.getElementById('manuInput').value = '';
+  renderTempManu();
+}
+
+function removeTempManu(i){
+  tempManu.splice(i,1);
+  renderTempManu();
+}
+
+function renderTempManu(){
+  const el = document.getElementById('manuList');
+  if(!el) return;
+  if(!tempManu.length){el.innerHTML='';return;}
+  let html='<div style="margin-bottom:6px">';
+  tempManu.forEach((m,i)=>{
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;background:var(--al);border-radius:var(--r);padding:6px 10px;margin-bottom:4px;font-size:13px">'
+      +'<span>🔧 '+m+'</span>'
+      +'<button class="btn" style="padding:2px 6px;font-size:11px" onclick="removeTempManu('+i+')">✕</button>'
+      +'</div>';
+  });
+  html+='</div>';
+  el.innerHTML = html;
+}
+
+function saveManutenzioni(roomNum, roomType){
+  if(!tempManu.length) return;
+  const s = st();
+  if(!s.manutenzioni) s.manutenzioni = [];
+  const pianoLabel = role==='p1'?'Piano 1':role==='p2'?'Piano 2':'Piano 3';
+  tempManu.forEach(m=>{
+    const entry = {
+      id: Date.now()+Math.random(),
+      camera: roomNum,
+      tipo: roomType||'',
+      piano: pianoLabel,
+      problema: m,
+      data: new Date().toLocaleDateString('it-IT'),
+      dataISO: new Date().toISOString().split('T')[0],
+      ora: new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}),
+      status: 'aperta'
+    };
+    s.manutenzioni.push(entry);
+    sendSlackIfOn('n_manutenzione','🔧 Camera '+roomNum+' — '+m);
+  });
+  sv(s);
+  tempManu = [];
+}
+
+function mTab(t, btn){
+  activeManuTab = t;
+  document.querySelectorAll('#tManutenzione .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderManutenzioni();
+}
+
+function renderManutenzioni(){
+  const s = st();
+  const list = s.manutenzioni || [];
+  let filtered = list;
+  if(activeManuTab==='aperte')  filtered = list.filter(m=>m.status==='aperta');
+  if(activeManuTab==='risolte') filtered = list.filter(m=>m.status==='risolta');
+  filtered = filtered.sort((a,b)=>b.id-a.id);
+  const el = document.getElementById('manutenzioneList');
+  if(!el) return;
+  if(!filtered.length){
+    el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna manutenzione '+(activeManuTab==='aperte'?'aperta':'trovata')+'.</p>';
+    return;
+  }
+  let html='';
+  filtered.forEach(function(m){
+    const isAperta = m.status==='aperta';
+    const bc = isAperta?'var(--at)':'var(--bord)';
+    const op = isAperta?'1':'0.65';
+    const tc = isAperta?'var(--at)':'var(--gt)';
+    let row = '<div style="border:0.5px solid '+bc+';border-radius:var(--r);padding:10px 12px;margin-bottom:8px;opacity:'+op+'">';
+    row += '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:6px">';
+    row += '<div>';
+    row += '<span style="font-weight:500;font-family:var(--mono)">Camera '+m.camera+'</span>';
+    row += '<span style="font-size:12px;color:var(--muted);margin-left:6px">'+m.piano+'</span>';
+    if(m.tipo) row += '<span style="font-size:12px;color:var(--muted);margin-left:4px">— '+m.tipo+'</span>';
+    row += '<div style="font-size:13px;margin-top:4px;font-weight:500;color:'+tc+'">🔧 '+m.problema+'</div>';
+    row += '<div style="font-size:11px;color:var(--muted);margin-top:3px">'+m.data+' — '+m.ora+'</div>';
+    if(m.risoltaOra) row += '<div style="font-size:11px;color:var(--gt)">✓ Risolta '+m.risoltaOra+'</div>';
+    row += '</div>';
+    row += '<div style="display:flex;gap:6px;flex-shrink:0">';
+    if(isAperta) row += '<button class="btn btn-g" style="padding:4px 10px;font-size:11px" data-id="'+m.id+'" onclick="risolviManu(this.dataset.id)">✓ Risolta</button>';
+    row += '<button class="btn btn-r" style="padding:4px 8px;font-size:11px" data-id="'+m.id+'" onclick="deleteManu(this.dataset.id)">✕</button>';
+    row += '</div></div></div>';
+    html += row;
+  });
+  el.innerHTML = html;
+  const aperte = list.filter(m=>m.status==='aperta').length;
+  if(aperte>0 && activeManuTab!=='risolte'){
+    el.innerHTML = '<div style="background:var(--al);border-radius:var(--r);padding:8px 12px;margin-bottom:10px;font-size:13px;color:var(--at);font-weight:500">⚠ '+aperte+' manutenzioni aperte</div>' + el.innerHTML;
+  }
+}
+
+function risolviManu(id){
+  const s=st(); const m=(s.manutenzioni||[]).find(x=>x.id==id);
+  if(m){
+    m.status='risolta';
+    m.risoltaOra=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})+' '+new Date().toLocaleDateString('it-IT');
+    sv(s);
+    sendSlackIfOn('n_manutenzione','✅ Camera '+m.camera+' — '+m.problema+' — risolta');
+    flash('Manutenzione segnata come risolta','var(--green)');
+    renderManutenzioni();
+  }
+}
+function deleteManu(id){
+  if(!confirm('Eliminare questa segnalazione?')) return;
+  const s=st(); s.manutenzioni=(s.manutenzioni||[]).filter(x=>x.id!=id); sv(s);
+  flash('Segnalazione eliminata','var(--amber)'); renderManutenzioni();
+}
+
+
+// ══ IMPOSTAZIONI NOTIFICHE ══
+
+const NOTIF_DEFS = {
+  hk: [
+    {id:'n_camera_pronta',   label:'Camera pronta',         sub:'Quando una camerista segna una camera come pronta', def:true},
+    {id:'n_manutenzione',    label:'Manutenzione segnalata', sub:'Quando una camerista segnala un problema in camera', def:true},
+    {id:'n_chiamata',        label:'Chiamata cameriste',     sub:'Quando reception chiama un piano o tutti', def:true},
+  ],
+  reminder: [
+    {id:'n_sauna_30',        label:'Sauna — 30 min prima',   sub:'', def:true, time:true, timeId:'t_sauna_30', timeDef:''},
+    {id:'n_sauna_5',         label:'Sauna — 5 min prima',    sub:'', def:true},
+    {id:'n_diario_830',      label:'Diario mattina',         sub:'Riepilogo note di ieri', def:true, time:true, timeId:'t_diario_830', timeDef:'08:30'},
+    {id:'n_diario_1630',     label:'Diario pomeriggio',      sub:'Riepilogo note della mattinata', def:true, time:true, timeId:'t_diario_1630', timeDef:'16:30'},
+    {id:'n_speciali_4g',     label:'Servizi speciali — 4 giorni prima', sub:'Reminder torte, fiori, bottiglie...', def:true},
+    {id:'n_speciali_0',      label:'Servizi speciali — giorno stesso', sub:'Ogni mattina alle ore impostate', def:true, time:true, timeId:'t_speciali_0', timeDef:'09:00'},
+  ],
+  servizi: [
+    {id:'n_ev_avvio',        label:'EV — Ricarica avviata',  sub:'', def:true},
+    {id:'n_ev_fine',         label:'EV — Ricarica completata', sub:'', def:true},
+    {id:'n_bici',            label:'Bici assegnata',          sub:'', def:true},
+    {id:'n_sauna_new',       label:'Sauna — Nuova prenotazione', sub:'', def:true},
+    {id:'n_speciali_new',    label:'Servizio speciale — Inserimento', sub:'', def:true},
+  ]
+};
+
+function getNotifSettings(){
+  try{return JSON.parse(localStorage.getItem('hba_notif')||'null')||{}}catch{return{}}
+}
+function setNotifSettings(d){localStorage.setItem('hba_notif',JSON.stringify(d))}
+
+function isNotifOn(id){
+  const s=getNotifSettings();
+  // default is true unless explicitly set to false
+  return s[id]!==false;
+}
+function getNotifTime(timeId, def){
+  const s=getNotifSettings();
+  return s[timeId]||def||'';
+}
+
+function renderNotifSettings(){
+  ['hk','reminder','servizi'].forEach(function(group){
+    const el=document.getElementById('notifRows_'+group);
+    if(!el) return;
+    let html='';
+    NOTIF_DEFS[group].forEach(function(def){
+      const on=isNotifOn(def.id);
+      const uid='tog_'+def.id;
+      html+='<div class="toggle-row">';
+      html+='<div><div class="toggle-label">'+def.label+'</div>';
+      if(def.sub) html+='<div class="toggle-sub">'+def.sub+'</div>';
+      if(def.time){
+        const tv=getNotifTime(def.timeId, def.timeDef);
+        html+='<div style="margin-top:6px;display:flex;align-items:center;gap:6px">';
+        html+='<span style="font-size:12px;color:var(--muted)">Orario:</span>';
+        html+='<input type="time" class="time-input" id="'+def.timeId+'" value="'+tv+'">';
+        html+='</div>';
+      }
+      html+='</div>';
+      html+='<label class="toggle">';
+      html+='<input type="checkbox" id="'+uid+'"'+(on?' checked':'')+' onchange="previewNotif()">';
+      html+='<span class="toggle-slider"></span>';
+      html+='</label>';
+      html+='</div>';
+    });
+    el.innerHTML=html;
+  });
+}
+
+function previewNotif(){
+  // live feedback while changing - nothing needed, just visual
+}
+
+function saveNotifSettings(){
+  const s={};
+  ['hk','reminder','servizi'].forEach(function(group){
+    NOTIF_DEFS[group].forEach(function(def){
+      const chk=document.getElementById('tog_'+def.id);
+      if(chk) s[def.id]=chk.checked;
+      if(def.time){
+        const ti=document.getElementById(def.timeId);
+        if(ti) s[def.timeId]=ti.value;
+      }
+    });
+  });
+  setNotifSettings(s);
+  const msg=document.getElementById('notifSaveMsg');
+  if(msg){msg.innerHTML='<span style="color:var(--gt)">✓ Impostazioni salvate</span>';setTimeout(()=>msg.innerHTML='',3000);}
+  flash('Impostazioni notifiche salvate','var(--green)');
+}
+
+// Wrapper: only send if notification is enabled
+function sendSlackIfOn(notifId, msg){
+  if(isNotifOn(notifId)) sendSlack(msg);
+}
+
+// Get custom reminder time
+function getReminderTime(timeId, def){
+  return getNotifTime(timeId, def);
+}
+
+
+// ══ MESSAGGI RAPIDI (in-app alle cameriste) ══
+let rapPiano = 'p1';
+
+function selRapPiano(btn){
+  document.querySelectorAll('#tRapidi .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  rapPiano = btn.dataset.piano;
+}
+
+function sendRapido(template){
+  const room = document.getElementById('rapRoom').value.trim();
+  const msg = template.replace('{room}', room || '—');
+  _doSendRapido(msg);
+}
+
+function sendRapidoCustom(){
+  const room = document.getElementById('rapRoom').value.trim();
+  const custom = document.getElementById('rapCustom').value.trim();
+  if(!custom){flash('Scrivi un messaggio prima di inviare','var(--red)');return;}
+  const msg = room ? custom + ' (Camera ' + room + ')' : custom;
+  _doSendRapido(msg);
+  document.getElementById('rapCustom').value = '';
+}
+
+function _doSendRapido(msg){
+  const s = st();
+  // Send to selected floors
+  const targets = rapPiano === 'all' ? ['p1','p2','p3'] : [rapPiano];
+  targets.forEach(function(p){
+    s.calls[p] = {active: true, msg: msg};
+  });
+  // Log the message
+  if(!s.rapLog) s.rapLog = [];
+  s.rapLog.unshift({
+    msg: msg,
+    piano: rapPiano,
+    ora: new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}),
+    data: new Date().toLocaleDateString('it-IT')
+  });
+  if(s.rapLog.length > 20) s.rapLog = s.rapLog.slice(0,20);
+  sv(s);
+  // Feedback
+  const fb = document.getElementById('rapFeedback');
+  const pianoLabel = rapPiano==='all'?'tutti i piani':rapPiano==='p1'?'Piano 1':rapPiano==='p2'?'Piano 2':'Piano 3';
+  if(fb) fb.innerHTML = '<span style="color:var(--gt)">✓ Messaggio inviato a '+pianoLabel+'</span>';
+  setTimeout(function(){if(fb) fb.innerHTML='';}, 3000);
+  flash('Messaggio inviato a '+pianoLabel,'var(--blue)');
+  renderRapLog();
+}
+
+function renderRapLog(){
+  const el = document.getElementById('rapLog');
+  if(!el) return;
+  const s = st();
+  const log = s.rapLog || [];
+  const today = new Date().toLocaleDateString('it-IT');
+  const todayLog = log.filter(function(l){return l.data===today;});
+  if(!todayLog.length){
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted)">Nessun messaggio inviato oggi.</p>';
+    return;
+  }
+  let html = '';
+  todayLog.forEach(function(l){
+    const pianoLabel = l.piano==='all'?'Tutti':l.piano==='p1'?'Piano 1':l.piano==='p2'?'Piano 2':'Piano 3';
+    html += '<div style="padding:8px 0;border-bottom:0.5px solid var(--bord);font-size:13px">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">'
+      + '<span style="color:var(--muted);font-size:11px">'+l.ora+' — '+pianoLabel+'</span>'
+      + '</div>'
+      + '<div style="margin-top:2px">'+l.msg+'</div>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+// ══ COMMISSIONI ══
+const COMM_TIPI = {
+  email: '📧 Email',
+  chiamata: '📞 Chiamata',
+  fornitore: '🚚 Fornitore',
+  prenotazione: '📅 Prenotazione',
+  acquisto: '🛒 Acquisto',
+  altro: '📝 Altro'
+};
+let activeCommTab = 'aperte';
+
+function commTab(t, btn){
+  activeCommTab = t;
+  document.querySelectorAll('#tCommissioni .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderCommissioni();
+}
+
+function addCommissione(){
+  const tipo = document.getElementById('commTipo').value;
+  const desc = document.getElementById('commDesc').value.trim();
+  const assegnata = document.getElementById('commAssegnata').value.trim();
+  const note = document.getElementById('commNote').value.trim();
+  if(!desc){flash('Inserisci una descrizione','var(--red)');return;}
+  const s = st();
+  if(!s.commissioni) s.commissioni = [];
+  s.commissioni.unshift({
+    id: Date.now(),
+    tipo, desc, assegnata, note,
+    data: new Date().toLocaleDateString('it-IT'),
+    dataISO: new Date().toISOString().split('T')[0],
+    ora: new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}),
+    status: 'aperta',
+    notif9: false,
+    notif17: false
+  });
+  sv(s);
+  closeM('mCommNew');
+  ['commDesc','commAssegnata','commNote'].forEach(function(id){
+    var el=document.getElementById(id); if(el) el.value='';
+  });
+  flash('Commissione aggiunta','var(--green)');
+  renderCommissioni();
+}
+
+function doneCommissione(id){
+  const s = st();
+  const c = (s.commissioni||[]).find(function(x){return x.id==id;});
+  if(c){
+    c.status = c.status==='fatta' ? 'aperta' : 'fatta';
+    c.fattaOra = c.status==='fatta' ? new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}) : null;
+    sv(s);
+    renderCommissioni();
+  }
+}
+
+function deleteCommissione(id){
+  if(!confirm('Eliminare questa commissione?')) return;
+  const s = st();
+  s.commissioni = (s.commissioni||[]).filter(function(x){return x.id!=id;});
+  sv(s);
+  flash('Commissione eliminata','var(--amber)');
+  renderCommissioni();
+}
+
+function renderCommissioni(){
+  const s = st();
+  const list = s.commissioni || [];
+  let filtered = list;
+  if(activeCommTab==='aperte') filtered = list.filter(function(c){return c.status==='aperta';});
+  if(activeCommTab==='fatte') filtered = list.filter(function(c){return c.status==='fatta';});
+
+  const el = document.getElementById('commList');
+  if(!el) return;
+
+  if(!filtered.length){
+    const emptyMsg = activeCommTab==='aperte'
+      ? 'Nessuna commissione aperta. Ottimo!'
+      : activeCommTab==='fatte' ? 'Nessuna commissione completata.' : 'Nessuna commissione.';
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted);padding:8px 0">'+emptyMsg+'</p>';
+    return;
+  }
+
+  let html = '';
+  filtered.forEach(function(c){
+    const tipoLabel = COMM_TIPI[c.tipo] || c.tipo;
+    const isDone = c.status === 'fatta';
+    const bc = isDone ? 'var(--bord)' : 'var(--green)';
+    const op = isDone ? '0.6' : '1';
+    html += '<div style="border-left:3px solid '+bc+';padding:10px 0 10px 12px;margin-bottom:10px;opacity:'+op+'">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+      + '<div style="flex:1">'
+      + '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">'
+      + '<span class="badge bg-gr">'+tipoLabel+'</span>'
+      + (c.assegnata?'<span style="font-size:12px;color:var(--muted)">→ '+c.assegnata+'</span>':'')
+      + '<span style="font-size:11px;color:var(--muted);margin-left:auto">'+c.data+' '+c.ora+'</span>'
+      + '</div>'
+      + '<div style="font-size:13px;font-weight:'+(isDone?'400':'500')+(isDone?';text-decoration:line-through;color:var(--muted)':'')+'">' + c.desc + '</div>'
+      + (c.note?'<div style="font-size:12px;color:var(--muted);margin-top:3px">'+c.note+'</div>':'')
+      + (isDone&&c.fattaOra?'<div style="font-size:11px;color:var(--gt);margin-top:3px">✓ Completata alle '+c.fattaOra+'</div>':'')
+      + '</div>'
+      + '<div style="display:flex;gap:6px;flex-shrink:0">'
+      + '<button class="btn" style="padding:4px 10px;font-size:12px;background:'+(isDone?'var(--gl)':'var(--g100)')+';color:'+(isDone?'var(--gt)':'var(--g600)')+'" data-id="'+c.id+'" onclick="doneCommissione(this.dataset.id)">'+(isDone?'↩ Riapri':'✓ Fatto')+'</button>'
+      + '<button class="btn btn-r" style="padding:4px 8px;font-size:12px" data-id="'+c.id+'" onclick="deleteCommissione(this.dataset.id)">✕</button>'
+      + '</div></div></div>';
+  });
+  el.innerHTML = html;
+
+  // Counter badge
+  const aperte = list.filter(function(c){return c.status==='aperta';}).length;
+  // update tab label if needed
+}
+
+function checkCommissioniNotifs(){
+  const s = st();
+  if(!s.commissioni || !s.commissioni.length) return;
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes();
+  const todayStr = now.toISOString().split('T')[0];
+  const aperte = s.commissioni.filter(function(c){return c.status==='aperta';});
+  if(!aperte.length) return;
+
+  let changed = false;
+  const key9 = todayStr+'_comm9';
+  const key17 = todayStr+'_comm17';
+  if(!s.diarioNotifs) s.diarioNotifs = {};
+
+  // 9:00 reminder
+  if(h===9 && m>=0 && m<5 && !s.diarioNotifs[key9]){
+    s.diarioNotifs[key9] = true; changed = true;
+    let msg = '📌 *Commissioni aperte — buongiorno!*\n';
+    aperte.forEach(function(c){
+      const tl = COMM_TIPI[c.tipo]||c.tipo;
+      msg += '• '+tl+': '+c.desc+(c.assegnata?' → '+c.assegnata:'')+(c.note?' ('+c.note+')':'')+'\n';
+    });
+    sendSlack(msg);
+    flash('📌 Reminder commissioni mattina inviato','var(--green)');
+  }
+
+  // 17:00 reminder
+  if(h===17 && m>=0 && m<5 && !s.diarioNotifs[key17]){
+    s.diarioNotifs[key17] = true; changed = true;
+    let msg = '📌 *Commissioni ancora aperte — ore 17:00*\n';
+    aperte.forEach(function(c){
+      const tl = COMM_TIPI[c.tipo]||c.tipo;
+      msg += '• '+tl+': '+c.desc+(c.assegnata?' → '+c.assegnata:'')+(c.note?' ('+c.note+')':'')+'\n';
+    });
+    sendSlack(msg);
+    flash('📌 Reminder commissioni pomeriggio inviato','var(--amber)');
+  }
+
+  if(changed) sv(s);
+}
+
+
+// ══ LAVANDERIA ISPEZIONI ══
+
+function lavTab(t, btn){
+  document.querySelectorAll('#lavTabs .tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  ['ltBiancheria','ltIspezione','ltReport'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.classList.remove('active');el.classList.add('hidden');}
+  });
+  var target = document.getElementById('lt'+t.charAt(0).toUpperCase()+t.slice(1));
+  if(target){target.classList.remove('hidden');target.classList.add('active');}
+  if(t==='report') renderLavIspReport();
+}
+
+function startLavIsp(){
+  var num = document.getElementById('lavIspRoom').value.trim();
+  if(!num){flash('Inserisci il numero della camera','var(--red)');return;}
+  renderLavIspChecklist(num);
+}
+
+function renderLavIspChecklist(num){
+  var s = st();
+  var lavIsps = s.lavIspezioni || {};
+  var existing = lavIsps[num] || {};
+  var html = '<h3 style="font-size:13px;font-weight:500;margin-bottom:10px">Camera '+num+'</h3>';
+
+  ISP.forEach(function(sec, si){
+    html += '<h3 style="font-size:12px;font-weight:500;margin:12px 0 6px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">'+sec.t+'</h3>';
+    html += '<div class="card" style="padding:0 1.25rem">';
+    sec.v.forEach(function(item, ii){
+      var k = 'lav_'+si+'_'+ii;
+      var ok = existing[k]===true;
+      var warn = existing[k]==='issue';
+      var okClass = 'isp-ok'+(ok?' on':'');
+      var warnClass = 'isp-warn'+(warn?' on':'');
+      html += '<div class="isp-row">';
+      html += '<div class="'+okClass+'" data-num="'+num+'" data-key="'+k+'" data-val="true" onclick="lavIspClick(this)">'+(ok?'<span style="color:#fff;font-size:12px">✓</span>':'')+'</div>';
+      html += '<div class="'+warnClass+'" data-num="'+num+'" data-key="'+k+'" data-val="issue" onclick="lavIspClick(this)">'+(warn?'<span style="color:var(--red);font-size:12px">!</span>':'')+'</div>';
+      html += '<span style="font-size:13px">'+item+'</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  html += '<label class="lbl" style="margin-top:12px">Note</label>';
+  html += '<textarea id="lavIspNote" placeholder="Osservazioni, problemi da segnalare alla reception...">'+(existing._note||'')+'</textarea>';
+  html += '<div id="lavIspScore" style="margin-top:10px"></div>';
+  html += '<button class="btn btn-p btn-full" style="margin-top:10px" data-room="'+num+'" onclick="saveLavIsp(this.dataset.room)">💾 Salva controllo camera</button>';
+
+  document.getElementById('lavIspContent').innerHTML = html;
+  updateLavIspScore(num);
+}
+
+function lavIspClick(el){
+  var num = el.dataset.num;
+  var key = el.dataset.key;
+  var val = el.dataset.val === 'true' ? true : el.dataset.val;
+  lavIspT(num, key, val);
+}
+
+
+function lavIspT(num, key, val){
+  var s = st();
+  if(!s.lavIspezioni) s.lavIspezioni = {};
+  if(!s.lavIspezioni[num]) s.lavIspezioni[num] = {};
+  s.lavIspezioni[num][key] = s.lavIspezioni[num][key]===val ? null : val;
+  sv(s);
+  renderLavIspChecklist(num);
+  document.getElementById('lavIspRoom').value = num;
+  updateLavIspScore(num);
+}
+
+function updateLavIspScore(num){
+  var s = st();
+  var isp = (s.lavIspezioni||{})[num] || {};
+  var total=0, ok=0, issues=0;
+  ISP.forEach(function(sec,si){
+    sec.v.forEach(function(_,ii){
+      var k='lav_'+si+'_'+ii; total++;
+      if(isp[k]===true) ok++;
+      else if(isp[k]==='issue') issues++;
+    });
+  });
+  var pct = total>0 ? Math.round(ok/total*100) : 0;
+  var el = document.getElementById('lavIspScore');
+  if(!el) return;
+  var col = pct>=90?'var(--green)':pct>=70?'var(--amber)':'var(--red)';
+  el.innerHTML = '<div style="display:flex;justify-content:space-between;margin-bottom:3px">'
+    + '<span style="font-size:13px;font-weight:500">Punteggio pulizia</span>'
+    + '<span style="font-size:18px;font-weight:500;color:'+col+'">'+pct+'%</span></div>'
+    + '<div class="score-bar"><div class="score-f" style="width:'+pct+'%;background:'+col+'"></div></div>'
+    + '<div style="display:flex;gap:12px;font-size:12px;color:var(--muted);margin-top:3px">'
+    + '<span style="color:var(--gt)">✓ '+ok+' ok</span>'
+    + (issues>0?'<span style="color:var(--rt)">⚠ '+issues+' problemi</span>':'')
+    + '<span>'+(total-ok-issues)+' da verificare</span></div>';
+}
+
+function saveLavIsp(num){
+  var s = st();
+  if(!s.lavIspezioni) s.lavIspezioni = {};
+  if(!s.lavIspezioni[num]) s.lavIspezioni[num] = {};
+  var noteEl = document.getElementById('lavIspNote');
+  s.lavIspezioni[num]._note = noteEl ? noteEl.value : '';
+  s.lavIspezioni[num]._time = new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  s.lavIspezioni[num]._date = new Date().toLocaleDateString('it-IT');
+  s.lavIspezioni[num]._dateISO = new Date().toISOString().split('T')[0];
+
+  // Calculate score
+  var total=0, ok=0, issues=0;
+  ISP.forEach(function(sec,si){
+    sec.v.forEach(function(_,ii){
+      var k='lav_'+si+'_'+ii; total++;
+      if(s.lavIspezioni[num][k]===true) ok++;
+      else if(s.lavIspezioni[num][k]==='issue') issues++;
+    });
+  });
+  s.lavIspezioni[num]._score = total>0?Math.round(ok/total*100):0;
+  s.lavIspezioni[num]._issues = issues;
+
+  sv(s);
+  flash('Controllo camera '+num+' salvato — '+s.lavIspezioni[num]._score+'%','var(--purple)');
+
+  // Send Slack if issues found
+  if(issues>0){
+    var msg = '🔍 Controllo lavanderia — Camera *'+num+'* — Punteggio: *'+s.lavIspezioni[num]._score+'%* — '+issues+' problemi';
+    if(s.lavIspezioni[num]._note) msg += ' — "'+s.lavIspezioni[num]._note+'"';
+    sendSlack(msg);
+  }
+
+  // Clear form
+  document.getElementById('lavIspRoom').value = '';
+  document.getElementById('lavIspContent').innerHTML = '';
+  renderLavIspReport();
+}
+
+function renderLavIspReport(){
+  var s = st();
+  var isps = s.lavIspezioni || {};
+  var el = document.getElementById('lavIspReport');
+  if(!el) return;
+
+  var rooms = Object.keys(isps).filter(function(k){return !k.startsWith('_') && isps[k]._score!==undefined;});
+  rooms.sort(function(a,b){return parseInt(a)-parseInt(b);});
+
+  if(!rooms.length){
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted)">Nessun controllo eseguito ancora oggi.</p>';
+    return;
+  }
+
+  // Summary stats
+  var scores = rooms.map(function(r){return isps[r]._score||0;});
+  var avg = Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length);
+  var critical = rooms.filter(function(r){return (isps[r]._score||0)<70;}).length;
+  var good = rooms.filter(function(r){return (isps[r]._score||0)>=90;}).length;
+
+  var avgCol = avg>=90?'var(--green)':avg>=70?'var(--amber)':'var(--red)';
+
+  var html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">'
+    + '<div class="sc"><div class="sn" style="color:'+avgCol+'">'+avg+'%</div><div class="sl">Media</div></div>'
+    + '<div class="sc"><div class="sn" style="color:var(--green)">'+good+'</div><div class="sl">Ottime (≥90%)</div></div>'
+    + '<div class="sc"><div class="sn" style="color:var(--red)">'+critical+'</div><div class="sl">Da rivedere (&lt;70%)</div></div>'
+    + '</div>';
+
+  // Progress bar
+  html += '<div class="prog"><div class="prog-f" style="width:'+avg+'%;background:'+avgCol+'"></div></div>';
+  html += '<p style="font-size:12px;color:var(--muted);margin-bottom:14px">'+rooms.length+' camere controllate</p>';
+
+  // Per-room detail
+  html += '<div style="display:grid;grid-template-columns:1fr 70px 70px auto;gap:8px;padding:5px 0;font-size:11px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord);text-transform:uppercase;letter-spacing:.4px">'
+    + '<span>Camera</span><span style="text-align:center">Score</span><span style="text-align:center">Prob.</span><span>Ora</span></div>';
+
+  rooms.forEach(function(num){
+    var isp = isps[num];
+    var sc = isp._score || 0;
+    var col = sc>=90?'var(--green)':sc>=70?'var(--amber)':'var(--red)';
+    var bg = sc>=90?'bg-g':sc>=70?'bg-a':'bg-r';
+    html += '<div style="display:grid;grid-template-columns:1fr 70px 70px auto;gap:8px;padding:9px 0;border-bottom:0.5px solid var(--bord);align-items:center">'
+      + '<div><span style="font-weight:500;font-family:var(--mono)">Camera '+num+'</span>'
+      + (isp._note?'<div style="font-size:11px;color:var(--muted);margin-top:2px">'+isp._note+'</div>':'')
+      + '</div>'
+      + '<span class="badge '+bg+'" style="text-align:center">'+sc+'%</span>'
+      + '<span style="text-align:center;font-size:13px;color:'+(isp._issues>0?'var(--red)':'var(--muted)')+'">'+(isp._issues||0)+'</span>'
+      + '<span style="font-size:12px;color:var(--muted)">'+(isp._time||'')+'</span>'
+      + '</div>';
+  });
+
+  // Problems detail
+  var problemRooms = rooms.filter(function(r){return (isps[r]._issues||0)>0;});
+  if(problemRooms.length){
+    html += '<div class="divider"></div>';
+    html += '<h3 style="font-size:13px;font-weight:500;margin-bottom:8px">⚠️ Dettaglio problemi</h3>';
+    problemRooms.forEach(function(num){
+      var isp = isps[num];
+      var problems = [];
+      ISP.forEach(function(sec,si){
+        sec.v.forEach(function(item,ii){
+          if(isp['lav_'+si+'_'+ii]==='issue') problems.push(sec.t+': '+item);
+        });
+      });
+      html += '<div style="margin-bottom:10px">'
+        + '<span style="font-weight:500;font-family:var(--mono)">Camera '+num+'</span>'
+        + '<span class="badge bg-r" style="margin-left:6px">'+isp._score+'%</span>'
+        + '<ul style="margin-top:6px;padding-left:16px">';
+      problems.forEach(function(p){
+        html += '<li style="font-size:13px;color:var(--rt);margin-bottom:3px">'+p+'</li>';
+      });
+      html += '</ul></div>';
+    });
+  }
+
+  el.innerHTML = html;
+}
+
+function exportLavIspCSV(){
+  var s = st();
+  var isps = s.lavIspezioni || {};
+  var rooms = Object.keys(isps).filter(function(k){return isps[k]._score!==undefined;}).sort(function(a,b){return parseInt(a)-parseInt(b);});
+  var lines = ['Camera,Score,Problemi,Ora,Note'];
+  rooms.forEach(function(num){
+    var isp = isps[num];
+    var note = (isp._note||'').replace(/,/g,' ');
+    lines.push(num+','+(isp._score||0)+','+(isp._issues||0)+','+(isp._time||'')+','+note);
+  });
+  lines.push('');
+  lines.push('Camera,Sezione,Voce,Esito');
+  rooms.forEach(function(num){
+    var isp = isps[num];
+    ISP.forEach(function(sec,si){
+      sec.v.forEach(function(item,ii){
+        var v = isp['lav_'+si+'_'+ii];
+        if(v) lines.push(num+','+sec.t+','+item.replace(/,/g,' ')+(v===true?',OK':',Problema'));
+      });
+    });
+  });
+  dlCSV(lines.join('\n'),'controllo_camere_'+td().replace(/\//g,'-')+'.csv');
+}
+
+function renderLavIspReportRec(){
+  var s = st();
+  var isps = s.lavIspezioni || {};
+  var el = document.getElementById('lavIspReportRec');
+  if(!el) return;
+  var rooms = Object.keys(isps).filter(function(k){return isps[k]._score!==undefined;}).sort(function(a,b){return parseInt(a)-parseInt(b);});
+  if(!rooms.length){
+    el.innerHTML = '<p style="font-size:13px;color:var(--muted)">Nessun controllo lavanderia eseguito oggi.</p>';
+    return;
+  }
+  var avg = Math.round(rooms.reduce(function(a,r){return a+(isps[r]._score||0);},0)/rooms.length);
+  var critical = rooms.filter(function(r){return (isps[r]._score||0)<70;}).length;
+  var avgCol = avg>=90?'var(--green)':avg>=70?'var(--amber)':'var(--red)';
+  var html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">'
+    + '<div class="sc"><div class="sn" style="color:'+avgCol+'">'+avg+'%</div><div class="sl">Media</div></div>'
+    + '<div class="sc"><div class="sn" style="color:var(--green)">'+rooms.filter(function(r){return (isps[r]._score||0)>=90;}).length+'</div><div class="sl">Ottime</div></div>'
+    + '<div class="sc"><div class="sn" style="color:var(--red)">'+critical+'</div><div class="sl">Da rivedere</div></div>'
+    + '</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 60px 60px 60px;gap:8px;padding:5px 0;font-size:11px;font-weight:500;color:var(--muted);border-bottom:0.5px solid var(--bord);text-transform:uppercase;letter-spacing:.4px"><span>Camera</span><span style="text-align:center">Score</span><span style="text-align:center">Prob.</span><span style="text-align:center">Ora</span></div>';
+  rooms.forEach(function(num){
+    var isp = isps[num];
+    var sc = isp._score||0;
+    var bg = sc>=90?'bg-g':sc>=70?'bg-a':'bg-r';
+    html += '<div style="display:grid;grid-template-columns:1fr 60px 60px 60px;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--bord);align-items:center">'
+      + '<div><span style="font-weight:500;font-family:var(--mono)">Camera '+num+'</span>'
+      + (isp._note?'<div style="font-size:11px;color:var(--muted)">'+isp._note+'</div>':'')+'</div>'
+      + '<span class="badge '+bg+'" style="text-align:center">'+sc+'%</span>'
+      + '<span style="text-align:center;font-size:13px;color:'+(isp._issues>0?'var(--red)':'var(--muted)')+'">'+( isp._issues||0)+'</span>'
+      + '<span style="font-size:12px;color:var(--muted);text-align:center">'+(isp._time||'')+'</span>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+// ══ FLUSSAGGI ══
+let activeFlTab = 'oggi';
+let selectedVasca = '304';
+
+function camTab(t, btn){
+  document.querySelectorAll('#camTabs .tab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  ['ctCamere','ctFlussaggi','ctVasche'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){el.classList.remove('active');el.classList.add('hidden');}
+  });
+  var target = document.getElementById('ct'+t.charAt(0).toUpperCase()+t.slice(1));
+  if(target){target.classList.remove('hidden');target.classList.add('active');}
+  if(t==='flussaggi') renderFlussaggi();
+  if(t==='vasche'){renderVasche();renderVascheUltimi();}
+}
+
+function updateFlLabel(n){
+  // visual feedback on checkbox labels
+  var ids = {1:'flLavandino',2:'flDoccia',3:'flBidet'};
+  var labIds = {1:'flLab1',2:'flLab2',3:'flLab3'};
+  var chk = document.getElementById(ids[n]);
+  var lab = document.getElementById(labIds[n]);
+  if(lab){
+    if(chk && chk.checked){
+      lab.style.background='var(--bl)';
+      lab.style.borderColor='var(--blue)';
+      lab.style.color='var(--bt)';
+    } else {
+      lab.style.background='var(--g50)';
+      lab.style.borderColor='var(--bord2)';
+      lab.style.color='';
+    }
+  }
+}
+
+function addFlussaggio(){
+  var nome = document.getElementById('flussNome').value.trim();
+  var room = document.getElementById('flussRoom').value.trim();
+  var lav = document.getElementById('flLavandino').checked;
+  var doc = document.getElementById('flDoccia').checked;
+  var bid = document.getElementById('flBidet').checked;
+  if(!nome){flash('Inserisci il tuo nome','var(--red)');return;}
+  if(!room){flash('Inserisci il numero della camera','var(--red)');return;}
+  if(!lav && !doc && !bid){flash('Seleziona almeno un elemento','var(--red)');return;}
+
+  var cosa = [];
+  if(lav) cosa.push('Lavandino');
+  if(doc) cosa.push('Doccia');
+  if(bid) cosa.push('Bidet');
+
+  var s = st();
+  if(!s.flussaggi) s.flussaggi = [];
+  var now = new Date();
+  s.flussaggi.unshift({
+    id: Date.now(),
+    nome: nome,
+    room: room,
+    piano: role,
+    cosa: cosa,
+    data: now.toLocaleDateString('it-IT'),
+    dataISO: now.toISOString().split('T')[0],
+    ora: now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})
+  });
+  sv(s);
+
+  // Reset checkboxes
+  ['flLavandino','flDoccia','flBidet'].forEach(function(id,i){
+    var el=document.getElementById(id); if(el) el.checked=false;
+    updateFlLabel(i+1);
+  });
+  document.getElementById('flussRoom').value = '';
+
+  flash('Flussaggio camera '+room+' registrato','var(--blue)');
+  renderFlussaggi();
+}
+
+function flTab(t, btn){
+  activeFlTab = t;
+  document.querySelectorAll('#ctFlussaggi .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  renderFlussaggi();
+}
+
+function renderFlussaggi(){
+  var s = st();
+  var list = s.flussaggi || [];
+  var pianoRooms = getPianoRooms();
+
+  // Filter by piano and period
+  var now = new Date();
+  var todayStr = now.toISOString().split('T')[0];
+  var weekAgo = new Date(now.getTime() - 7*24*60*60*1000).toISOString().split('T')[0];
+
+  var filtered = list.filter(function(f){
+    return f.piano === role;
+  });
+  if(activeFlTab === 'oggi') filtered = filtered.filter(function(f){return f.dataISO===todayStr;});
+  if(activeFlTab === 'settimana') filtered = filtered.filter(function(f){return f.dataISO>=weekAgo;});
+
+  var el = document.getElementById('flussaggiList');
+  if(!el) return;
+
+  if(!filtered.length){
+    var msg = activeFlTab==='oggi'?'Nessun flussaggio registrato oggi.':
+              activeFlTab==='settimana'?'Nessun flussaggio negli ultimi 7 giorni.':'Nessun flussaggio registrato.';
+    el.innerHTML='<p style="font-size:13px;color:var(--muted)">'+msg+'</p>';
+    return;
+  }
+
+  var html = '';
+  filtered.forEach(function(f){
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:0.5px solid var(--bord);gap:8px;flex-wrap:wrap">'
+      + '<div>'
+      + '<span style="font-weight:500;font-family:var(--mono)">Camera '+f.room+'</span>'
+      + '<span style="font-size:12px;color:var(--muted);margin-left:8px">'+f.nome+'</span>'
+      + '<div style="margin-top:3px">'
+      + f.cosa.map(function(c){return '<span class="badge bg-b" style="margin-right:3px">'+c+'</span>';}).join('')
+      + '</div>'
+      + '</div>'
+      + '<span style="font-size:12px;color:var(--muted);white-space:nowrap">'+f.data+' '+f.ora+'</span>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function getPianoRooms(){
+  var p = role.replace('p','');
+  if(p==='1') return Array.from({length:12},function(_,i){return String(101+i);});
+  if(p==='2') return Array.from({length:17},function(_,i){return String(201+i);});
+  return Array.from({length:11},function(_,i){return String(301+i);});
+}
+
+// ══ VASCHE IDROMASSAGGIO ══
+var VASCHE_ROOMS = ['304','308','309'];
+
+function selVasca(btn){
+  document.querySelectorAll('#ctVasche .ftab').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');
+  selectedVasca = btn.dataset.room;
+}
+
+function addCambioAcqua(){
+  var s = st();
+  if(!s.cambioAcqua) s.cambioAcqua = [];
+  var now = new Date();
+  s.cambioAcqua.unshift({
+    id: Date.now(),
+    room: selectedVasca,
+    data: now.toLocaleDateString('it-IT'),
+    dataISO: now.toISOString().split('T')[0],
+    ora: now.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})
+  });
+  sv(s);
+  flash('Cambio acqua vasca '+selectedVasca+' registrato','var(--blue)');
+  renderVasche();
+  renderVascheUltimi();
+}
+
+function renderVascheUltimi(){
+  var s = st();
+  var list = s.cambioAcqua || [];
+  var el = document.getElementById('vascheUltimi');
+  if(!el) return;
+  var html = '';
+  VASCHE_ROOMS.forEach(function(room){
+    var last = list.find(function(c){return c.room===room;});
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--bord)">'
+      + '<span style="font-weight:500;font-family:var(--mono)">Camera '+room+'</span>'
+      + (last
+        ? '<span class="badge bg-g">'+last.data+' — '+last.ora+'</span>'
+        : '<span class="badge bg-r">Mai registrato</span>')
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderVasche(){
+  var s = st();
+  var list = s.cambioAcqua || [];
+  var el = document.getElementById('vascheList');
+  if(!el) return;
+  if(!list.length){
+    el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessun cambio acqua registrato.</p>';
+    return;
+  }
+  var html = '';
+  list.slice(0,30).forEach(function(c){
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--bord)">'
+      + '<span style="font-weight:500;font-family:var(--mono)">Camera '+c.room+'</span>'
+      + '<span style="font-size:12px;color:var(--muted)">'+c.data+' — '+c.ora+'</span>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+
+// ══ NOTIFICA URGENTE FULLSCREEN ══
+let urgentAudio = null;
+
+function showUrgentNotif(msg, icon){
+  // Set content
+  document.getElementById('urgentMsg').textContent = msg || 'Messaggio dalla reception';
+  document.getElementById('urgentIcon').textContent = icon || '🔔';
+
+  // Determine title based on message content
+  var title = 'Messaggio dalla Reception';
+  if(msg && msg.toLowerCase().indexOf('partenza') !== -1) title = '✈️ PARTENZA — Pulizia Urgente!';
+  else if(msg && msg.toLowerCase().indexOf('priorit') !== -1) title = 'PRIORITA - Pulire Subito!';
+  else if(msg && msg.toLowerCase().indexOf('aspetta') !== -1) title = '🚫 ASPETTA — Non Pulire';
+  else if(msg && msg.toLowerCase().indexOf('ospite in camera') !== -1) title = '🔑 Non Disturbare';
+  else if(msg && msg.toLowerCase().indexOf('early check') !== -1) title = '✅ Early Check-in';
+  document.getElementById('urgentTitle').textContent = title;
+
+  // Show overlay with flash
+  var overlay = document.getElementById('urgentOverlay');
+  overlay.classList.add('on');
+
+  // Play notification sound
+  playNotifSound();
+
+  // Vibrate if supported
+  if(navigator.vibrate) navigator.vibrate([300, 100, 300, 100, 500]);
+}
+
+function dismissUrgent(){
+  var overlay = document.getElementById('urgentOverlay');
+  overlay.classList.remove('on');
+  stopNotifSound();
+  // Also dismiss the call
+  dismissCall();
+}
+
+function playNotifSound(){
+  try{
+    // Create oscillator-based alert sound (no file needed)
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    urgentAudio = ctx;
+    var playBeep = function(freq, start, duration){
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.4, ctx.currentTime + start);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
+      osc.start(ctx.currentTime + start);
+      osc.stop(ctx.currentTime + start + duration);
+    };
+    // Play 3 ascending beeps
+    playBeep(880, 0, 0.2);
+    playBeep(1100, 0.25, 0.2);
+    playBeep(1320, 0.5, 0.4);
+    // Repeat after 1.5s
+    setTimeout(function(){
+      if(document.getElementById('urgentOverlay').classList.contains('on')){
+        playBeep(880, 0, 0.2);
+        playBeep(1100, 0.25, 0.2);
+        playBeep(1320, 0.5, 0.4);
+      }
+    }, 2000);
+  }catch(e){ /* audio not supported */ }
+}
+
+function stopNotifSound(){
+  try{ if(urgentAudio) urgentAudio.close(); urgentAudio = null; }catch(e){}
+}
+
+
+// ══ DROPDOWN TAB ══
+function toggleTabDropdown(btn){
+  var menu = document.getElementById('tabDropMenu');
+  if(!menu) return;
+  if(menu.classList.contains('open')){
+    menu.classList.remove('open');
+    return;
+  }
+  // Position menu below the button
+  var rect = btn.getBoundingClientRect();
+  menu.style.top = (rect.bottom + 2) + 'px';
+  menu.style.right = (window.innerWidth - rect.right) + 'px';
+  menu.classList.add('open');
+}
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.tab-dropdown')){
+    var menu = document.getElementById('tabDropMenu');
+    if(menu) menu.classList.remove('open');
+  }
+});
+function rTabDrop(t){
+  var menu = document.getElementById('tabDropMenu');
+  if(menu) menu.classList.remove('open');
+  // Remove active from all tabs
+  document.querySelectorAll('#recTabs .tab').forEach(function(x){x.classList.remove('active');});
+  document.querySelector('.tab-more').classList.add('active');
+  // Show the tab
+  document.querySelectorAll('.tc').forEach(function(x){x.classList.add('hidden');x.classList.remove('active');});
+  var el = document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1));
+  if(el){el.classList.remove('hidden');el.classList.add('active');}
+  if(t==='ispezione'){renderIspSelect();renderLavIspReportRec();}
+  if(t==='storico') renderStorico();
+  if(t==='report') renderReport();
+  if(t==='impost'){renderNotifSettings();loadSlackConfig();}
+  if(t==='lavanderia') renderLav();
+}
+
+// ══ COOKING CLASS ══
+const COOK_PRICE = 55;
+const COOK_MAX = 10;
+let activeCookTab = 'prossime';
+
+function cookTab(t, btn){
+  activeCookTab = t;
+  document.querySelectorAll('#tCookingclass .ftab').forEach(function(x){x.classList.remove('active');});
+  btn.classList.add('active');
+  renderCooking();
+}
+
+function initCookingDate(){
+  var el = document.getElementById('ckData');
+  if(!el) return;
+  // Set to next Tuesday
+  var d = new Date();
+  var day = d.getDay();
+  var diff = day<=2 ? 2-day : 9-day;
+  d.setDate(d.getDate()+diff);
+  el.value = d.toISOString().split('T')[0];
+}
+
+function addCooking(){
+  var nome = document.getElementById('ckNome').value.trim();
+  var room = document.getElementById('ckRoom').value.trim();
+  var data = document.getElementById('ckData').value;
+  var pax  = parseInt(document.getElementById('ckPax').value)||1;
+  var note = document.getElementById('ckNote').value.trim();
+  var warn = document.getElementById('ckWarning');
+
+  if(!nome||!data){flash('Inserisci nome e data','var(--red)');return;}
+
+  // Check it's a Tuesday
+  var d = new Date(data+'T12:00:00');
+  if(d.getDay()!==2){
+    warn.textContent = 'Attenzione: la data selezionata non è un martedì!';
+  } else {
+    warn.textContent = '';
+  }
+
+  // Check availability
+  var s = st();
+  if(!s.cookingClass) s.cookingClass = [];
+  var existing = s.cookingClass.filter(function(x){return x.data===data && x.status!=='cancellata';});
+  var totPax = existing.reduce(function(a,x){return a+x.pax;},0);
+  if(totPax+pax > COOK_MAX){
+    warn.textContent = 'Posti esauriti per questa data! Disponibili: '+(COOK_MAX-totPax);
+    return;
+  }
+
+  s.cookingClass.unshift({
+    id: Date.now(),
+    nome, room, data, pax, note,
+    ora: '17:00',
+    prezzo: pax * COOK_PRICE,
+    status: 'confermata',
+    dataISO: data,
+    creata: new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})
+  });
+  sv(s);
+  closeM('mCooking');
+  ['ckNome','ckRoom','ckNote'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('ckPax').value='2';
+  warn.textContent='';
+  flash('Prenotazione Cooking Class aggiunta!','var(--green)');
+
+  // Show reminder to update Garda Trentino
+  setTimeout(function(){
+    alert('⚠️ Ricorda di aggiornare la disponibilità su Garda Trentino!');
+  }, 400);
+
+  renderCooking();
+}
+
+function cancelCooking(id){
+  if(!confirm('Cancellare questa prenotazione?')) return;
+  var s = st();
+  var x = (s.cookingClass||[]).find(function(x){return x.id==id;});
+  if(x){ x.status='cancellata'; sv(s); renderCooking();
+    flash('Prenotazione cancellata','var(--amber)');
+    setTimeout(function(){ alert('⚠️ Ricorda di aggiornare la disponibilità su Garda Trentino!'); }, 400);
+  }
+}
+
+function renderCooking(){
+  var s = st();
+  var list = s.cookingClass || [];
+  var today = new Date().toISOString().split('T')[0];
+
+  // Update availability for next Tuesday
+  var avEl = document.getElementById('cookingAvail');
+  if(avEl){
+    var d = new Date(); var day=d.getDay(); var diff=day<=2?2-day:9-day;
+    d.setDate(d.getDate()+diff);
+    var nextTue = d.toISOString().split('T')[0];
+    var booked = list.filter(function(x){return x.data===nextTue&&x.status!=='cancellata';}).reduce(function(a,x){return a+x.pax;},0);
+    var avail = COOK_MAX - booked;
+    var col = avail>5?'var(--gt)':avail>0?'var(--at)':'var(--rt)';
+    avEl.innerHTML = '<div style="display:flex;gap:12px;font-size:13px;flex-wrap:wrap">'
+      +'<span>Prossimo martedì <strong>'+nextTue.split('-').reverse().join('/')+'</strong></span>'
+      +'<span style="color:'+col+'"><strong>'+avail+'/'+COOK_MAX+'</strong> posti disponibili</span>'
+      +'<span style="color:var(--muted)">Incasso previsto: €'+(booked*COOK_PRICE)+'</span>'
+      +'</div>';
+  }
+
+  var filtered = list;
+  if(activeCookTab==='prossime') filtered=list.filter(function(x){return x.dataISO>=today&&x.status!=='cancellata';});
+  if(activeCookTab==='passate') filtered=list.filter(function(x){return x.dataISO<today;});
+  filtered = filtered.sort(function(a,b){return a.dataISO>b.dataISO?1:-1;});
+
+  var el = document.getElementById('cookingList');
+  if(!el) return;
+  if(!filtered.length){el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna prenotazione.</p>';return;}
+
+  var html = '';
+  filtered.forEach(function(x){
+    var isCancelled = x.status==='cancellata';
+    var bc = isCancelled?'var(--bord)':x.dataISO===today?'var(--green)':'var(--blue)';
+    html += '<div style="border-left:3px solid '+bc+';padding:10px 0 10px 12px;margin-bottom:10px;opacity:'+(isCancelled?'0.5':'1')+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+      +'<div>'
+      +'<div style="font-weight:500">'+x.nome+(x.room?' — Cam. '+x.room:'')+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+x.dataISO.split('-').reverse().join('/')+' ore 17:00 · '+x.pax+' pers. · €'+x.prezzo+'</div>'
+      +(x.note?'<div style="font-size:12px;color:var(--muted)">'+x.note+'</div>':'')
+      +(isCancelled?'<span class="badge bg-r">Cancellata</span>':'')
+      +'</div>'
+      +(!isCancelled?'<button class="btn btn-r" style="padding:4px 8px;font-size:12px" data-id="'+x.id+'" onclick="cancelCooking(this.dataset.id)">Cancella</button>':'')
+      +'</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+// ══ MASSAGGI ══
+let activeMassTab = 'prossimi';
+
+function massTab(t, btn){
+  activeMassTab = t;
+  document.querySelectorAll('#tMassaggi .ftab').forEach(function(x){x.classList.remove('active');});
+  btn.classList.add('active');
+  renderMassaggi();
+}
+
+function initMassDate(){
+  var el = document.getElementById('massData');
+  if(el) el.value = new Date().toISOString().split('T')[0];
+}
+
+function addMassaggio(){
+  var nome  = document.getElementById('massNome').value.trim();
+  var room  = document.getElementById('massRoom').value.trim();
+  var tipo  = document.getElementById('massTipo').value;
+  var data  = document.getElementById('massData').value;
+  var ora   = document.getElementById('massOra').value;
+  var dur   = document.getElementById('massDurata').value;
+  var op    = document.getElementById('massOp').value.trim();
+  var note  = document.getElementById('massNote').value.trim();
+
+  if(!nome||!data||!ora){flash('Inserisci nome, data e ora','var(--red)');return;}
+
+  var s = st();
+  if(!s.massaggi) s.massaggi = [];
+  s.massaggi.unshift({
+    id: Date.now(),
+    nome, room, tipo, data, ora, durata:dur, operatore:op, note,
+    dataISO: data,
+    status: 'confermato',
+    notifMattina: false
+  });
+  sv(s);
+  closeM('mMassaggio');
+  ['massNome','massRoom','massOp','massNote'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  flash('Prenotazione massaggio aggiunta!','var(--green)');
+  renderMassaggi();
+}
+
+function cancelMassaggio(id){
+  if(!confirm('Cancellare questa prenotazione?')) return;
+  var s = st();
+  var x = (s.massaggi||[]).find(function(x){return x.id==id;});
+  if(x){x.status='cancellato';sv(s);renderMassaggi();flash('Prenotazione cancellata','var(--amber)');}
+}
+
+function renderMassaggi(){
+  var s = st();
+  var list = s.massaggi || [];
+  var today = new Date().toISOString().split('T')[0];
+
+  var filtered = list;
+  if(activeMassTab==='prossimi') filtered=list.filter(function(x){return x.dataISO>=today&&x.status!=='cancellato';});
+  if(activeMassTab==='oggi') filtered=list.filter(function(x){return x.dataISO===today&&x.status!=='cancellato';});
+  filtered = filtered.sort(function(a,b){return (a.dataISO+a.ora)>(b.dataISO+b.ora)?1:-1;});
+
+  var el = document.getElementById('massaggiList');
+  if(!el) return;
+  if(!filtered.length){el.innerHTML='<p style="font-size:13px;color:var(--muted)">Nessuna prenotazione.</p>';return;}
+
+  var html = '';
+  filtered.forEach(function(x){
+    var isCancelled = x.status==='cancellato';
+    var isToday = x.dataISO===today;
+    var bc = isCancelled?'var(--bord)':isToday?'var(--green)':'var(--purple)';
+    html += '<div style="border-left:3px solid '+bc+';padding:10px 0 10px 12px;margin-bottom:10px;opacity:'+(isCancelled?'0.5':'1')+'">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+      +'<div style="flex:1">'
+      +'<div style="font-weight:500">'+x.nome+(x.room?' — Cam. '+x.room:'')+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-top:2px">'+x.dataISO.split('-').reverse().join('/')+' ore '+x.ora+' · '+x.tipo+' · '+x.durata+' min'+(x.operatore?' · '+x.operatore:'')+'</div>'
+      +(x.note?'<div style="font-size:12px;color:var(--muted)">'+x.note+'</div>':'')
+      +(isCancelled?'<span class="badge bg-r">Cancellato</span>':'')
+      +'</div>'
+      +(!isCancelled?'<button class="btn btn-r" style="padding:4px 8px;font-size:12px" data-id="'+x.id+'" onclick="cancelMassaggio(this.dataset.id)">Cancella</button>':'')
+      +'</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function checkMassaggiNotifs(){
+  var s = st();
+  if(!s.massaggi||!s.massaggi.length) return;
+  var now = new Date();
+  var today = now.toISOString().split('T')[0];
+  var h = now.getHours(), m = now.getMinutes();
+  if(!s.diarioNotifs) s.diarioNotifs = {};
+  var key = today+'_mass9';
+  if(h===9&&m>=0&&m<5&&!s.diarioNotifs[key]){
+    var todayMass = s.massaggi.filter(function(x){return x.dataISO===today&&x.status!=='cancellato';});
+    if(todayMass.length){
+      s.diarioNotifs[key]=true;
+      var msg = '💆 *Massaggi di oggi — '+today.split('-').reverse().join('/')+'*\n';
+      todayMass.sort(function(a,b){return a.ora>b.ora?1:-1;}).forEach(function(x){
+        msg += '• '+x.ora+' — '+x.nome+(x.room?' (cam.'+x.room+')':'')+' — '+x.tipo+' '+x.durata+'min'+(x.operatore?' — '+x.operatore:'')+'\n';
+      });
+      sendSlack(msg);
+      sv(s);
+      flash('💆 Reminder massaggi inviato su Slack','var(--green)');
+    }
+  }
+}
+
+
+// ══ BARRA DI STATO ══
+function updateStatusBar(){
+  var el = document.getElementById('recStatusBar');
+  if(!el) return;
+  var s = st();
+  var pills = [];
+
+  // EV in carica
+  var evActive = (s.ev||[]).filter(function(e){return e.status==='attiva';});
+  evActive.forEach(function(e){
+    pills.push('<div class="status-pill green"><span class="status-dot green"></span>⚡ EV '+e.plate+' — Col. '+e.col+' — in carica dalle '+e.start+'</div>');
+  });
+
+  // Sauna accesa (prenotazioni in corso ora)
+  var now = new Date();
+  var todayStr = now.toISOString().split('T')[0];
+  var nowMin = now.getHours()*60 + now.getMinutes();
+  var saunaActive = (s.sauna||[]).filter(function(b){
+    if(b.status==='cancelled') return false;
+    // date field format: YYYY-MM-DD
+    if(b.date!==todayStr) return false;
+    var parts = (b.time||'00:00').split(':');
+    var startMin = parseInt(parts[0])*60 + parseInt(parts[1]||0);
+    var endMin = startMin + parseInt(b.dur||60);
+    return nowMin >= startMin && nowMin < endMin;
+  });
+  saunaActive.forEach(function(b){
+    pills.push('<div class="status-pill amber"><span class="status-dot amber"></span>🧖 Sauna IN CORSO — Cam. '+b.room+(b.guest?' ('+b.guest+')':'')+' — fino alle '+b.endTime+'</div>');
+  });
+
+  // Sauna prossima entro 30 min
+  var saunasSoon = (s.sauna||[]).filter(function(b){
+    if(b.status==='cancelled'||b.date!==todayStr) return false;
+    var parts = (b.time||'00:00').split(':');
+    var startMin = parseInt(parts[0])*60 + parseInt(parts[1]||0);
+    var diff = startMin - nowMin;
+    return diff > 0 && diff <= 30;
+  });
+  saunasSoon.forEach(function(b){
+    var parts = (b.time||'').split(':');
+    var startMin = parseInt(parts[0])*60 + parseInt(parts[1]||0);
+    var diff = startMin - nowMin;
+    pills.push('<div class="status-pill blue"><span class="status-dot blue"></span>🧖 Sauna tra '+diff+' min — Cam. '+b.room+(b.guest?' ('+b.guest+')':'')+' alle '+b.time+'</div>');
+  });
+
+  if(pills.length > 0){
+    el.classList.add('on');
+    el.innerHTML = pills.join('');
+  } else {
+    el.classList.remove('on');
+    el.innerHTML = '';
+  }
+}
+
+// ══ SLACK ══
+function updateSlackDot(){
+  // Pipedream URL is hardcoded so Slack is always "connected"
+  ['slackDot','slackDotCam'].forEach(function(id){
+    const d=document.getElementById(id);
+    if(d) d.className='slack-dot on';
+  });
+}
+function saveSlack(){
+  const ch=document.getElementById('slackChannel').value.trim();
+  const pd=document.getElementById('slackPipedream')?document.getElementById('slackPipedream').value.trim():'';
+  setSlackCfg({channel:ch,pipedream:pd||'https://eomg9237kh4k4ol.m.pipedream.net'}); updateSlackDot();
+  flash('Slack configurato!','var(--green)');
+  document.getElementById('slackMsg').innerHTML='<span style="color:var(--gt)">✓ Salvato</span>';
+}
+async function testSlack(){
+  const msgEl=document.getElementById('slackMsg');
+  msgEl.innerHTML='<span style="color:var(--muted)">Invio in corso...</span>';
+  const ok=await sendSlack('🏨 Test da HBA Housekeeping — '+fd());
+  msgEl.innerHTML=ok
+    ?'<span style="color:var(--gt)">✓ Inviato! Controlla su Slack.</span>'
+    :'<span style="color:var(--rt)">⚠ Errore. Controlla URL Pipedream.</span>';
+}
+async function sendSlack(msg){
+  const sl=getSlack();
+  const pipedream = sl.pipedream||'https://eomg9237kh4k4ol.m.pipedream.net';
+  if(!pipedream) return false;
+  const text = '*HBA*'+(sl.channel?' '+sl.channel:'')+'\n'+msg;
+  try{
+    const r = await fetch(pipedream,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:text})
+    });
+    return true;
+  }catch(e){return false;}
+}
+function loadSlackConfig(){
+  const sl=getSlack();
+  if(sl.channel&&document.getElementById('slackChannel')) document.getElementById('slackChannel').value=sl.channel;
+  const pd=sl.pipedream||'https://eomg9237kh4k4ol.m.pipedream.net';
+  if(document.getElementById('slackPipedream')) document.getElementById('slackPipedream').value=pd;
+}
+
+// ══ UTILS ══
+function openM(id){
+  if(id==='mSlack') loadSlackConfig();
+  if(id==='mSaunaNew') initSaunaDate();
+  if(id==='mSpecNew'){initSpecDate();updateSpecFields();}
+  document.getElementById(id).classList.add('open');
+}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') document.querySelectorAll('.modal-bg.open').forEach(m=>m.classList.remove('open'));});
+document.getElementById('loginDate').textContent=fd();
+</script>
+</body>
+</html>
