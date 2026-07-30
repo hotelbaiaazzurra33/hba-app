@@ -1147,10 +1147,12 @@ function runCleanupNowAuth(){
   flash('Pulizia completata — dati più vecchi di 30 giorni eliminati','var(--green)');
 }
 
-function cleanOldData(s){
-  var cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 30);
-  var cutoffStr = cutoff.toISOString().split('T')[0];
+function cleanOldData(s, cutoffStr){
+  if(!cutoffStr){
+    var cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 30);
+    cutoffStr = cutoff.toISOString().split('T')[0];
+  }
 
   // Diario
   if(s.diario) s.diario = s.diario.filter(function(e){ return (e.dataISO||'') >= cutoffStr; });
@@ -1204,11 +1206,26 @@ function cleanOldData(s){
 
 var _lastPushTime = 0;
 function sv(s){
-  s = cleanOldData(s);
   _cache=s;
   _lastPushTime = Date.now();
   localStorage.setItem(SK,JSON.stringify(s));
   _pushSupa(s);
+}
+
+function checkMonthlyCleanup(){
+  var now = new Date();
+  if(now.getDate() !== 15) return; // solo il 15 del mese
+  var monthKey = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0');
+  var s = st();
+  if(!s.settings) s.settings = {};
+  if(s.settings.lastCleanupMonth === monthKey) return; // già fatto questo mese
+  // Cutoff = 15 del mese precedente (mantieni ultimo mese)
+  var cutoff = new Date(now.getFullYear(), now.getMonth() - 1, 15);
+  var cutoffStr = cutoff.toISOString().split('T')[0];
+  s = cleanOldData(s, cutoffStr);
+  s.settings.lastCleanupMonth = monthKey;
+  sv(s);
+  flash('🗑 Pulizia mensile completata — dati prima del '+cutoffStr+' eliminati','var(--green)');
 }
 
 function _lGet(){try{return JSON.parse(localStorage.getItem(SK)||'null')||ns()}catch{return ns()}}
@@ -1317,7 +1334,7 @@ function go(r){
     document.getElementById('lavDate').textContent=td();
     renderRec(); renderStorico(); updateSlackDot(); startSupaSync(); startBackupTimer(); updateTabBadges();
     polling=setInterval(pollRec,2500);
-    saunaPolling=setInterval(()=>{checkSaunaNotifs();renderSauna();checkSpecialiNotifs();checkDiarioNotifs();checkCommissioniNotifs();checkMassaggiNotifs();checkSaunaOnReminder();},60000);
+    saunaPolling=setInterval(()=>{checkSaunaNotifs();renderSauna();checkSpecialiNotifs();checkDiarioNotifs();checkCommissioniNotifs();checkMassaggiNotifs();checkSaunaOnReminder();checkMonthlyCleanup();},60000);
   } else if(r==='lav'){
     document.getElementById('sLav').classList.add('active');
     document.getElementById('lavDate2').textContent=fd();
