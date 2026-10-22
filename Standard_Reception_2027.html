@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Standard Reception 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+[hidden]{display:none!important}
+body{margin:0}
+/* Layout: barra laterale fissa con indice + sezioni a scorrimento; su telefono l'indice diventa una barra in alto. */
+:root{
+  --bg:#EFF4F7; --surface:#FFFFFF; --fg:#0F2837; --muted:#566F7D; --line:#D3E0E6;
+  --accent:#10708F; --accent-soft:#DCEEF4; --deep:#0A3550; --deep-fg:#EAF6FB;
+  --crit:#AE352C; --crit-soft:#FBE8E5; --warn:#7F5300; --warn-soft:#FFF0CF; --tip:#1B6845; --tip-soft:#DDF2E7;
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'Public Sans','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1921; --surface:#12252F; --fg:#E2EEF3; --muted:#92ADBA; --line:#24404D;
+  --accent:#55BCDF; --accent-soft:#12394A; --deep:#0A2E41; --deep-fg:#EAF6FB;
+  --crit:#FF8D80; --crit-soft:#3B1D1B; --warn:#F2C56E; --warn-soft:#3A2F12; --tip:#7FD4A8; --tip-soft:#133528; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1921; --surface:#12252F; --fg:#E2EEF3; --muted:#92ADBA; --line:#24404D;
+  --accent:#55BCDF; --accent-soft:#12394A; --deep:#0A2E41; --deep-fg:#EAF6FB;
+  --crit:#FF8D80; --crit-soft:#3B1D1B; --warn:#F2C56E; --warn-soft:#3A2F12; --tip:#7FD4A8; --tip-soft:#133528; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--f-body);margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h2{font-size:clamp(1.6rem,3vw,2.1rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.08rem;font-weight:700}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.2rem;display:grid;gap:.35rem}
+b,strong{font-weight:600}
+
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;background:var(--deep);color:var(--deep-fg);padding:22px 16px 20px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
+.brand{font:700 1.15rem/1.1 var(--f-display)}
+.brand small{display:block;font:500 .72rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:5px}
+.search{width:100%;padding:9px 11px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:inherit;font:inherit;font-size:.9rem}
+.search::placeholder{color:rgba(234,246,251,.65)}
+.nav{display:grid;gap:2px}
+.nav a{color:var(--deep-fg);text-decoration:none;padding:7px 10px;border-radius:7px;font-size:.92rem;font-weight:500;opacity:.86}
+.nav a:hover{background:rgba(255,255,255,.12);opacity:1}
+.nav a.on{background:rgba(255,255,255,.2);opacity:1}
+.nav a.nuovo::after{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#7FD4E8;margin-left:8px}
+.side .foot{margin-top:auto;font-size:.76rem;opacity:.7}
+
+main{padding-block:32px 80px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-width:0}
+.wrap{max-width:1020px;margin-inline:auto;display:grid;gap:44px}
+
+.hero{background:var(--deep);color:var(--deep-fg);border-radius:16px;padding:clamp(22px,4vw,40px);display:grid;gap:12px;background-image:radial-gradient(ellipse at 100% 0%,rgba(85,188,223,.28),transparent 60%)}
+.hero .eyebrow{font:600 .75rem var(--f-body);letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+.hero p{max-width:60ch;opacity:.9}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.84rem;margin-top:6px;opacity:.95}
+
+.sec{display:grid;gap:18px;min-width:0}
+.sec>header{display:grid;gap:6px}
+.sec .lead{color:var(--muted);max-width:68ch}
+.stack{display:grid;gap:14px;min-width:0}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.card>h3 .tag{font:600 .7rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+
+.badge{display:inline-block;font:600 .68rem/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;background:var(--fg);color:var(--bg);padding:4px 7px;border-radius:5px;vertical-align:middle;margin-left:6px}
+
+.note{border-radius:10px;padding:11px 14px;display:grid;gap:2px;font-size:.95rem;border:1px solid transparent}
+.note .lab{font:700 .72rem var(--f-body);letter-spacing:.1em;text-transform:uppercase}
+.note.crit{background:var(--crit-soft);color:var(--crit);border-color:color-mix(in srgb,var(--crit) 35%,transparent)}
+.note.warn{background:var(--warn-soft);color:var(--warn);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+.note.tip{background:var(--tip-soft);color:var(--tip);border-color:color-mix(in srgb,var(--tip) 35%,transparent)}
+.note>span{color:var(--fg)}
+.note.crit .lab,.note.warn .lab,.note.tip .lab{color:inherit}
+
+.say{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;padding:10px 14px;display:grid;gap:3px}
+.say .lab{font:700 .7rem var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.say q{font-style:italic;quotes:none}
+.say .row{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.copy{flex:none;font:600 .75rem var(--f-body);border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:6px;padding:4px 9px;cursor:pointer}
+.copy:hover{background:var(--accent);color:var(--surface)}
+
+/* checklist */
+.chk{list-style:none;padding:0;gap:2px}
+.chk li{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:8px;cursor:pointer;line-height:1.4}
+.chk li:hover{background:var(--accent-soft)}
+.chk input{margin:3px 0 0;width:18px;height:18px;flex:none;accent-color:var(--accent);cursor:pointer}
+.chk li.done span{text-decoration:line-through;color:var(--muted)}
+.chk .time{font:600 .72rem var(--f-body);background:var(--accent-soft);color:var(--accent);border-radius:5px;padding:2px 6px;margin-right:6px;white-space:nowrap}
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{font:600 .82rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:7px 12px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.hint{font-size:.84rem;color:var(--muted)}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font:600 .95rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:9px 18px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.tab small{font-weight:500;opacity:.8;margin-left:6px}
+.panel[hidden]{display:none!important}
+
+/* check-in: percorso a passi */
+.flow{list-style:none;padding:0;display:grid;gap:0;counter-reset:s}
+.flow>li{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding-bottom:16px}
+.flow>li:last-child{padding-bottom:0}
+.flow>li::before{counter-increment:s;content:counter(s);width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--surface);display:grid;place-items:center;font:700 1rem var(--f-display);z-index:1}
+.flow>li::after{content:"";position:absolute;left:17px;top:38px;bottom:2px;width:2px;background:var(--line)}
+.flow>li:last-child::after{display:none}
+.flow .step{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px;min-width:0}
+.flow .step h3{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+details>summary{cursor:pointer;padding:14px 18px;font:700 1.02rem var(--f-display);list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+details>summary::-webkit-details-marker{display:none}
+details>summary::after{content:"+";font:500 1.4rem/1 var(--f-body);color:var(--accent)}
+details[open]>summary::after{content:"−"}
+details>.in{padding:2px 18px 18px;display:grid;gap:12px}
+details h4{margin:4px 0 0;font:700 .82rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 .72rem var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);background:var(--accent-soft);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n{white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px;border:1px solid rgba(0,0,0,.25)}
+
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:6px;align-content:start;text-decoration:none;color:inherit}
+.rule:hover{border-color:var(--accent)}
+.rule .k{font:600 .72rem var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.rule h3{font-size:1.12rem}
+.rule p{font-size:.93rem;color:var(--muted)}
+
+.pill{justify-self:start;font:700 .7rem var(--f-body);letter-spacing:.09em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.rulecard{border-width:2px}
+.rulecard.ok{border-color:var(--tip)}.rulecard.ok .pill{background:var(--tip-soft);color:var(--tip)}
+.rulecard.eval{border-color:var(--warn)}.rulecard.eval .pill{background:var(--warn-soft);color:var(--warn)}
+.empty{display:none;color:var(--muted)}
+body.searching .empty.show{display:block}
+mark{background:var(--warn-soft);color:inherit;border-radius:3px}
+
+
+/* mappa camere */
+.ftab{font:600 .95rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:9px 18px;cursor:pointer}
+.ftab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.fmap{display:flex;gap:8px;min-width:700px;padding:14px}
+.fcol{flex:1;display:grid;gap:6px;min-width:0}
+.frow{display:flex;gap:5px;align-items:stretch}
+.fside{writing-mode:vertical-rl;transform:rotate(180deg);font:700 .66rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);width:16px;text-align:center;flex:none}
+.rm{flex:1;min-width:58px;min-height:70px;border:1px solid color-mix(in srgb,var(--c) 50%,transparent);border-top:5px solid var(--c);background:color-mix(in srgb,var(--c) 14%,var(--surface));color:var(--fg);border-radius:8px;padding:6px;display:grid;align-content:start;gap:2px;text-align:left;cursor:pointer;font:inherit}
+.rm:hover{background:color-mix(in srgb,var(--c) 28%,var(--surface))}
+.rm b{font:700 1.02rem/1 var(--f-display)}
+.rm small{font-size:.66rem;line-height:1.15;color:var(--muted)}
+.rm .ic{font-size:.66rem;font-weight:700}
+.rm.serv{flex:.9;cursor:default;border:1px dashed var(--line);background:repeating-linear-gradient(45deg,var(--accent-soft) 0 6px,transparent 6px 12px);color:var(--muted);font-size:.66rem;place-content:center;text-align:center}
+.corr{display:flex;justify-content:space-between;font:600 .66rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:5px 22px;border-block:1px dashed var(--line)}
+.testa{flex:0 0 76px;display:flex}
+.testa .rm{min-height:100%}
+.rcard,.cat{border-left:5px solid var(--c)}
+.rcard{scroll-margin-top:96px;transition:box-shadow .3s}
+.rcard.flash{box-shadow:0 0 0 3px var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font:600 .72rem var(--f-body);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.hub{border:2px solid var(--accent);background:var(--accent-soft)}
+
+.principio{border-top:4px solid var(--accent)}
+.problema{border-top-color:var(--crit)}
+/* contatti e mercati */
+.sos{display:flex;justify-content:space-between;align-items:center;background:var(--crit);color:#fff;border-radius:12px;padding:14px 20px;text-decoration:none;font:700 1.1rem var(--f-display)}
+.sos b{font-size:2rem}
+.tels{list-style:none;padding:0;gap:4px}
+.tel a{display:flex;justify-content:space-between;gap:10px;text-decoration:none;color:var(--fg);padding:7px 9px;border-radius:8px;background:var(--accent-soft)}
+.tel a:hover{outline:1px solid var(--accent)}
+.tel span{font-variant-numeric:tabular-nums;font-weight:600;color:var(--accent);white-space:nowrap}
+.tel small{display:block;color:var(--muted);font-size:.8rem;margin:2px 9px 0}
+.mlist{list-style:none;padding:0;gap:3px;font-size:.94rem}
+.mlist b{font-weight:500}
+.mlist span{color:var(--muted);font-size:.86rem}
+.mlist li.near b{font-weight:700;color:var(--accent)}
+.mday.today{border:2px solid var(--accent)}
+.mday.today h3::after{content:"Oggi";margin-left:8px;font:700 .66rem var(--f-body);letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:var(--surface);padding:3px 7px;border-radius:5px;vertical-align:middle}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--deep)}
+  .side{position:sticky;top:env(safe-area-inset-top,0px);height:auto;z-index:20;padding:10px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));gap:8px;overflow:visible}
+  .brand small,.side .foot{display:none}
+  .nav{display:flex;overflow-x:auto;gap:4px;padding-bottom:4px}
+  .nav a{white-space:nowrap}
+  main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-top:20px}
+  html{scroll-padding-top:150px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand"><small>Hotel Baia Azzurra</small>Standard Reception 2027</div>
+  <input class="search" id="q" type="search" placeholder="Cerca (es. cani, virtual card)" aria-label="Cerca nel manuale" autocomplete="off">
+  <nav class="nav" id="nav">
+    <a href="#regole" class="nuovo">Le regole del banco</a>
+    <a href="#ruolo">Il ruolo</a>
+    <a href="#orari">Orari</a>
+    <a href="#routine" class="nuovo">Routine giornaliera</a>
+    <a href="#telefono" class="nuovo">Telefono</a>
+    <a href="#checkin" class="nuovo">Check-in</a>
+    <a href="#checkout">Check-out</a>
+    <a href="#camere" class="nuovo">Piano camere</a>
+    <a href="#mappa" class="nuovo">Mappa camere</a>
+    <a href="#sistemi" class="nuovo">I sistemi</a>
+    <a href="#prenotazioni" class="nuovo">Prenotazioni</a>
+    <a href="#tariffe">Tariffe e offerte</a>
+    <a href="#casi">Casi particolari</a>
+    <a href="#comunicazione">Comunicazione</a>
+    <a href="#cassa">Cassa e contabilità</a>
+    <a href="#questura" class="nuovo">Polizia e ISTAT</a>
+    <a href="#pulizie">Pulizie e piani</a>
+    <a href="#cancellazioni" class="nuovo">Cancellazioni</a>
+    <a href="#reclami">Reclami e problemi</a>
+    <a href="#sicurezza">Sicurezza</a>
+    <a href="#contatti" class="nuovo">Contatti di emergenza</a>
+    <a href="#mercati" class="nuovo">Mercati</a>
+  </nav>
+  <div class="foot">Il pallino indica le sezioni con novità 2027.</div>
+</aside>
+
+<main><div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">Hotel Baia Azzurra · Manuale operativo</span>
+  <h1>Standard Reception 2027</h1>
+  <p>Tutto quello che serve al banco, in ordine di giornata. Per ogni turno trovi cosa fare, cosa dire e cosa controllare. Le voci con la spunta si possono segnare mentre lavori.</p>
+  <div class="legend"><span><b>Regola critica</b> · non derogabile</span><span><b>Attenzione</b> · avviso importante</span><span><b>Consiglio</b> · aiuta a lavorare meglio</span><span><span class="badge" style="margin:0">Nuovo</span> aggiunto nel 2027</span></div>
+</header>
+
+<!-- ============ REGOLE ============ -->
+<section class="sec" id="regole">
+  <header><h2>Le regole del banco</h2><p class="lead">Sei abitudini che il cliente nota subito. Se ricordi solo queste, stai già facendo un ottimo lavoro.</p></header>
+  <div class="g2">
+    <div class="card principio"><h3><span class="tag">Il nostro spirito</span>Omotenashi</h3>
+      <p>È l’idea giapponese dell’ospitalità: trattare le persone come ospiti nella nostra casa, anticipando i loro bisogni prima che li esprimano. Non è solo essere un buon padrone di casa: è empatia messa in pratica, attenzione a ogni dettaglio, il desiderio di far vivere un’esperienza che resti nei ricordi.</p></div>
+    <div class="card principio problema"><h3><span class="tag">Quando c’è un problema</span>Prima di tutto, ascolta</h3>
+      <ul><li><b>Ascolta attivamente</b>, senza interrompere e senza ribattere</li>
+      <li><b>Fai sentire il cliente capito</b>: interessati, scusati, mostra che ti sta a cuore</li>
+      <li><b>Prova in tutti i modi a gestirlo e risolverlo</b>, subito: il cliente non deve aspettare</li></ul>
+      <p class="hint">Dettagli in <a href="#reclami">Reclami e problemi</a>.</p></div>
+  </div>
+  <div class="rules">
+    <a class="rule" href="#telefono"><span class="k">Telefono</span><h3>“Buongiorno, Hotel Baia Azzurra”</h3><p>Risposta semplice, sempre uguale. Se c’è una chiamata persa, si richiama.</p></a>
+    <a class="rule" href="#desideri"><span class="k">Prenotazioni dal sito</span><h3>Chiedi se hanno desideri</h3><p>Una frase semplicissima a ogni nuova prenotazione. È un vero gesto verso il cliente.</p></a>
+    <a class="rule" href="#camere"><span class="k">Ogni mattina</span><h3>Guarda il piano camere</h3><p>Upgrade se ci sono camere libere, spostamenti dalle camere piccole. Con poco lavoro, controlla anche i giorni dopo.</p></a>
+    <a class="rule" href="#checkin"><span class="k">Check-in</span><h3>Segui i passi, in modo leggero</h3><p>Ricorda il menu cuscini, ma senza insistere: non tutti hanno voglia di ascoltare.</p></a>
+    <a class="rule" href="#cancellazioni"><span class="k">Cancellazioni</span><h3>Flessibili e col sorriso</h3><p>Vecchio cliente: 100% flessibili con un buono. Cliente nuovo a pochi giorni: si valuta insieme e decide la reception.</p></a>
+    <a class="rule" href="#routine"><span class="k">Ogni turno</span><h3>Le checklist di mattina, pomeriggio e sera</h3><p>Cosa fare e in che ordine, con le spunte da segnare.</p></a>
+  </div>
+</section>
+
+<!-- ============ RUOLO ============ -->
+<section class="sec" id="ruolo">
+  <header><h2>Il ruolo della reception</h2><p class="lead">«Un sorriso risolve tanti problemi»</p></header>
+  <div class="card blk">
+    <p>Da sempre il ruolo principale della reception è accogliere i clienti al loro arrivo. La prima tappa degli ospiti è il bancone della hall: qui si svolgono check-in e check-out e si raccolgono le prime informazioni utili per il soggiorno.</p>
+    <p>La reception è anche il punto di riferimento per tutta la struttura e per tutti i reparti, ed è il luogo dove i clienti si rivolgono per richieste specifiche ed eventuali reclami.</p>
+    <p>Chi lavora in reception ha più di chiunque altro il contatto diretto con i clienti: deve quindi essere il più preparato sull’albergo, sulle sue regole, sui suoi servizi e su tutto ciò che lo circonda. È chi coccola il cliente in vacanza, per farlo sentire meglio che a casa, puntando sempre al massimo profitto ma restando sorridente, disponibile e attento. Il nostro lavoro è far vivere un’esperienza che resti nei ricordi delle persone.</p>
+  </div>
+  <div class="g2">
+    <div class="card"><h3>Di cosa ci occupiamo</h3>
+      <ul><li>Accoglienza del cliente</li><li>Consulenza al cliente (offerte, servizi, territorio)</li><li>Immagine dell’hotel</li><li>Gestione dei problemi</li><li>Fulcro della comunicazione tra tutti i reparti</li><li>Conoscenza perfetta della struttura e delle camere</li><li>Conoscenza del territorio per consigliare al meglio gli ospiti</li></ul></div>
+    <div class="card"><h3>Attività principali</h3>
+      <ul><li>Gestione personalizzata di ogni prenotazione</li><li>Check-in / liste arrivi e check-out</li><li>Conti e prenotazioni multiple</li><li>Cambi camera</li><li>Gestione lamentele e problemi</li><li>Lista pulizie e comunicazione con i piani</li><li>Comunicazione con il ristorante e prenotazioni Ristorante L’Onda</li><li>Gestione cassa e vendita al banco</li><li>Wellness, richieste clienti, concierge e personal help</li><li>Wishbox e WhatsApp</li><li>Recensioni e gestione OTA</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ ORARI ============ -->
+<section class="sec" id="orari">
+  <header><h2>Orari di riferimento</h2></header>
+  <div class="scroll blk"><table>
+    <thead><tr><th>Servizio</th><th>Orario</th></tr></thead>
+    <tbody>
+    <tr><td>Reception</td><td class="n">08:00 – 23:00</td></tr>
+    <tr><td>Colazione</td><td class="n">08:00 – 10:30</td></tr>
+    <tr><td>Pranzo</td><td class="n">12:00 – 15:00</td></tr>
+    <tr><td>Cena</td><td><span class="n">19:00 – 21:15</span> (ultima prenotazione 21:00, ultimo ordine 21:15)</td></tr>
+    <tr><td>Pulizie camere</td><td class="n">09:00 – 14:00</td></tr>
+    <tr><td>Check-in</td><td>Dalle <b>14:00</b>. Flessibile se la camera è pronta, comunque non prima delle 12:30</td></tr>
+    <tr><td>Check-out</td><td><b>10:30</b>. Flessibile fino alle 11:00. Late check-out a pagamento fino alle 12:30</td></tr>
+    <tr><td>Area relax</td><td class="n">09:00 – 23:00</td></tr>
+    <tr><td>Sauna</td><td>09:00 – 23:00, solo su prenotazione</td></tr>
+    <tr><td>Vasche idromassaggio</td><td>09:00 – 23:00, solo adulti. Vasca bambini dedicata</td></tr>
+    </tbody></table></div>
+  <div class="card"><p>Gli asciugamani per l’area wellness vengono consegnati dalla reception su richiesta del cliente, <b>uno a persona</b>. Le richieste di massaggio vanno raccolte e gestite come da procedura interna.</p></div>
+</section>
+
+<!-- ============ ROUTINE ============ -->
+<section class="sec" id="routine">
+  <header><h2>Routine giornaliera</h2><p class="lead">Scegli il turno. Le spunte restano solo su questo dispositivo e si azzerano ogni giorno.</p></header>
+  <div class="tools">
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" data-p="mattina" aria-selected="false">Mattina<small>7:30</small></button>
+      <button class="tab" role="tab" data-p="pomeriggio" aria-selected="false">Pomeriggio</button>
+      <button class="tab" role="tab" data-p="sera" aria-selected="false">Sera<small>fino alle 23:00</small></button>
+      <button class="tab" role="tab" data-p="notte" aria-selected="false">Notte<small>24:00</small></button>
+    </div>
+    <button class="btn" id="reset" type="button">Azzera le spunte</button>
+  </div>
+
+  <!-- MATTINA -->
+  <div class="panel stack" data-panel="mattina" role="tabpanel">
+    <div class="g2">
+      <div class="card"><h3><span class="tag">Prima di tutto</span>Apertura</h3>
+        <ul class="chk">
+          <li>Accendere le luci di reception/bar e le vetrine già dalle <b>7:30</b></li>
+          <li>Accendere la TV per creare un ambiente accogliente</li>
+          <li>Aprire il cancello verso la spiaggia</li>
+          <li>Lasciare aperta la porta d’ingresso; la porta scorrevole deve restare chiusa</li>
+          <li>Accendere la musica SwissJazz alle <b>08:00</b>, con la guida musicale preimpostata</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Subito dopo</span>Controlli preliminari</h3>
+        <ul class="chk">
+          <li><b>Chiusura fiscale</b> prima di qualsiasi altra attività</li>
+          <li>Chiudere la cassa bar e controllare il fondo cassa (versamento)</li>
+          <li>Controllare che terrazza e tende siano in ordine</li>
+          <li>Controllare le chiamate perse sul telefono dell’hotel e richiamare <span class="badge">Nuovo</span></li>
+          <li>Inviare alla Polizia le schedine alloggiati del giorno prima e archiviare la ricevuta (<a href="#questura">procedura</a>) <span class="badge">Nuovo</span></li>
+        </ul></div>
+      <div class="card" id="mattina-camere"><h3><span class="tag">Responsabile di reception</span>Piano camere <span class="badge">Nuovo</span></h3>
+        <ul class="chk">
+          <li>Aprire il planner e guardare le camere della giornata</li>
+          <li>Upgrade possibili con le camere libere</li>
+          <li>Spostare i clienti dalle camere piccole se ce ne sono di libere nella stessa categoria</li>
+          <li>Se c’è poco da fare, controllare anche i giorni seguenti</li>
+        </ul>
+        <p class="hint">Dettagli nella sezione <a href="#camere">Piano camere</a>.</p></div>
+      <div class="card"><h3><span class="tag">Arrivi di oggi</span>Check-in della giornata <span class="badge">Nuovo</span></h3>
+        <ul class="chk">
+          <li>Controllare i check-in della giornata, prenotazione per prenotazione</li>
+          <li>Desideri dei clienti in arrivo, o particolarità che ci ricordiamo di loro</li>
+          <li>Controllare eventuali richieste arrivate su Reguest</li>
+          <li>Controllare eventuali cambi camera: clienti in camere piccole o altro</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Nuove prenotazioni</span>Desideri dei clienti <span class="badge">Nuovo</span></h3>
+        <ul class="chk">
+          <li>Per ogni prenotazione arrivata dal sito, scrivere la frase “avete dei desideri?”</li>
+        </ul>
+        <p class="hint">Testi pronti nella sezione <a href="#desideri">Messaggio desideri</a>.</p></div>
+      <div class="card"><h3><span class="tag">Partenze</span>Preparazione check-out</h3>
+        <ul class="chk">
+          <li>Preparare i pre-conti dei clienti in partenza</li>
+          <li>Addebitare la VirtualCard per gli arrivi del giorno</li>
+          <li>Controllare i quaderni delle pulizie e comunicare con il team ai piani; consegnare alle cameriere box, avvisi, buoni o cartoline per i clienti</li>
+          <li>Verificare le liste arrivi/partenze su Reguest e SimpleBooking: clienti fidelity, servizi extra, voucher, BauBox, Kid’s Box, Loyalty</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Richieste</span>Servizi extra e corrispondenza</h3>
+        <ul class="chk">
+          <li>Verificare i servizi extra su Reguest (alcuni vanno confermati a mano). I compleanni si vedono appena aperta la sezione 5Stelle</li>
+          <li>Controllare le richieste speciali (fiori, cuscini extra, bottiglie, BauBox, regalini bambini) e assicurarsi che siano soddisfatte</li>
+          <li>Controllare la corrispondenza su Reguest, WhatsApp, Email, Booking.com ed Expedia</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Ore 11:00</span>Passaggio di consegne</h3>
+        <ul class="chk">
+          <li>Chiudere sempre la sbarra d’ingresso</li>
+          <li>Creare le chiavi per gli arrivi successivi alle 11:00 (istruzioni sotto il PC)</li>
+          <li>Reset dell’aria condizionata: <b>21°C</b> in inverno, <b>23°C</b> in estate</li>
+          <li>Passare al collega tutte le informazioni e gli aggiornamenti necessari</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Dopo le partenze</span>Controllo pulizie e addebiti</h3>
+        <ul class="chk">
+          <li>Verificare con Simone e Giada che le stanze siano pulite e in ordine</li>
+          <li>Rimuovere gli addebiti extra dalle camere dei clienti già partiti</li>
+          <li>Verificare sul sistema Plateform le prenotazioni del ristorante per la giornata</li>
+        </ul></div>
+    </div>
+    <div class="note tip"><span class="lab">Concierge, sempre</span><span>Offri il massimo supporto per ogni richiesta: prenotazioni, suggerimenti su attività locali, assistenza generale.</span></div>
+  </div>
+
+  <!-- POMERIGGIO -->
+  <div class="panel stack" data-panel="pomeriggio" role="tabpanel" hidden>
+    <div class="g2">
+      <div class="card"><h3><span class="tag">Domani</span>Controllo arrivi e partenze</h3>
+        <ul class="chk">
+          <li>Controllo arrivi del giorno seguente, prenotazione per prenotazione, su SimpleBooking e Reguest</li>
+          <li>Controllo giornaliero ISTAT: camere in partenza, prezzi e addebiti</li>
+          <li>Nuove prenotazioni dal sito: inviare il messaggio desideri <span class="badge">Nuovo</span></li>
+          <li>Chiamate perse: richiamare <span class="badge">Nuovo</span></li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Contabilità</span>Ricevute fiscali e fatture</h3>
+        <ul class="chk">
+          <li>Verificare la numerazione delle ricevute fiscali del giorno precedente (+ ISTAT) e incrociarle con le partenze</li>
+          <li>Controllare in TS Digital che tutte le fatture siano state inviate, verificando che problemi di anagrafica non abbiano bloccato l’invio</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Prenotazioni</span>Servizi extra e upsell</h3>
+        <ul class="chk">
+          <li>Verificare i servizi extra nelle prenotazioni; aprire il “dettaglio conto” per un controllo preciso e leggere le email per letti aggiuntivi, bambini o cani</li>
+          <li>Segnare i clienti fidelity (vecchi clienti) con due asterischi (**) sul dettaglio della prenotazione</li>
+          <li>Controllare le email 2025 e 2026 dei clienti in arrivo, per desideri o particolarità. Abbiamo 39 camere: possiamo fare un servizio davvero personalizzato <span class="badge">Nuovo</span></li>
+          <li>Rimuovere gli addebiti dalle camere già partite, se non fatto al mattino</li>
+          <li>Verificare servizi extra e upsell su Reguest e SimpleBooking</li>
+          <li>Controllare la corrispondenza su Reguest, Wishbox, WhatsApp, Email, Booking.com ed Expedia</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Online</span>Gestione recensioni</h3>
+        <ul class="chk">
+          <li>Controllare le recensioni su Booking.com, Expedia, Google, Tripadvisor e HolidayCheck</li>
+          <li>Rispondere dove necessario, con cortesia e professionalità</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Giro della struttura</span>Controlli vari</h3>
+        <ul class="chk">
+          <li>Alle <b>15:00</b> controllare la zona wellness e rifornire gli asciugamani</li>
+          <li>Controllare il Bike Garage e l’ordine delle biciclette dietro la reception</li>
+          <li>Controllare lo stato del giardino</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Prima di chiudere il pomeriggio</span>Inserimenti e diario</h3>
+        <ul class="chk">
+          <li>Inserire i buoni camere in 5Stelle</li>
+          <li>Inserimenti nel diario: si scrive tutto quello che accade, tutti dobbiamo essere aggiornati</li>
+          <li>Su Slack solo le cose importanti, che tutti devono sapere subito (usarlo con attenzione)</li>
+          <li>Incrociare le anagrafiche dei clienti in arrivo e verificare le email su 5Stelle rispetto a quelle inserite in Reguest, per un database aggiornato ai fini newsletter</li>
+        </ul></div>
+    </div>
+    <div class="note tip"><span class="lab">Concierge, sempre</span><span>Gestisci richieste e necessità dei clienti con la massima disponibilità, anticipando le esigenze e proponendo servizi personalizzati.</span></div>
+  </div>
+
+  <!-- SERA -->
+  <div class="panel stack" data-panel="sera" role="tabpanel" hidden>
+    <div class="g2">
+      <div class="card"><h3><span class="tag">Domani mattina</span>Check-out del giorno seguente</h3>
+        <ul class="chk">
+          <li>Controllare i prezzi via email o SimpleBooking e verificare servizi extra/addebiti su Reguest</li>
+          <li>Fare questo controllo la sera prima evita discussioni o problemi al check-out</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Domani pomeriggio</span>Arrivi del giorno successivo</h3>
+        <ul class="chk">
+          <li>Verificare note speciali (letti aggiuntivi, cani, richieste, cambi camera) e lo storico clienti su 5Stelle ed email</li>
+          <li>Controllare le Virtual Card degli arrivi del giorno seguente (non si stampano più: siamo paper free)</li>
+          <li>Annotare le informazioni rilevanti sul foglio arrivi e le note per le pulizie</li>
+          <li>Controllo prenotazioni e ISTAT</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Stampe</span>Liste e comunicazioni</h3>
+        <ul class="chk">
+          <li>Stampare la lista di arrivi, partenze e fermi del giorno seguente con tutte le note particolari</li>
+          <li>Segnare con un asterisco (*) i vecchi clienti per velocizzare il check-in; aggiungere note su letti extra, cani, clienti loyalty</li>
+          <li>Inviare un messaggio nel canale Slack “Team Baia” con partenze, arrivi e fermi del giorno seguente</li>
+          <li>Chiamate perse: richiamare <span class="badge">Nuovo</span></li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Per le ragazze ai piani</span>Liste pulizie</h3>
+        <ul class="chk">
+          <li>Riportare tutte le informazioni sulle liste di pulizia, distribuite correttamente tra i vari piani</li>
+          <li>Stampare partenze, fermi e arrivi per ogni piano, con le liste di pulizia allegate</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Durante la serata</span>Aiuto al bar <span class="badge">Nuovo</span></h3>
+        <ul class="chk">
+          <li>Dare aiuto e supporto al bar, specialmente in bassa stagione</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Prima delle 23:00</span>Controlli e preparazioni</h3>
+        <ul class="chk">
+          <li>Verificare Bike Garage, Surf Garage e giardino</li>
+          <li>Segnare a mano gli addebiti al bar in 5Stelle</li>
+          <li>Scrivere un post-it con il numero totale di persone a colazione e le indicazioni sui tavoli (es. 2x, 3x)</li>
+          <li>Controllare lo stato e l’utilizzo della vasca idromassaggio</li>
+        </ul></div>
+      <div class="card"><h3><span class="tag">Ore 23:00</span>Contabilità e chiusura cassa</h3>
+        <ul class="chk">
+          <li>Contabilità e chiusura della cassa bar e reception alle 23:00, seguendo le istruzioni nella sezione <a href="#cassa">Cassa e contabilità</a></li>
+        </ul></div>
+    </div>
+  </div>
+
+  <!-- NOTTE -->
+  <div class="panel stack" data-panel="notte" role="tabpanel" hidden>
+    <div class="card"><h3><span class="tag">Turno notte · 24:00</span>Chiusura della struttura</h3>
+      <ul class="chk">
+        <li>Coprire i divani</li>
+        <li>Tirare su i materassi delle sdraio davanti al bar</li>
+        <li>Riporre candeline e menu dai tavoli</li>
+        <li>Portare dentro la barca e i cartelli dalla spiaggia</li>
+        <li>Chiudere la cassa BAR</li>
+        <li>Chiudere tutte le porte, chiudere a chiave la porta dell’ufficio, controllare la chiusura di lavanderia e cucina</li>
+        <li>Spegnere tutte le luci, lasciando solo il corridoio e la lampada vicino al divano (le luci esterne hanno il timer)</li>
+        <li>Chiudere la porta d’entrata scorrevole e il cancello esterno all’uscita</li>
+      </ul></div>
+  </div>
+</section>
+
+<!-- ============ TELEFONO ============ -->
+<section class="sec" id="telefono">
+  <header><h2>Telefono <span class="badge">Nuovo</span></h2><p class="lead">La voce è il primo contatto con l’hotel. Poche regole, sempre uguali.</p></header>
+  <div class="g2">
+    <div class="card"><h3>Come si risponde</h3>
+      <div class="say"><span class="lab">Dì così</span><div class="row"><q>Buongiorno, Hotel Baia Azzurra.</q><button class="copy" type="button" data-copy="Buongiorno, Hotel Baia Azzurra.">Copia</button></div></div>
+      <p>Semplice e diretto. Poi ascolta e aiuta.</p></div>
+    <div class="card"><h3>Chiamate perse</h3>
+      <div class="note warn"><span class="lab">Attenzione</span><span>Se sul telefono dell’hotel c’è una chiamata persa, <b>richiama sempre il numero</b>.</span></div>
+      <p>Guarda il telefono a inizio turno e ogni volta che hai finito un’attività lunga.</p></div>
+  </div>
+  <div class="card"><h3>Prenotazioni per telefono</h3>
+    <p>Presentazione, disponibilità e gentilezza sono fondamentali. Le prenotazioni telefoniche non si confermano al telefono: si può bloccare la camera, ma la conferma avviene con l’inserimento su SimpleBooking (su 5Stelle solo se complicata). Regole complete nella sezione <a href="#prenotazioni">Prenotazioni</a>.</p></div>
+</section>
+
+<!-- ============ CHECK-IN ============ -->
+<section class="sec" id="checkin">
+  <header><h2>Check-in <span class="badge">Nuovo</span></h2><p class="lead">Un percorso in otto passi. Il tono è quello di una casa che aspetta gli ospiti, non di una procedura.</p></header>
+  <div class="card"><h3>Prima che arrivino</h3>
+    <ul class="chk">
+      <li>La camera è pronta e in ordine</li>
+      <li>Cambi camera, upgrade e note speciali sono scritti sul foglio arrivi</li>
+      <li>Le chiavi sono già create</li>
+      <li>Gift box (bambini) e BauBox (cani) sono preparati</li>
+    </ul></div>
+
+  <ol class="flow">
+    <li><div class="step"><h3>Accoglienza</h3>
+      <div class="say"><span class="lab">Dì così</span><q>Buongiorno, benvenuti! Avete fatto un buon viaggio?</q></div>
+      <div class="say"><span class="lab">Poi</span><q>Vi serve aiuto con le valigie?</q></div>
+      <div class="say"><span class="lab">Parcheggio</span><q>Avete già parcheggiato l’auto? Posso aiutarvi?</q></div>
+      <p class="hint">Il parcheggio privato è disponibile per le camere 304, 308 e 309.</p></div></li>
+
+    <li><div class="step"><h3>Chi sono? Nuovo o loyalty</h3>
+      <p>Controlla se il cliente è nuovo o loyalty. Ai clienti loyalty riserva un’accoglienza speciale.</p>
+      <div class="say"><span class="lab">Cliente loyalty</span><q>Benvenuti di nuovo, è un piacere rivedervi!</q></div></div></li>
+
+    <li><div class="step"><h3>Documenti e registrazione</h3>
+      <ul><li>Procedi subito con la registrazione del cliente</li><li><b>I documenti non si trattengono</b>: si restituiscono subito. Non si fanno fotocopie</li></ul></div></li>
+
+    <li><div class="step"><h3>Camera e Welcome Card</h3>
+      <ul class="chk">
+        <li>Numero camera, piano, ascensore, funzionamento di chiave e porte</li>
+        <li>Eventuali cambi di camera già programmati (vanno scritti anche sulla Welcome Card)</li>
+        <li>Orari della colazione e disponibilità del ristorante a pranzo e cena</li>
+        <li>Garage biciclette e servizi aggiuntivi: giardino, sauna, idromassaggio</li>
+        <li>Dove si trovano gli asciugamani per il giardino</li>
+        <li>Per il servizio bar si firmano i buoni</li>
+      </ul></div></li>
+
+    <li><div class="step"><h3>Menu cuscini <span class="badge">Nuovo</span></h3>
+      <p>Abbiamo un menu cuscini. Accennalo in una frase, senza insistere: non tutti i clienti hanno voglia di ascoltarci dopo il viaggio.</p>
+      <div class="say"><span class="lab">Proposta</span><div class="row"><q>Se vi fa piacere, abbiamo anche un menu cuscini: ve lo lascio in camera?</q><button class="copy" type="button" data-copy="Se vi fa piacere, abbiamo anche un menu cuscini: ve lo lascio in camera?">Copia</button></div></div></div></li>
+
+    <li><div class="step"><h3>Box di benvenuto</h3>
+      <ul><li><b>GiftBox</b> per i bambini, da consegnare al check-in</li><li><b>BauBox</b> per gli ospiti con cane: si prepara direttamente in camera</li></ul></div></li>
+
+    <li><div class="step"><h3>Welcome Card e Area Clienti Reguest</h3>
+      <div class="say"><span class="lab">Dì così</span><q>La Welcome Card contiene tutte le informazioni utili per il soggiorno. Avete inoltre accesso all’Area Clienti Reguest, dove potete vedere informazioni aggiornate, servizi e richieste direttamente dal vostro dispositivo.</q></div></div></li>
+
+    <li><div class="step"><h3>Chiusura</h3>
+      <div class="say"><span class="lab">Dì così</span><q>Posso aiutarvi con le valigie? Vi auguro una splendida vacanza, siamo sempre disponibili per qualsiasi domanda.</q></div></div></li>
+  </ol>
+
+  <div class="note tip"><span class="lab">Il principio</span><span>La reception è il punto di riferimento dove il cliente può rivolgersi per domande, problemi e altro. Sii sempre disponibile, pronto ad ascoltare e ad offrire il miglior supporto possibile.</span></div>
+</section>
+
+<!-- ============ CHECK-OUT ============ -->
+<section class="sec" id="checkout">
+  <header><h2>Check-out</h2></header>
+  <div class="g2">
+    <div class="card"><h3>Accoglienza e saluto</h3>
+      <div class="say"><span class="lab">Dì così</span><q>Buongiorno! Posso avere il numero della vostra camera?</q></div>
+      <div class="say"><span class="lab">Poi</span><q>Come è andato il vostro soggiorno? Tutto bene?</q></div>
+      <p>Accogli le critiche con un sorriso, come spunto di miglioramento.</p>
+      <div class="say"><span class="lab">Se ci sono critiche</span><q>Le critiche sono sempre costruttive, ci aiutano a migliorare ulteriormente.</q></div>
+      <div class="note warn"><span class="lab">Attenzione</span><span>Se il cliente è molto scontento, la direzione autorizza uno sconto del <b>10%</b>, solo in caso di reale insoddisfazione.</span></div></div>
+    <div class="card"><h3>Presentazione del conto <span class="badge">Nuovo</span></h3>
+      <p>Il conto si presenta sul <b>tablet</b> e poi si <b>invia al cliente via email</b>.</p>
+      <div class="say"><span class="lab">Dì così</span><q>Ecco il conto con le date del soggiorno e il prezzo, per favore controllate gli eventuali extra. Ve lo mando anche via email.</q></div>
+      <div class="note crit"><span class="lab">Importantissimo: l’email</span><span>Avere l’email dei clienti è fondamentale, soprattutto di chi arriva dalle OTA. Se non l’hai chiesta al check-in, il conto è un’altra occasione: chiedila per inviarglielo.</span></div>
+      <div class="say"><span class="lab">Cliente OTA senza email</span><q>A che indirizzo email preferite ricevere il conto?</q></div>
+      <p>Se ci sono errori sugli extra, scusati e verifica insieme al cliente i buoni firmati.</p>
+      <div class="say"><span class="lab">Se contesta</span><q>Mi scuso per l’inconveniente, verifichiamo insieme i buoni firmati.</q></div>
+      <p>Se l’errore è confermato, correggi il conto senza discussioni e rimandalo.</p></div>
+  </div>
+  <details class="blk" open><summary>Modalità di pagamento</summary><div class="in"><ul>
+    <li><b>Expedia/Booking:</b> la Virtual Card copre solo tassa di soggiorno ed extra. L’addebito camera avviene già al check-in e non compare nel conto</li>
+    <li>Tutte le carte di credito sono accettate (AMEX funziona solo con il POS vecchio)</li>
+    <li>Non è possibile aggiungere la mancia sulla carta di credito</li>
+    <li>Il totale della carta di credito deve corrispondere <b>esattamente</b> al totale della ricevuta fiscale</li>
+    <li>Il bonifico bancario è accettato solo per clienti ben conosciuti (nessun assegno o altra forma di pagamento)</li>
+    <li>Il pagamento in contanti va segnato come “Simon”</li></ul></div></details>
+  <details class="blk"><summary>Ricevuta fiscale</summary><div class="in"><ul>
+    <li>Stampa sempre la ricevuta fiscale subito dopo il pagamento</li>
+    <li>Non è necessario consegnarla ai clienti internazionali; va sempre consegnata ai clienti italiani</li>
+    <li>Le copie non consegnate vanno archiviate nel quaderno sotto il banco</li>
+    <li>In caso di errore: fai una Nota di Credito e ristampa la ricevuta corretta</li></ul></div></details>
+  <details class="blk"><summary>Fatture</summary><div class="in"><ul>
+    <li>Devono essere richieste dal cliente <b>prima</b> dell’emissione della ricevuta fiscale: non si può fatturare dopo aver già emesso la ricevuta</li>
+    <li>Verifica sempre se l’anagrafica del cliente è già presente prima di emettere la fattura</li>
+    <li>Non esistono fatture per clienti esteri: si stampa una ricevuta fiscale cambiando solo l’intestazione</li>
+    <li>Per prenotazioni Booking/Expedia con Virtual Card non possiamo emettere fattura: il cliente deve richiederla direttamente al portale</li></ul></div></details>
+  <div class="card blk"><h3>Dopo il check-out</h3><ul>
+    <li>I clienti possono usare parcheggio e giardino per tutta la giornata</li>
+    <li>Possono fare la doccia nel Bike 3, se necessario</li></ul></div>
+</section>
+
+<!-- ============ PIANO CAMERE ============ -->
+<section class="sec" id="camere">
+  <header><h2>Piano camere <span class="badge">Nuovo</span></h2><p class="lead">La responsabile di reception è anche la responsabile del piano camere. Il piano è il lavoro che fa la differenza prima che il cliente arrivi.</p></header>
+  <div class="g2">
+    <div class="card"><h3><span class="tag">Ogni mattina</span>Controllo del piano camere</h3>
+      <ul class="chk">
+        <li>Guarda il planner per la giornata</li>
+        <li><b>Upgrade</b>: se ci sono camere disponibili, valuta un upgrade per i clienti in arrivo</li>
+        <li><b>Camere piccole</b>: se un cliente è in una camera piccola e ce ne sono altre libere nella stessa categoria, spostalo</li>
+        <li>Se non sei sicura che tutto sia caricato bene: tasto destro → “Ricarica planner”</li>
+      </ul></div>
+    <div class="card"><h3><span class="tag">Quando c’è poco da fare</span>Guarda avanti</h3>
+      <p>Nei momenti tranquilli controlla anche il piano dei <b>giorni seguenti</b>: più si sistema in anticipo, meno si corre il giorno dell’arrivo.</p></div>
+  </div>
+  <div class="note crit"><span class="lab">Regola critica</span><span>Ogni spostamento o upgrade va comunicato al cliente al check-in, scritto sulla Welcome Card e annotato nel campo NOTE. In caso di dubbio, lascia l’avviso in camera la sera prima, verso l’ora di cena.</span></div>
+  <p class="hint">Descrizione di ogni camera e piante dei piani: <a href="#mappa">Mappa camere</a>.</p>
+  <p class="hint">Come dividere una prenotazione per spostare il cliente: vedi <a href="#divisione">Divisione di una prenotazione</a>. Le categorie si prenotano per categoria e non per numero: eccezioni in <a href="#tipologia">Regole generali</a>.</p>
+</section>
+
+<!-- ============ MAPPA CAMERE ============ -->
+<section class="sec" id="mappa">
+  <header><h2>Mappa camere <span class="badge">Nuovo</span></h2><p class="lead">Le piante dei tre piani in versione schematica, con la descrizione di ogni camera. Tocca una camera sulla mappa per leggerne la scheda.</p></header>
+  <div class="note tip"><span class="lab">Come leggere la mappa</span><span>In alto il lato nord, in basso il lato lago; a sinistra la testata verso il camping. <b>S</b> = preferire per singola · <b>3L / 4L</b> = fino a 3 o 4 letti · <b>♿</b> = camera per disabili · <b>P</b> = parcheggio privato. Nella tabella cartacea le camere lato lago sono in azzurro, le Baia Family in arancione.</span></div>
+  <div class="tabs" role="tablist" id="ftabs"><button class="ftab" type="button" data-f="1" aria-selected="true">1° piano</button><button class="ftab" type="button" data-f="2" aria-selected="false">2° piano</button><button class="ftab" type="button" data-f="3" aria-selected="false">3° piano</button></div>
+  <div class="fpanel stack" data-fp="1"><div class="scroll fscroll"><div class="fmap"><div class="fcol"><div class="frow"><span class="fside">Nord</span><button type="button" class="rm" style="--c:#3E9C8C" data-room="103" aria-label="Camera 103, Peler"><b>103</b><small>Peler</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="102" aria-label="Camera 102, Aurora"><b>102</b><small>Aurora</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="101" aria-label="Camera 101, Aurora"><b>101</b><small>Aurora</small><span class="ic">S</span></button><div class="rm serv" aria-hidden="true">scale<br>ascensore</div><button type="button" class="rm" style="--c:#3E9C8C" data-room="114" aria-label="Camera 114, Peler"><b>114</b><small>Peler</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="112" aria-label="Camera 112, Aurora"><b>112</b><small>Aurora</small></button></div><div class="corr"><span>← lato camping</span><span>corridoio</span><span></span></div><div class="frow"><span class="fside">Lago</span><button type="button" class="rm" style="--c:#2F86B8" data-room="104" aria-label="Camera 104, Baia"><b>104</b><small>Baia</small></button><button type="button" class="rm" style="--c:#C08A2E" data-room="105" aria-label="Camera 105, Ponale"><b>105</b><small>Ponale</small><span class="ic">4L</span></button><button type="button" class="rm" style="--c:#C8613A" data-room="106" aria-label="Camera 106, Ora Design"><b>106</b><small>Ora Design</small></button><button type="button" class="rm" style="--c:#C8613A" data-room="107" aria-label="Camera 107, Ora Design"><b>107</b><small>Ora Design</small></button><button type="button" class="rm" style="--c:#C08A2E" data-room="108" aria-label="Camera 108, Ponale"><b>108</b><small>Ponale</small><span class="ic">4L</span></button><button type="button" class="rm" style="--c:#2F86B8" data-room="109" aria-label="Camera 109, Baia"><b>109</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="110" aria-label="Camera 110, Baia tripla"><b>110</b><small>Baia tripla</small><span class="ic">3L</span></button></div></div><div class="testa"><button type="button" class="rm" style="--c:#B5557A" data-room="111" aria-label="Camera 111, Baia Family"><b>111</b><small>Baia Family</small><span class="ic">4L</span></button></div></div></div><div class="g3"><div class="card rcard" id="r103" style="--c:#3E9C8C"><h3><span class="tag">1° piano · lato nord</span>Camera 103 · Peler</h3><p>Vasca interna, vista verso il camping, terrazzo grande.</p><div class="chips"><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r102" style="--c:#6E8FB5"><h3><span class="tag">1° piano · lato nord</span>Camera 102 · Aurora</h3><p>Terrazzo grande.</p></div><div class="card rcard" id="r101" style="--c:#6E8FB5"><h3><span class="tag">1° piano · lato nord</span>Camera 101 · Aurora</h3><p>Terrazzo grande. È la prima scelta per le singole.</p><div class="chips"><span class="chip">Singola</span></div></div><div class="card rcard" id="r114" style="--c:#3E9C8C"><h3><span class="tag">1° piano · lato nord</span>Camera 114 · Peler</h3><p>Vasca interna, camera grande.</p><div class="chips"><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r112" style="--c:#6E8FB5"><h3><span class="tag">1° piano · lato nord</span>Camera 112 · Aurora</h3><p>Volendo si arriva a 3 letti, ma stretti.</p></div><div class="card rcard" id="r111" style="--c:#B5557A"><h3><span class="tag">1° piano · testata</span>Camera 111 · Baia Family</h3><p>Letto a castello, vista lago parziale. Fino a 4 persone.</p><div class="chips"><span class="chip">fino a 4 letti</span><span class="chip">Letto a castello</span></div></div><div class="card rcard" id="r104" style="--c:#2F86B8"><h3><span class="tag">1° piano · lato lago</span>Camera 104 · Baia</h3><p>Letto a baldacchino.</p></div><div class="card rcard" id="r105" style="--c:#C08A2E"><h3><span class="tag">1° piano · lato lago</span>Camera 105 · Ponale</h3><p>Vasca interna in camera. Fino a 4 letti.</p><div class="chips"><span class="chip">fino a 4 letti</span><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r106" style="--c:#C8613A"><h3><span class="tag">1° piano · lato lago</span>Camera 106 · Ora Design</h3><p>Vasca esterna in terrazzo, bagno in vetro.</p><div class="chips"><span class="chip">Vasca in terrazzo</span><span class="chip">Bagno in vetro</span></div></div><div class="card rcard" id="r107" style="--c:#C8613A"><h3><span class="tag">1° piano · lato lago</span>Camera 107 · Ora Design</h3><p>Vasca esterna in terrazzo, bagno in vetro.</p><div class="chips"><span class="chip">Vasca in terrazzo</span><span class="chip">Bagno in vetro</span></div></div><div class="card rcard" id="r108" style="--c:#C08A2E"><h3><span class="tag">1° piano · lato lago</span>Camera 108 · Ponale</h3><p>Vasca interna in camera. Fino a 4 letti.</p><div class="chips"><span class="chip">fino a 4 letti</span><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r109" style="--c:#2F86B8"><h3><span class="tag">1° piano · lato lago</span>Camera 109 · Baia</h3><p>Camera Baia lato lago, senza note particolari.</p></div><div class="card rcard" id="r110" style="--c:#2F86B8"><h3><span class="tag">1° piano · lato lago</span>Camera 110 · Baia tripla</h3><p>Tripla: fino a 3 letti.</p><div class="chips"><span class="chip">fino a 3 letti</span></div></div></div></div><div class="fpanel stack" data-fp="2" hidden><div class="scroll fscroll"><div class="fmap"><div class="fcol"><div class="frow"><span class="fside">Nord</span><button type="button" class="rm" style="--c:#3E9C8C" data-room="203" aria-label="Camera 203, Peler"><b>203</b><small>Peler</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="202" aria-label="Camera 202, Aurora"><b>202</b><small>Aurora</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="201" aria-label="Camera 201, Aurora"><b>201</b><small>Aurora</small><span class="ic">S</span></button><div class="rm serv" aria-hidden="true">scale<br>ascensore</div><button type="button" class="rm" style="--c:#3E9C8C" data-room="217" aria-label="Camera 217, Peler"><b>217</b><small>Peler</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="216" aria-label="Camera 216, Aurora"><b>216</b><small>Aurora</small></button></div><div class="corr"><span>← lato camping</span><span>corridoio</span><span></span></div><div class="frow"><span class="fside">Lago</span><button type="button" class="rm" style="--c:#7A6BC4" data-room="205" aria-label="Camera 205, Baia Design"><b>205</b><small>Baia Design</small></button><button type="button" class="rm" style="--c:#7A6BC4" data-room="206" aria-label="Camera 206, Baia Design"><b>206</b><small>Baia Design</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="207" aria-label="Camera 207, Baia"><b>207</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="208" aria-label="Camera 208, Baia"><b>208</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="209" aria-label="Camera 209, Baia"><b>209</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="210" aria-label="Camera 210, Baia"><b>210</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="211" aria-label="Camera 211, Baia"><b>211</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="212" aria-label="Camera 212, Baia"><b>212</b><small>Baia</small></button><button type="button" class="rm" style="--c:#2F86B8" data-room="214" aria-label="Camera 214, Baia tripla"><b>214</b><small>Baia tripla</small><span class="ic">3L</span></button></div></div><div class="testa"><button type="button" class="rm" style="--c:#B5557A" data-room="215" aria-label="Camera 215, Baia Family"><b>215</b><small>Baia Family</small><span class="ic">4L</span></button></div></div></div><div class="g3"><div class="card rcard" id="r203" style="--c:#3E9C8C"><h3><span class="tag">2° piano · lato nord</span>Camera 203 · Peler</h3><p>Vasca interna, vista verso il camping.</p><div class="chips"><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r202" style="--c:#6E8FB5"><h3><span class="tag">2° piano · lato nord</span>Camera 202 · Aurora</h3><p>Camera Aurora lato nord, senza note particolari.</p></div><div class="card rcard" id="r201" style="--c:#6E8FB5"><h3><span class="tag">2° piano · lato nord</span>Camera 201 · Aurora</h3><p>La prima scelta per le singole al 2° piano.</p><div class="chips"><span class="chip">Singola</span></div></div><div class="card rcard" id="r217" style="--c:#3E9C8C"><h3><span class="tag">2° piano · lato nord</span>Camera 217 · Peler</h3><p>Vasca interna, camera grande.</p><div class="chips"><span class="chip">Vasca interna</span></div></div><div class="card rcard" id="r216" style="--c:#6E8FB5"><h3><span class="tag">2° piano · lato nord</span>Camera 216 · Aurora</h3><p>Volendo si aggiungono letti, ma sono stretti.</p></div><div class="card rcard" id="r215" style="--c:#B5557A"><h3><span class="tag">2° piano · testata</span>Camera 215 · Baia Family</h3><p>Letto a castello, vista lago parziale. Fino a 4 persone.</p><div class="chips"><span class="chip">fino a 4 letti</span><span class="chip">Letto a castello</span></div></div><div class="card rcard" id="r205" style="--c:#7A6BC4"><h3><span class="tag">2° piano · lato lago</span>Camera 205 · Baia Design</h3><p>Letto a baldacchino, bagno vetrato.</p><div class="chips"><span class="chip">Bagno vetrato</span></div></div><div class="card rcard" id="r206" style="--c:#7A6BC4"><h3><span class="tag">2° piano · lato lago</span>Camera 206 · Baia Design</h3><p>Bagno vetrato, lavandino in camera.</p><div class="chips"><span class="chip">Bagno vetrato</span></div></div><div class="card rcard" id="r207" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 207 · Baia</h3><p>Piccola.</p><div class="chips"><span class="chip">Piccola</span></div></div><div class="card rcard" id="r208" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 208 · Baia</h3><p>Compare nella pianta ma non nella tabella camere: descrizione da completare.</p><div class="chips"><span class="chip">Da completare</span></div></div><div class="card rcard" id="r209" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 209 · Baia</h3><p>Bagno con finestra.</p></div><div class="card rcard" id="r210" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 210 · Baia</h3><p>Piccola.</p><div class="chips"><span class="chip">Piccola</span></div></div><div class="card rcard" id="r211" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 211 · Baia</h3><p>Piccola.</p><div class="chips"><span class="chip">Piccola</span></div></div><div class="card rcard" id="r212" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 212 · Baia</h3><p>Camera Baia lato lago, senza note particolari.</p></div><div class="card rcard" id="r214" style="--c:#2F86B8"><h3><span class="tag">2° piano · lato lago</span>Camera 214 · Baia tripla</h3><p>Abbastanza grande, fino a 3 letti.</p><div class="chips"><span class="chip">fino a 3 letti</span></div></div></div></div><div class="fpanel stack" data-fp="3" hidden><div class="scroll fscroll"><div class="fmap"><div class="fcol"><div class="frow"><span class="fside">Nord</span><button type="button" class="rm" style="--c:#8B4FA0" data-room="303" aria-label="Camera 303, North Signature Red"><b>303</b><small>North Signature Red</small><span class="ic">4L · ♿</span></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="302" aria-label="Camera 302, Aurora"><b>302</b><small>Aurora</small></button><button type="button" class="rm" style="--c:#6E8FB5" data-room="301" aria-label="Camera 301, Aurora"><b>301</b><small>Aurora</small></button><div class="rm serv" aria-hidden="true">scale<br>ascensore</div><button type="button" class="rm" style="--c:#8B4FA0" data-room="311" aria-label="Camera 311, North Signature Romantic"><b>311</b><small>North Signature Romantic</small><span class="ic">4L</span></button><button type="button" class="rm" style="--c:#8B4FA0" data-room="310" aria-label="Camera 310, North Signature Wellness"><b>310</b><small>North Signature Wellness</small></button></div><div class="corr"><span>← lato camping</span><span>corridoio</span><span></span></div><div class="frow"><span class="fside">Lago</span><button type="button" class="rm" style="--c:#2B6CB0" data-room="304" aria-label="Camera 304, Lake Superior Nature"><b>304</b><small>Lake Superior Nature</small><span class="ic">3L · P</span></button><button type="button" class="rm" style="--c:#1F9EA8" data-room="305" aria-label="Camera 305, Baia +"><b>305</b><small>Baia +</small></button><button type="button" class="rm" style="--c:#1F9EA8" data-room="306" aria-label="Camera 306, Baia +"><b>306</b><small>Baia +</small></button><button type="button" class="rm" style="--c:#1F9EA8" data-room="307" aria-label="Camera 307, Baia +"><b>307</b><small>Baia +</small></button><button type="button" class="rm" style="--c:#2B6CB0" data-room="308" aria-label="Camera 308, Lake Superior Deconstruct"><b>308</b><small>Lake Superior Deconstruct</small><span class="ic">P</span></button><button type="button" class="rm" style="--c:#2B6CB0" data-room="309" aria-label="Camera 309, Lake Superior Relax"><b>309</b><small>Lake Superior Relax</small><span class="ic">3L · P</span></button></div></div></div></div><div class="g3"><div class="card rcard" id="r303" style="--c:#8B4FA0"><h3><span class="tag">3° piano · lato nord</span>Camera 303 · North Signature Red</h3><p>La camera rossa. È la camera per disabili, accessibile in sedia a rotelle. Fino a 4 letti.</p><div class="chips"><span class="chip">fino a 4 letti</span><span class="chip">Disabili</span><span class="chip">Prenotabile a numero</span></div></div><div class="card rcard" id="r302" style="--c:#6E8FB5"><h3><span class="tag">3° piano · lato nord</span>Camera 302 · Aurora</h3><p>Camera Aurora lato nord, senza note particolari.</p></div><div class="card rcard" id="r301" style="--c:#6E8FB5"><h3><span class="tag">3° piano · lato nord</span>Camera 301 · Aurora</h3><p>Bagno con finestra.</p></div><div class="card rcard" id="r311" style="--c:#8B4FA0"><h3><span class="tag">3° piano · lato nord</span>Camera 311 · North Signature Romantic</h3><p>Fino a 4 letti.</p><div class="chips"><span class="chip">fino a 4 letti</span></div></div><div class="card rcard" id="r310" style="--c:#8B4FA0"><h3><span class="tag">3° piano · lato nord</span>Camera 310 · North Signature Wellness</h3><p>Vasca vetrata dietro il letto, doccia combo.</p><div class="chips"><span class="chip">Vasca vetrata</span></div></div><div class="card rcard" id="r304" style="--c:#2B6CB0"><h3><span class="tag">3° piano · lato lago</span>Camera 304 · Lake Superior Nature</h3><p>Doccia in camera e vasca in terrazzo. Fino a 3 letti.</p><div class="chips"><span class="chip">fino a 3 letti</span><span class="chip">Vasca in terrazzo</span><span class="chip">Parcheggio privato</span></div></div><div class="card rcard" id="r305" style="--c:#1F9EA8"><h3><span class="tag">3° piano · lato lago</span>Camera 305 · Baia +</h3><p>Doppia finestra.</p></div><div class="card rcard" id="r306" style="--c:#1F9EA8"><h3><span class="tag">3° piano · lato lago</span>Camera 306 · Baia +</h3><p>Finestra singola.</p></div><div class="card rcard" id="r307" style="--c:#1F9EA8"><h3><span class="tag">3° piano · lato lago</span>Camera 307 · Baia +</h3><p>Doppia finestra.</p></div><div class="card rcard" id="r308" style="--c:#2B6CB0"><h3><span class="tag">3° piano · lato lago</span>Camera 308 · Lake Superior Deconstruct</h3><p>La suite più piccola, con vasca in terrazzo.</p><div class="chips"><span class="chip">Vasca in terrazzo</span><span class="chip">Parcheggio privato</span></div></div><div class="card rcard" id="r309" style="--c:#2B6CB0"><h3><span class="tag">3° piano · lato lago</span>Camera 309 · Lake Superior Relax</h3><p>Vasca in terrazzo, possibile terzo letto.</p><div class="chips"><span class="chip">fino a 3 letti</span><span class="chip">Vasca in terrazzo</span><span class="chip">Parcheggio privato</span></div></div></div></div>
+  <details class="blk"><summary>Le categorie di camera</summary><div class="in"><div class="g2"><div class="card cat" style="--c:#6E8FB5"><h3><span class="tag">101, 102, 112, 201, 202, 216, 301, 302</span>Aurora</h3><p>Lato nord. Camere semplici e luminose; sono le uniche vendute online come singola (−10% dalla doppia).</p></div><div class="card cat" style="--c:#3E9C8C"><h3><span class="tag">103, 114, 203, 217</span>Peler</h3><p>Lato nord, in testata. Vasca interna in camera; le 103 e 203 guardano verso il camping.</p></div><div class="card cat" style="--c:#2F86B8"><h3><span class="tag">104, 109, 110, 207, 208, 209, 210, 211, 212, 214</span>Baia</h3><p>Lato lago. Le camere più diffuse: alcune piccole, alcune triple.</p></div><div class="card cat" style="--c:#7A6BC4"><h3><span class="tag">205, 206</span>Baia Design</h3><p>2° piano lato lago. Bagno vetrato. Esclusa dalla vendita OTA.</p></div><div class="card cat" style="--c:#C08A2E"><h3><span class="tag">105, 108</span>Ponale</h3><p>1° piano lato lago. Vasca interna, fino a 4 letti.</p></div><div class="card cat" style="--c:#C8613A"><h3><span class="tag">106, 107</span>Ora Design</h3><p>1° piano lato lago. Vasca esterna in terrazzo e bagno in vetro: dirlo sempre al cliente.</p></div><div class="card cat" style="--c:#B5557A"><h3><span class="tag">111, 215</span>Baia Family</h3><p>In testata. Letto a castello, vista lago parziale, fino a 4 letti. Esclusa dalla vendita OTA.</p></div><div class="card cat" style="--c:#1F9EA8"><h3><span class="tag">305, 306, 307</span>Baia +</h3><p>3° piano lato lago. Si distinguono per le finestre (doppia o singola).</p></div><div class="card cat" style="--c:#2B6CB0"><h3><span class="tag">304, 308, 309</span>Lake Superior</h3><p>Suite del 3° piano lato lago, con vasca in terrazzo e parcheggio privato. Il numero di camera si può confermare.</p></div><div class="card cat" style="--c:#8B4FA0"><h3><span class="tag">303, 310, 311</span>North Signature</h3><p>Suite del 3° piano lato nord, molto diverse tra loro: dire sempre quale è stata assegnata e mandare una foto. Esclusa dalla vendita OTA.</p></div></div>
+    <p class="hint">Si prenota per categoria, non per numero. Eccezioni: suite, camere a 4 letti e camera per disabili (vedi <a href="#tipologia">Regole generali</a>).</p></div></details>
+  <div class="card"><h3>Altre stanze</h3><ul>
+    <li><b>401 e 402</b>: camere dipendenti</li>
+    <li><b>B1</b>: emergenza</li>
+    <li><b>B2</b>: privata</li>
+    <li><b>B3</b>: stanza per il late check-out (anche per la doccia dopo il check-out)</li></ul></div>
+</section>
+
+<!-- ============ SISTEMI ============ -->
+<section class="sec" id="sistemi">
+  <header><h2>I sistemi <span class="badge">Nuovo</span></h2><p class="lead">Al centro c’è 5Stelle. Gli altri programmi gli girano intorno e si parlano tra loro.</p></header>
+  <div class="card hub"><h3><span class="tag">Il gestionale, al centro di tutto</span>5Stelle</h3><p>Planning camere, fatturazione, conti clienti, extra e gestione del minimo notti.</p></div>
+  <div class="g2">
+    <div class="card"><h3><span class="tag">Vendita</span>SimpleBooking</h3><ul>
+      <li><b>Booking engine del sito</b>: i clienti prenotano direttamente dal nostro sito. Offerte base: Long Stay, Early Booking, Last minute, Baia Loyalty program</li>
+      <li><b>Vendita OTA</b> (Booking.com, Expedia…): vede la disponibilità su 5Stelle e gestisce la vendita; sulle OTA i prezzi salgono automaticamente dell’8%</li>
+      <li><b>Converto, invio offerte</b>: il sistema per mandare le offerte a chi ci scrive. Alcune offerte restano via email: proposte con cambi camera o clienti storici che non vogliono perdere il rapporto umano</li>
+      <li><b>Servizi extra</b> prenotabili durante la prenotazione: cani di piccola e media taglia (prezzo extra), culle per bambini, donazioni</li></ul></div>
+    <div class="card"><h3><span class="tag">Ospite</span>Reguest</h3><ul>
+      <li><b>Guest area</b>: area personale creata con la prenotazione, accessibile con l’email senza login, con tutte le informazioni del soggiorno</li>
+      <li><b>Email automatiche</b>: manda la conferma quando la prenotazione viene creata su 5Stelle</li>
+      <li><b>Vendita servizi</b>: late check-out (da confermare), doccia prima della partenza (gratis), ricarica elettrica, fiori (da confermare), bottiglia di bollicine (da confermare). Tutti gli extra non venduti da SimpleBooking passano da Reguest</li>
+      <li><b>Recensioni interne</b>: chiede al cliente una recensione che resta interna. Quelle pubbliche sono su Booking.com, Expedia, Google e Tripadvisor</li></ul></div>
+    <div class="card"><h3><span class="tag">Prezzi</span>Smart Pricing</h3><p>Collegato a SimpleBooking e 5Stelle, muove i prezzi in base a vacanze, richiesta e altri fattori, e li manda ai due sistemi. I prezzi si caricano a inizio stagione e poi si controllano a mano.</p></div>
+    <div class="card"><h3><span class="tag">E poi</span>Gli altri strumenti</h3><ul>
+      <li>EV, ricarica auto elettriche</li><li>EatApp</li><li>TS Digital, fatture elettroniche</li><li>Garda Guestcard</li><li>PagoOnline Unicredit</li><li>Housekeeping</li><li>Spotify</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ PRENOTAZIONI ============ -->
+<section class="sec" id="prenotazioni">
+  <header><h2>Gestione delle prenotazioni</h2></header>
+  <div class="note crit"><span class="lab">Regola fondamentale</span><span>Le prenotazioni vanno inserite <b>sempre da SimpleBooking</b>. Direttamente in 5Stelle si inseriscono solo quelle complicate.</span></div>
+
+  <div class="card" id="desideri"><h3><span class="tag">Per ogni prenotazione dal sito</span>Messaggio desideri <span class="badge">Nuovo</span></h3>
+    <p>Appena arriva una prenotazione dal sito, scrivi una frase semplicissima per chiedere se il cliente ha desideri. È un vero gesto verso di lui. Se rispondono, annota il desiderio nel campo NOTE della prenotazione.</p>
+    <div class="say"><span class="lab">Italiano · proposta</span><div class="row"><q>Gentile [Nome], grazie per aver prenotato da noi! Se avete qualche desiderio per il vostro soggiorno, scriveteci pure: faremo il possibile. A presto, Hotel Baia Azzurra</q><button class="copy" type="button" data-copy="Gentile [Nome], grazie per aver prenotato da noi! Se avete qualche desiderio per il vostro soggiorno, scriveteci pure: faremo il possibile. A presto, Hotel Baia Azzurra">Copia</button></div></div>
+    <div class="say"><span class="lab">English · proposal</span><div class="row"><q>Dear [Name], thank you for booking with us! If you have any wishes for your stay, just let us know and we will do our best. See you soon, Hotel Baia Azzurra</q><button class="copy" type="button" data-copy="Dear [Name], thank you for booking with us! If you have any wishes for your stay, just let us know and we will do our best. See you soon, Hotel Baia Azzurra">Copy</button></div></div>
+    <div class="say"><span class="lab">Deutsch · Vorschlag</span><div class="row"><q>Guten Tag [Name], vielen Dank für Ihre Buchung! Wenn Sie besondere Wünsche für Ihren Aufenthalt haben, schreiben Sie uns gerne, wir tun unser Bestes. Bis bald, Hotel Baia Azzurra</q><button class="copy" type="button" data-copy="Guten Tag [Name], vielen Dank für Ihre Buchung! Wenn Sie besondere Wünsche für Ihren Aufenthalt haben, schreiben Sie uns gerne, wir tun unser Bestes. Bis bald, Hotel Baia Azzurra">Kopieren</button></div></div>
+  </div>
+
+  <details class="blk" open><summary>Canali e regole generali</summary><div class="in"><ul>
+    <li>Si inserisce tutto da SimpleBooking; solo le prenotazioni complicate (per esempio con cambi camera) vanno inserite direttamente in 5Stelle</li>
+    <li>Le prenotazioni si cancellano <b>nel canale da cui sono arrivate</b>: Booking → da Booking, sito → da SimpleBooking, manuali su 5Stelle → esclusivamente da 5Stelle</li>
+    <li>La sincronizzazione tra portali richiede fino a 5 minuti: se serve subito una camera non ancora cancellata, spostala in OVER e verrà annullata automaticamente</li>
+    <li>Nel cambio camera, lascia sempre l’avviso in camera la sera prima</li>
+    <li>Al check-in, le camere collegate di prenotazioni di gruppo vanno <b>scollegate</b>, altrimenti gli addebiti finiscono nel gruppo e non nella singola stanza</li>
+    <li>Prolungamento Booking/Expedia: se il cliente paga in hotel, applica il nostro prezzo per le notti extra e dividi la prenotazione; se paga con Virtual Card, dividi la prenotazione e fai pagare al check-out solo le notti extra</li>
+    <li>A fine turno, lascia sempre il resoconto della giornata</li></ul></div></details>
+
+  <details class="blk"><summary>Prenotazioni al banco, dirette e telefoniche</summary><div class="in">
+    <p>Presentazione, disponibilità e gentilezza sono fondamentali. Le prenotazioni telefoniche non si confermano al telefono: si può bloccare la camera, ma la conferma avviene con l’inserimento su SimpleBooking (su 5Stelle solo se complicata).</p>
+    <h4>Dati indispensabili</h4>
+    <ul><li>Nome e cognome (fatteli scrivere bene)</li><li>Email (per attivare la Guest Area Reguest)</li><li>Numero di cellulare (per eventuali emergenze)</li></ul>
+    <p>Inserisci subito la prenotazione su SimpleBooking: il cliente riceve la conferma automatica da Reguest e accede alla Guest Area.</p></div></details>
+
+  <details class="blk"><summary>Walk-in (passanti)</summary><div class="in"><ul>
+    <li>Accompagna sempre il cliente a vedere la stanza</li>
+    <li>Richiedi la carta di credito; il saldo avviene all’arrivo</li>
+    <li>Extra e tassa di soggiorno si pagano alla fine</li>
+    <li>Salva la carta nel dettaglio conto</li>
+    <li>Chiedi l’email per l’invito alla Guest Area Reguest</li></ul></div></details>
+
+  <details class="blk"><summary>Prenotazioni via email e preventivi</summary><div class="in">
+    <p>Per alcuni vecchi clienti il rapporto costruito via email è fondamentale, quindi in certi casi è preferibile non usare SimpleBooking direttamente. Lo stesso vale per cambi camera o proposte complesse. Nelle Note in Mail c’è un format standard per le offerte via email. Chiedi sempre una carta di credito.</p>
+    <p>Anche le prenotazioni arrivate via email, WhatsApp o telefono si inseriscono da SimpleBooking. Direttamente in 5Stelle solo quelle complicate.</p>
+    <h4>Quando privilegiare l’email</h4>
+    <ul><li>Prenotazioni complicate</li><li>Prenotazioni con cambi camera</li><li>Vecchi clienti (per mantenere il rapporto informale)</li></ul>
+    <h4>Preventivi (Bookback / Converto)</h4>
+    <p>I preventivi ai clienti che scrivono via email o telefono si inviano tramite SimpleBooking, chiedendo una carta di credito a garanzia. Per creare il preventivo, inserisci e salva prima il cliente in rubrica. Puoi aggiungere più proposte se ci sono diverse possibilità nel periodo richiesto, e personalizzare il messaggio per far sentire il cliente speciale.</p>
+    <h4>Procedura tipo</h4>
+    <ol><li>Arriva una email dal cliente</li><li>Rispondi personalmente dicendo che seguirà una seconda email con il preventivo specifico. È importante rispondere prima di inviare il preventivo, per mantenere un rapporto umano</li><li>Crea il preventivo (validità standard <b>7 giorni</b>) e ricordati di cliccare “controllo disponibilità”</li><li>Invia il preventivo</li></ol></div></details>
+
+  <details class="blk"><summary>Prenotazioni OTA (Booking.com, Expedia, Visit Trentino/Feratel)</summary><div class="in">
+    <p>Le disponibilità sono gestite da SimpleBooking, che sincronizza automaticamente tutti i portali. I prezzi su Booking.com ed Expedia vengono maggiorati automaticamente dell’8% dal sistema, per compensare le commissioni (15-18% circa).</p>
+    <ul>
+      <li>Invoglia sempre il cliente a prenotare direttamente sul nostro sito, per avere un contatto diretto e un’email vera. Le prenotazioni da portale non danno accesso alle email: chiedila all’arrivo</li>
+      <li>Non tutte le categorie sono vendute sui portali: sono escluse Ora Family e Baia Family; le altre a discrezione nostra</li>
+      <li>I clienti scelgono se pagare in hotel (Hotel Collect) o con carta virtuale creata dal portale (Expedia/Booking Collect), visibile il giorno dopo l’arrivo. In ogni caso i clienti pagano alla partenza</li>
+      <li>Siamo partner Genius di Booking.com: alcuni clienti Genius possono avere sconti applicati dal portale (anche su Trip.com), non modificabili da noi</li></ul></div></details>
+
+  <details class="blk"><summary>Voucher e buoni</summary><div class="in">
+    <p>Si gestiscono solo da SimpleBooking, anche per l’anno successivo.</p>
+    <ol><li>Ricevi i soldi e addebita (carta o bonifico)</li><li>Emetti la ricevuta</li><li>Invia il voucher/buono</li></ol>
+    <div class="note warn"><span class="lab">Attenzione</span><span>I voucher/buoni riguardano solo il prezzo della camera, non extra o altri servizi. Per voucher su cene o altri servizi, consultati con il team.</span></div></div></details>
+
+  <details class="blk"><summary>Blocco prenotazioni (da confermare / camere bloccate)</summary><div class="in">
+    <ol><li>Inserisci la prestazione su 5Stelle</li><li>Seleziona “da confermare”</li><li>Nel campo Cognome inserisci nome e cognome del cliente</li><li>Scrivi “da confermare” e salva</li></ol>
+    <div class="note warn"><span class="lab">Attenzione</span><span>Le camere possono essere bloccate solo per un massimo di <b>24-48 ore</b>.</span></div></div></details>
+
+  <details class="blk" id="divisione"><summary>Divisione di una prenotazione</summary><div class="in">
+    <p>È sempre possibile dividere una prenotazione se il cliente richiede un cambio camera.</p>
+    <ol><li>Crea la prenotazione nelle camere OVER BOOKING, oppure sposta in OVER la prenotazione da dividere</li><li>Tasto destro del mouse → “Dividi”</li><li>Dividi la prenotazione: il prezzo può essere ripartito proporzionalmente oppure inserito già corretto per ogni camera</li><li>Sposta ciascuna parte nella camera corretta</li></ol></div></details>
+
+  <div class="card blk"><h3>Planner camere: legenda colori</h3>
+    <div class="scroll" style="border:0"><table><thead><tr><th>Colore</th><th>Significato</th></tr></thead><tbody>
+    <tr><td><span class="sw" style="background:#BFE6F2"></span>Azzurrino</td><td>Da confermare / non concluse</td></tr>
+    <tr><td><span class="sw" style="background:#8A9BB0"></span>Grigio / blu</td><td>Confermate (inserite manualmente)</td></tr>
+    <tr><td><span class="sw" style="background:#9B7BD6"></span>Violetto</td><td>SimpleBooking / sito hotel</td></tr>
+    <tr><td><span class="sw" style="background:#F2E8A0"></span>Giallino</td><td>Trip.com</td></tr>
+    <tr><td><span class="sw" style="background:#2B5FC4"></span>Blu</td><td>Booking.com</td></tr>
+    <tr><td><span class="sw" style="background:#F09A3E"></span>Arancione</td><td>Expedia</td></tr>
+    <tr><td><span class="sw" style="background:#D63B3B"></span>Rosso</td><td>Errore</td></tr></tbody></table></div>
+    <p class="hint">Dopo delle modifiche, se non sei sicura che tutto sia caricato correttamente: tasto destro → “Ricarica planner”.</p></div>
+
+  <details class="blk" id="tipologia"><summary>Regole generali sulle prenotazioni</summary><div class="in">
+    <h4>Tipologia</h4>
+    <p>Le prenotazioni si fanno per <b>categoria</b> di camera, non per numero specifico. Fanno eccezione le suite, le camere a 4 letti e le camere per disabili, che possono essere prenotate con numero specifico. Si tiene conto dei desideri del cliente comunicando che si farà il possibile, ma si conferma solo la categoria.</p>
+    <h4>Dati richiesti alla prenotazione</h4>
+    <ul><li>Carta di credito completa (numero, scadenza, CVV) per tutti, anche per prenotazioni giornaliere. Per i vecchi clienti la richiesta è a discrezione</li><li>Prenotazioni per l’anno successivo: solo via email</li><li>Nessuna prenotazione confermata via telefono (eccezione: solo stesso giorno, comunque con carta di credito)</li><li>Obbligatori: nome, cognome, email e numero di telefono</li></ul>
+    <h4>Note nella prenotazione</h4>
+    <p>Usa sempre il campo NOTE per cambi camera, richieste speciali, presenza cani, letti aggiunti, cuscini e altre informazioni utili ai colleghi.</p>
+    <h4>Penalità per partenza anticipata</h4>
+    <p>Chi parte 1 o 2 giorni prima: per i vecchi clienti confrontati con Simone; per gli altri, pagamento totale della prenotazione preventivata.</p>
+    <h4>Anagrafiche e inserimento in 5Stelle</h4>
+    <ul><li>Contrassegna vecchi clienti/Stammgäste con ** nel dettaglio conto</li><li>Verifica sempre la presenza di email e numero di telefono; se manca l’email, chiedila anche ai clienti Booking/Expedia al check-in</li><li>Se presenti su Reguest, importa i dati su 5Stelle</li><li>Le carte di credito inserite su SimpleBooking scadono dopo 45 giorni: salva solo il CVV nel dettaglio conto (le altre carte si trasferiscono automaticamente da SimpleBooking a 5Stelle)</li></ul></div></details>
+</section>
+
+<!-- ============ TARIFFE ============ -->
+<section class="sec" id="tariffe">
+  <header><h2>Tariffe, offerte e politiche commerciali</h2></header>
+  <div class="g2">
+    <div class="card"><h3>Piani tariffari</h3><p><b>Best Rate Guarantee</b>: i prezzi base impostati dalla direzione, da cui partono tutte le offerte.</p></div>
+    <div class="card"><h3>Politiche di cancellazione</h3><ul>
+      <li><b>14 days cancellation</b>: cancellazione gratuita fino a 14 giorni prima dell’arrivo; oltre questo termine è richiesto il 100% del soggiorno</li>
+      <li><b>Not Refundable</b>: pagamento totale al momento della prenotazione tramite Nexi Pay (solo prenotazioni online). Se il pagamento non va a buon fine, la prenotazione viene cancellata; va emessa subito la ricevuta fiscale</li>
+      <li>Tutte le prenotazioni fatte da 13 giorni prima dell’arrivo in poi ricadono automaticamente in Not Refundable, con addebito immediato della carta</li></ul></div>
+  </div>
+  <div class="scroll blk"><table><thead><tr><th>Offerta</th><th>Sconto</th><th>Condizioni</th></tr></thead><tbody>
+    <tr><td>Direct Booking</td><td class="n">−4%</td><td>Su tutte le prenotazioni dirette da sito o email</td></tr>
+    <tr><td>Early Booking</td><td class="n">−5%</td><td>Prenotazione con 90-120 giorni di anticipo</td></tr>
+    <tr><td>Long Stay</td><td class="n">−10%</td><td>Dalle 8 notti in poi</td></tr>
+    <tr><td>Last minute</td><td class="n">−10%</td><td>Prenotazione un giorno prima o il giorno stesso del check-in, vendita al banco/SimpleBooking. Ricade in Not Refundable con addebito immediato</td></tr></tbody></table></div>
+  <div class="scroll blk"><table><thead><tr><th>Supplemento / servizio</th><th>Prezzo</th><th>Note</th></tr></thead><tbody>
+    <tr><td>Culla (max 4 anni)</td><td class="n">€20</td><td>Non disponibile in tutte le camere</td></tr>
+    <tr><td>Bambino 4-8 anni</td><td class="n">€25</td><td></td></tr>
+    <tr><td>Bambino 9-14 anni</td><td class="n">€30</td><td></td></tr>
+    <tr><td>3° letto aggiunto</td><td class="n">€40</td><td></td></tr>
+    <tr><td>4° letto aggiunto</td><td class="n">€25</td><td></td></tr>
+    <tr><td>Camera singola</td><td class="n">−10% dalla doppia</td><td>Solo camere Aurora; −10% anche vista lago solo in bassa stagione</td></tr>
+    <tr><td>Cane piccolo (fino a 8 kg)</td><td class="n">€21</td><td>Invia le istruzioni cani via email</td></tr>
+    <tr><td>Cane medio (fino a 15 kg)</td><td class="n">€32</td><td>Invia le istruzioni cani via email</td></tr>
+    <tr><td>Ricarica auto elettrica</td><td class="n">€0,70/kWh</td><td></td></tr>
+    <tr><td>Accappatoio extra</td><td class="n">€25</td><td>A soggiorno</td></tr>
+    <tr><td>Colazione extra</td><td class="n">€20 / €27</td><td>€20 clienti hotel, €27 esterni</td></tr>
+    <tr><td>Late check-out</td><td class="n">€30</td><td>Fino alle 12:30 al massimo</td></tr></tbody></table></div>
+  <details class="blk"><summary>Camere singole</summary><div class="in">
+    <p>Nella vendita online le camere singole sono disponibili solo nella categoria <b>Aurora</b> (a nord), con sconto del −10% dal prezzo doppia.</p>
+    <p>Se un cliente desidera una doppia ad uso singola che non sia Aurora, è possibile: il prezzo resta quello della doppia e si tolgono solo i €20 di colazione della seconda persona. In bassa stagione puoi offrire uno sconto del 10% sulle doppie ad uso singola, anche vista lago, in base alla disponibilità del piano camere.</p></div></details>
+  <details class="blk"><summary>Regole su camere e prezzi</summary><div class="in"><ul>
+    <li>I nostri prezzi si intendono sempre per <b>due persone con prima colazione</b>: non esistono prezzi senza colazione</li>
+    <li>Non facciamo la mezza pensione. In <b>bassa stagione</b> diamo al check-in il <b>10% di sconto sulla cena</b> (non sul pranzo), per incentivare il ristorante la sera</li>
+    <li><b>Ora Design</b>: specifica sempre che i bagni sono in vetro</li>
+    <li><b>North Signature</b>: specifica sempre quale delle tre camere (molto diverse tra loro) è stata assegnata, inviando una foto anche per le prenotazioni dirette da SimpleBooking</li>
+    <li><b>Lake Superior</b>: come per North Signature, è possibile confermare un numero di camera specifico</li></ul>
+    <div class="note crit"><span class="lab">Regola critica</span><span>Gli sconti possono essere fatti solo da Simone ed Emanuela. In caso di vero disservizio da parte nostra, lo sconto va dal 5% al 10% al massimo, a discrezione e in base alla gravità.</span></div></div></details>
+  <details class="blk"><summary>Regole OTA sui prezzi</summary><div class="in"><ul>
+    <li>Cancellazione sempre a <b>14 giorni</b> sui portali (non è un minimum stay)</li>
+    <li>Prezzi maggiorati automaticamente dell’8-10%</li>
+    <li>Categorie escluse dalla vendita OTA: North Signature, Baia Family, Baia Design e i vari terzi letti</li></ul></div></details>
+</section>
+
+<!-- ============ CASI PARTICOLARI ============ -->
+<section class="sec" id="casi">
+  <header><h2>Casi particolari</h2></header>
+  <div class="note crit"><span class="lab">Cambi camera</span><span>Massima attenzione: i cambi camera vanno sempre comunicati al cliente al check-in e scritti sulla Welcome Card. In caso di dubbi, lascia l’avviso in camera la sera prima, verso l’ora di cena, per ricordare il cambio del giorno seguente.</span></div>
+  <div class="g2">
+    <div class="card"><h3>Cani</h3><ul>
+      <li>Piccolo fino a 8 kg €21 · medio fino a 15 kg €32 (vedi <a href="#tariffe">Tariffe</a>)</li>
+      <li>All’arrivo, prepara la <b>BAU BOX</b> in camera</li>
+      <li>Sempre e solo al guinzaglio; accettati anche al ristorante; mai lasciati soli in camera</li>
+      <li>Se il cane è in camera, le ragazze delle pulizie non sono tenute a rifare la stanza</li>
+      <li>Ricorda le restrizioni per i cani in spiaggia: c’è una BAU BEACH alla fine del paese di Torbole, subito prima della Conca d’Oro</li>
+      <li>Spiega tutte le regole: c’è un foglio da stampare e le note da allegare alle email (Note in Mail)</li></ul></div>
+    <div class="card"><h3>Bambini e gadget</h3><ul>
+      <li>Accettati a un prezzo extra dedicato (vedi <a href="#tariffe">Tariffe</a>); disponibili anche le culle</li>
+      <li>Ricordati sempre la <b>BABY BOX</b>: il piccolo gadget va messo in camera all’arrivo</li>
+      <li>I bambini che dormono nel lettone pagano comunque €8 di colazione</li>
+      <li>Il focus dell’hotel non è comunque rivolto ai bambini</li></ul></div>
+    <div class="card"><h3>Compleanni e anniversari</h3><ul>
+      <li>Chiedi se desiderano qualcosa in camera (se lo sai in anticipo)</li>
+      <li>Metti in camera un foglio per un aperitivo offerto dalla casa</li>
+      <li>I compleanni compaiono appena aperto 5Stelle: si vedono quelli del giorno stesso e del giorno seguente. Segnalalo al collega della sera, che prepara i fogli</li>
+      <li>Possibili omaggi: fiori (fioreria Tulipa), bollicine, piatto di frutta, aperitivo in terrazza…</li></ul></div>
+    <div class="card"><h3>Do Not Disturb</h3><p>Le pulizie delle camere sono garantite fino alle 15:00. Se le ragazze Komplett hanno già finito il turno, intervengono le nostre ragazze delle pulizie. Se passano nel pomeriggio, possiamo occuparci noi del cambio asciugamani.</p></div>
+    <div class="card"><h3>Pulizie in bassa stagione</h3><p>Quando una camera resta chiusa per più di 2 giorni, va comunque ripassata dalle ragazze ai piani: controllare le vasche idromassaggio e pulire bene le terrazze (compresa la parte sopra gli armadi). Non avendo una governante fissa, spetta alla reception coordinare le ragazze ai piani e ricordare pulizie e servizi extra. Le camere del 3° piano vanno ripassate tutti i giorni per via della polvere.</p></div>
+    <div class="card"><h3>Tessere stanze</h3><p>Vengono create il giorno del check-in con scadenza al check-out, per motivi di sicurezza. Le istruzioni sono sotto il PC.</p></div>
+  </div>
+</section>
+
+<!-- ============ COMUNICAZIONE ============ -->
+<section class="sec" id="comunicazione">
+  <header><h2>Comunicazione</h2></header>
+  <div class="g2">
+    <div class="card"><h3><span class="tag">Storico completo</span>Diario cartaceo</h3>
+      <p>Tutto ciò che accade, consultabile anche offline. Scrivi: attività concluse e in corso; check-in/check-out particolari; richieste speciali (torta di compleanno, bottiglia in camera); extra organizzati (transfer, orari speciali); comunicazioni per i turni successivi.</p>
+      <div class="say"><span class="lab">Esempi</span><q>09/09 – Camera 205: aggiunta torta compleanno per sig.ra Rossi alle 18:00.</q><q>09/09 – Gruppo da 10 persone in arrivo domani, richiesto check-in anticipato.</q><q>Problema con il POS, tecnico previsto domani alle 14:00.</q></div></div>
+    <div class="card"><h3><span class="tag">Veloce e immediata</span>Chat Slack (canale Reception)</h3>
+      <p>Aggiornamenti last minute, urgenze (ospite arrivato in anticipo, guasto improvviso), avvisi brevi che tutti devono sapere subito. Non sostituisce il diario: le info extra devono finire anche lì.</p>
+      <div class="say"><span class="lab">Esempi</span><q>@team Ospite camera 312 è già arrivato, attivo check-in anticipato.</q><q>Attenzione: ascensore momentaneamente fuori servizio, avvisare gli ospiti.</q><q>Domani mattina consegna torte alle 10:00, chi è di turno verifichi.</q></div></div>
+  </div>
+  <div class="note tip"><span class="lab">Regola chiave</span><span>Diario = tutto quello che accade, così tutti sono aggiornati. Slack = solo le cose importanti che tutti devono sapere subito, da usare con attenzione.</span></div>
+
+  <details class="blk"><summary>Regole email</summary><div class="in">
+    <h4>Struttura del messaggio</h4>
+    <ul><li>Oggetto chiaro (es. “Conferma prenotazione – Hotel Baia Azzurra – Nome Cognome cliente – date soggiorno”)</li><li>Saluto personalizzato: “Gentile Sig. Rossi,” oppure “Buongiorno Dott.ssa Bianchi,”</li><li>Introduzione breve: ringrazia per averci contattato</li><li>Corpo: rispondi in modo diretto e ordinato a tutte le domande</li><li>Conclusione cordiale: “Rimaniamo a disposizione per qualsiasi ulteriore informazione”</li><li>Firma professionale: nome, cognome, ruolo, nome hotel, recapiti</li></ul>
+    <h4>Stile e tono</h4>
+    <ul><li>Formale ma accogliente: mai troppo rigido, sempre professionale</li><li>Cortesia costante: “La ringraziamo”, “Sarà un piacere accoglierLa”</li><li>Empatia e attenzione alle esigenze del cliente</li><li>Precisione: evita ambiguità su orari check-in/out, costi, condizioni</li></ul>
+    <h4>Tempistiche</h4>
+    <p>Rispondi entro 24 ore (meglio entro poche ore). Se serve più tempo, invia un messaggio intermedio.</p>
+    <div class="say"><span class="lab">Messaggio intermedio</span><q>La ringraziamo per la Sua richiesta, Le risponderemo nel dettaglio entro…</q></div>
+    <h4>Contenuto</h4>
+    <ul><li>Completezza: rispondi a tutte le domande</li><li>Chiarezza: frasi brevi, senza tecnicismi inutili</li><li>Personalizzazione: evita risposte standard impersonali</li><li>Rileggi: nessun errore o refuso</li></ul>
+    <h4>Dettagli pratici</h4>
+    <ul><li>Conferme: date, tipologia camera, numero persone, servizi inclusi, condizioni di cancellazione ed eventuali tasse</li><li>Richieste generiche: fornisci più informazioni possibili (servizi, attrazioni vicine, trasporti)</li><li>Reclami: rispondi con empatia, scusati sinceramente, proponi una soluzione o un’alternativa</li></ul></div></details>
+
+  <details class="blk" id="email2027" open><summary>Richieste per l’anno successivo: standard email 2027 <span class="badge">Nuovo</span></summary><div class="in">
+    <p>Si risponde sempre a ogni richiesta. Per le prenotazioni 2027 arrivate via email si segue questo standard.</p>
+    <ol class="flow">
+      <li><div class="step"><h3>Disponibilità e prezzo</h3><p>Ricevuta l’email, controlla la disponibilità come sempre e verifica il prezzo 2027 per periodo e categoria.</p></div></li>
+      <li><div class="step"><h3>È già stato nostro ospite nel 2026?</h3><p>Controlla <b>bene</b>: email, 5Stelle e prenotazioni OTA. Attenzione a varianti del nome e a indirizzi email diversi (personale/aziendale). Se non trovi un soggiorno 2026, vale il normale prezzo 2027.</p></div></li>
+      <li><div class="step"><h3>Se è un cliente di ritorno: confronta i prezzi</h3><p>Prezzo pagato nel 2026 contro prezzo 2027, a parità di periodo, categoria e trattamento.</p></div></li>
+      <li><div class="step"><h3>Invia l’offerta</h3><p>Canale preferito: <b>SimpleBooking</b>, cliccando <b>“Invia offerta”</b> e non “Controlla disponibilità”, perché la disponibilità online è chiusa. In alternativa usa i template email dell’app Reception. Validità sempre <b>massimo 1 settimana</b>.</p></div></li>
+    </ol>
+    <div class="scroll" style="border:0"><table><thead><tr><th>Prezzo 2027 rispetto al 2026</th><th>Cosa fare</th></tr></thead><tbody>
+      <tr><td>Più alto, da 0 a +5%</td><td>Procedi normalmente</td></tr>
+      <tr><td>Più alto di oltre il 5%</td><td>Inoltra a Simone <b>prima</b> di rispondere</td></tr>
+      <tr><td>Uguale o più basso</td><td>Inoltra subito a Simone</td></tr>
+      <tr><td>Dubbio su chi sia il cliente</td><td>Inoltra a Simone</td></tr></tbody></table></div>
+    <div class="note warn"><span class="lab">Come inoltrare a Simone</span><span>Inoltra l’email originale con una nota: nome del cliente, date 2026, prezzo 2026 e prezzo 2027, motivo del dubbio. Non rispondere al cliente prima della sua indicazione.</span></div>
+    <h4>Blocco camera per i clienti di ritorno</h4>
+    <p>Per i vecchi clienti già venuti nel 2026 si può bloccare la camera, mettendo subito un promemoria nell’app Baia con la scadenza dell’offerta. Se l’offerta scade senza risposta, sblocca la camera.</p>
+    <h4>Se i prezzi non sono ancora disponibili</h4>
+    <div class="say"><span class="lab">Formula consigliata</span><q>Gentile [Nome], La ringraziamo per averci contattato. Le confermiamo che sarà nostra cura ricontattarLa non appena apriremo le prenotazioni per la prossima stagione. Restiamo a disposizione per qualsiasi ulteriore informazione.</q></div>
+    <p>I buoni per l’anno successivo si possono inviare direttamente al cliente, con la procedura voucher. Ringrazia sempre chi torna: “Grazie per averci scelto nuovamente per il Suo soggiorno”.</p></div></details>
+</section>
+
+<!-- ============ CASSA ============ -->
+<section class="sec" id="cassa">
+  <header><h2>Cassa e contabilità</h2>
+    <div class="note warn"><span class="lab">Password e accessi</span><span>In questo manuale non sono scritte password o credenziali. Chiedile alla direzione.</span></div></header>
+
+  <details class="blk" open><summary>Gestione cassa Bar / Reception</summary><div class="in">
+    <h4>Turno mattina (ore 07:30)</h4>
+    <ol><li>Conta il totale dei contanti nel cassetto della cassa</li><li>Vai al tasto VERSAMENTO (nel tasto “banco”), seleziona il tuo nome e inserisci la password</li><li>Inserisci il totale contante nel sistema</li></ol>
+    <div class="note warn"><span class="lab">Attenzione</span><span>Non serve inserire il fondo cassa tramite VERSAMENTO: viene già impostato al mattino.</span></div>
+    <h4>Turno sera (ore 23:00)</h4>
+    <ol><li>Conta il totale dei contanti a fine turno</li><li>Lascia il fondo cassa intatto: sempre 300 €</li><li>Vai al tasto PRELIEVO e inserisci il totale dei contanti (incluso il fondo cassa) per completare il conteggio giornaliero</li></ol>
+    <h4>Registrazione dei totali</h4>
+    <ul><li>Annota il totale della cassa sul foglio Drive “Cassa Bar/Reception 20…”, assicurandoti che le modifiche vengano registrate automaticamente</li><li>Metti il foglio con totale e fondo cassa nella cassaforte di sinistra</li></ul>
+    <h4>Fondo cassa BAR</h4>
+    <div class="note crit"><span class="lab">Fondo cassa</span><span>Il fondo cassa è <b>fisso a 300 €</b>: scrivi sempre 300 €.</span></div>
+    <ul><li>Resti prelevati dalla cassa bar: segna come PRELIEVO sulla cassa bar</li><li>Monete prese dalla cassaforte di sinistra e date al bar: inserisci come VERSAMENTO sulla cassa bar</li></ul></div></details>
+
+  <details class="blk"><summary>Corrispettivi della mattina</summary><div class="in">
+    <p>Appena arrivato: controllo chiusura BAR e chiusura Reception.</p>
+    <ul><li>Chiusura cassa BAR: <b>1109 + funzione</b>; a fine stampa premi Annulla</li><li>Chiusura cassa RECEPTION: Report → Report contabili → Resoconto contabile</li><li>Nel cassetto corrispettivi, dividi le chiusure Hotel dalle chiusure Bar/Ristorante</li><li>Tieni separati anche gli scontrini POS/bancomat di Hotel e Bar/Ristorante</li><li>I corrispettivi giornalieri vanno caricati su Drive → Corrispettivi, divisi tra hotel, bar e ristorante</li><li>Controlla sempre la corrispondenza tra la chiusura cassa e il resoconto contabile di 5Stelle</li></ul></div></details>
+
+  <div class="note crit blk"><span class="lab">Controllo ISTAT giornaliero</span><span>Importantissimo: controlla le partenze sul foglio ISTAT confrontandole con le effettive partenze sulle ricevute fiscali del giorno.</span></div>
+
+  <details class="blk"><summary>Libro ricevute, Satispay e note di credito</summary><div class="in">
+    <h4>Libro ricevute</h4><p>Tieni sempre divise le fatture dalle ricevute normali.</p>
+    <h4>Satispay</h4>
+    <ol><li>Fai uno scontrino normale</li><li>Apri l’app Satispay Business sul cellulare della Baia</li><li>Apri il QR code in alto a destra: il cliente lo scansiona</li><li>Accetta il pagamento sull’app</li></ol>
+    <h4>Note di credito ed errori (ricevuta sbagliata da annullare)</h4>
+    <ol><li>Contabilità → Fatture in uscita → Nota di credito – annullo ricevuta</li><li>Inserisci a mano il numero progressivo, controllando quello dell’ultima ricevuta emessa</li><li>Seleziona la ricevuta/fattura da annullare (icona lente d’ingrandimento)</li><li>Clicca Fine e stampa</li></ol></div></details>
+
+  <details class="blk"><summary>Acconti (“caparre” su 5Stelle)</summary><div class="in">
+    <p>Da non confondere con i voucher.</p>
+    <h4>In contanti (clienti non italiani)</h4>
+    <ul><li>Crea un Conto Passante, senza salvare, e stampa una copia per il cliente</li><li>Inserisci l’ammontare con Addebito Clienti – Acconto, con il segno meno</li></ul>
+    <h4>Carta di credito (e per clienti italiani)</h4>
+    <ul><li>Dettaglio conto → clicca Caparra e segui le istruzioni</li><li>Stampa la ricevuta fiscale</li></ul></div></details>
+
+  <details class="blk"><summary>Virtual card</summary><div class="in">
+    <p>Per i clienti che hanno già pagato su Expedia o Booking.com, l’importo viene prelevato da una virtual card emessa dal portale, visibile nel dettaglio prenotazione. I clienti pagano in hotel solo eventuali addebiti e la city tax.</p>
+    <p>È preferibile che i clienti non vedano il costo della camera, perché può variare tra quanto corrisposto a noi e quanto realmente addebitato al cliente dal portale. Per stampare il conto: “Genera conto” mostra solo la tassa di soggiorno e gli eventuali extra.</p>
+    <div class="note crit"><span class="lab">Regola critica</span><span>Le virtual card vanno addebitate il giorno del check-in (o subito, per prenotazioni dello stesso giorno).</span></div></div></details>
+
+  <details class="blk"><summary>Carte di credito e POS</summary><div class="in">
+    <p>Per i clienti che prenotano online sul nostro sito, al check-out possono chiedere di pagare con quella carta.</p>
+    <h4>Come vedere la carta di credito in 5Stelle</h4>
+    <p>In alternativa, controlla nelle email del cliente o su SimpleBooking. Entra nel dettaglio camera: in alto a sinistra ci sono l’ID prenotazione e il simbolo della carta di credito; cliccalo per visualizzarla. La password si chiede alla direzione.</p>
+    <h4>POS sotto il banco reception</h4>
+    <ol><li>Premi il tasto verde e inserisci l’importo</li><li>Premi F = PAN manuale</li><li>Inserisci numero carta, tasto verde, data di scadenza, tasto verde</li></ol>
+    <p>Per Expedia Hotel Collect o Booking.com la carta virtuale è nella prenotazione del cliente, sezione Payment Information. Le carte Expedia sono visualizzabili al massimo <b>3 volte</b>, poi si bloccano.</p>
+    <p>Le carte vengono caricate da SimpleBooking a 5Stelle automaticamente. Il CVV non è visibile su 5Stelle ma solo su SimpleBooking (validità 45 giorni): annotalo nel dettaglio prenotazione.</p></div></details>
+
+  <details class="blk"><summary>Pagamenti online / POS online (Unicredit)</summary><div class="in">
+    <p>Pago Online BackOffice Unicredit, da Mozilla (per Booking si può fare il giorno dopo l’arrivo). Utente, password e ID esercente si chiedono alla direzione.</p>
+    <ul><li>Stampa prima la ricevuta fiscale da 5Stelle, togliendo extra e tassa di soggiorno (rotellina accanto a City Tax): i clienti pagheranno poi al check-out extra + tassa di soggiorno</li><li>Percorso: Gestione ordini → Inserimento ordine</li><li>ID transazione esercente: numero ricevuta fiscale o numero progressivo fattura</li><li>Nome/Cognome da inserire: quello del portale (Booking/Expedia), non del cliente</li><li>I campi in rosso sono obbligatori; serve anche il CCV2 (codice sicurezza)</li><li>Il portale conferma il pagamento con una scritta verde</li></ul></div></details>
+
+  <details class="blk"><summary>Variazioni del conto camera</summary><div class="in">
+    <p><b>Aggiungere un’altra camera a un conto:</b> da “Genera conto” puoi intervenire e correggere.</p>
+    <p><b>Cambio intestazione:</b> utile anche per emettere fattura al cliente di una camera. Le fatture con scorporo IVA sono solo per clienti italiani; per i clienti internazionali si emette ricevuta fiscale con cambio intestazione.</p></div></details>
+
+  <details class="blk"><summary>Procedura conti</summary><div class="in">
+    <ol><li>Controlla sempre i prezzi giornalieri e l’intero conto nel Dettaglio Conto; in caso di incongruenze verifica i prezzi scritti nelle email o sui portali</li><li>Anteprima conto</li><li>Prepara i conti in anticipo, prima dell’arrivo del cliente (niente stampa: il conto si mostra sul tablet)</li><li>Chiedi se il soggiorno è andato bene, raccogliendo le critiche in modo costruttivo</li><li>Spiega il conto sul tablet: numero camera, date, prezzo camera, e lascia controllare tutti gli addebiti</li><li>Invia il conto al cliente via email (se manca l’email, chiedila ora)</li><li>Se è tutto in ordine, procedi al pagamento (carta o contanti)</li><li>Stampa la ricevuta fiscale, controllando con l’anteprima che il totale corrisponda a quello della carta/bancomat</li></ol>
+    <p>Le ricevute fiscali / scontrini elettronici escono dalla stampante fiscale: una copia per il cliente e una per noi, da archiviare nel libro delle ricevute fiscali.</p>
+    <div class="note tip"><span class="lab">Regalini</span><span>Per soggiorni di almeno una settimana, per conti sopra i €1500, o per clienti particolarmente gentili, regaliamo una bottiglia piccola dell’olio della Baia.</span></div></div></details>
+
+  <details class="blk"><summary>Fatturazione elettronica: hotel</summary><div class="in">
+    <ol><li>Stampa un dettaglio conto per far controllare al cliente</li><li>Entra in “Genera conto”</li><li>Clicca su Fattura e inserisci tutti i dati: intestazione, indirizzo, CAP, partita IVA e codice fiscale, codice univoco o PEC, numero di telefono per sicurezza (se il cliente è già stato ospite, cerca il profilo cliccando su “Intestatario”)</li><li>Stampa un’anteprima per far controllare l’esattezza dei dati al cliente</li><li>Clicca su ELETTRONICA per generare il file .xml, da salvare nella cartella apposita con nome e cognome del cliente; stampa comunque una copia cartacea per la contabilità</li><li>Per l’invio: Mozilla → TS Digital, carica la fattura e clicca Invio</li></ol></div></details>
+
+  <details class="blk"><summary>Fatturazione elettronica: ristorante</summary><div class="in">
+    <ol><li>Contabilità → Fatture in uscita → Conto Passante</li><li>Seleziona FATTURA e inserisci il destinatario (se già ospite negli ultimi due anni, cercalo a database, controllando comunque i dati); servono intestazione, indirizzo, CAP, partita IVA, codice fiscale, codice univoco o PEC e telefono</li><li>Seleziona in alto a destra la casella “C”</li><li>Come descrizione inserisci “Menu” (non serve dettagliare tutto il conto)</li><li>Clicca Fine</li><li>Clicca su ELETTRONICA per generare il file .xml da salvare nella cartella apposita; stampa comunque una copia cartacea</li><li>Per l’invio: Mozilla → TS Digital, carica la fattura e clicca Invio</li></ol>
+    <p>I file generati vengono scaricati nella cartella apposita sul desktop. Per lo storico: ISTAT → Conti/Fatture del programma, e da lì caricali in TS Digital.</p></div></details>
+</section>
+
+<!-- ============ POLIZIA E ISTAT ============ -->
+<section class="sec" id="questura">
+  <header><h2>Polizia e ISTAT <span class="badge">Nuovo</span></h2><p class="lead">Due invii obbligatori: le schedine degli alloggiati alla Polizia di Stato e i movimenti all’ISTAT della Provincia. Si fanno dal Mac della reception.</p></header>
+  <div class="note warn"><span class="lab">Utenti, password e certificati</span><span>Non sono scritti in questo manuale. Chiedili alla direzione.</span></div>
+  <div class="card"><h3><span class="tag">Prima di tutto</span>Dove si salvano i file</h3>
+    <p>Sulla <b>Scrivania del Mac</b>, nella cartella <b>PS-ISTAT</b>. Hotel e appartamenti hanno cartelle separate:</p>
+    <div class="scroll" style="border:0"><table><thead><tr><th>File</th><th>Hotel</th><th>Appartamenti</th></tr></thead><tbody>
+      <tr><td>Schedine Polizia</td><td>PS Hotel</td><td>PS APP</td></tr>
+      <tr><td>File ISTAT</td><td>ISTAT Hotel</td><td>ISTAT App</td></tr></tbody></table></div></div>
+
+  <div class="g2">
+  <div class="card"><h3><span class="tag">Polizia di Stato · Alloggiati Web</span>Invio schedine alloggiati</h3>
+    <div class="note crit"><span class="lab">Regola critica</span><span>Si inviano sempre le schedine del <b>giorno prima</b>. Per legge l’invio va fatto entro 24 ore dall’arrivo.</span></div>
+    <ol class="flow">
+      <li><div class="step"><h3>Crea il file</h3><p>Salvalo in PS-ISTAT: schedine hotel in <b>PS Hotel</b>, appartamenti in <b>PS APP</b>.</p></div></li>
+      <li><div class="step"><h3>Apri Mozilla Firefox</h3><p>Vai sul sito Alloggiati Web della Polizia di Stato → <b>Accesso</b> → <b>Certificato</b>.</p></div></li>
+      <li><div class="step"><h3>Scegli il certificato</h3><p>Nell’<b>Area di lavoro</b> scegli il certificato <b>HOTEL</b> per l’hotel, quello degli appartamenti per le APP.</p></div></li>
+      <li><div class="step"><h3>Invia</h3><p><b>Invio file</b> → scegli il file → <b>Elabora e invia</b>. Se tutto va bene compare la conferma.</p></div></li>
+      <li><div class="step"><h3>Archivia la ricevuta</h3><p>In <b>Gestione ricevute</b> scarica la ricevuta del giorno prima, stampala e mettila nel raccoglitore <b>PS Schedine</b>.</p></div></li>
+    </ol></div>
+
+  <div class="card"><h3><span class="tag">Istituto di statistica · Provincia</span>Invio file ISTAT</h3>
+    <ol class="flow">
+      <li><div class="step"><h3>Crea il file</h3><p>Salvalo in PS-ISTAT: hotel in <b>ISTAT Hotel</b>, appartamenti in <b>ISTAT App</b>.</p></div></li>
+      <li><div class="step"><h3>Apri Safari</h3><p>Nella barra dei preferiti clicca su <b>ISTAT</b> e accedi con l’utente Hotel o quello App.</p></div></li>
+      <li><div class="step"><h3>Carica il file</h3><p><b>Gestione movimentazione</b> → <b>Invio file</b> → scegli il file salvato → <b>Salva</b>.</p></div></li>
+      <li><div class="step"><h3>Inserisci il C59</h3><p>Torna a <b>Movimentazione</b> → <b>Inserimento file C59 da file</b>.</p></div></li>
+      <li><div class="step"><h3>Salva e stampa</h3><p>Clicca sul file in basso, salvalo e stampalo.</p></div></li>
+    </ol></div>
+  </div>
+  <div class="note tip"><span class="lab">Controllo</span><span>Il controllo giornaliero ISTAT (partenze sul foglio ISTAT contro ricevute fiscali) è nella routine del pomeriggio e in <a href="#cassa">Cassa e contabilità</a>.</span></div>
+</section>
+
+<!-- ============ PULIZIE ============ -->
+<section class="sec" id="pulizie">
+  <header><h2>Pulizie e coordinamento con i piani</h2><p class="lead">La divisione del lavoro delle ragazze ai piani spetta alla reception. Al mattino si preparano le schede pulizie, annotando richieste speciali, cambi camera ed eventuali criticità. Mantieni un buon rapporto di collaborazione con il team.</p></header>
+  <div class="card blk"><h3>Foglio pulizie stanze</h3>
+    <ul><li>Stampa il foglio giornaliero: Report → Part./Ferm./Arr. → scegli il piano → stampa</li><li>Alla governante va stampata la situazione di tutte le camere</li><li>Una volta a settimana, stampa uno screenshot della situazione camere delle prossime due settimane, per Komplett e governante</li><li>Inizio turno alle 7:00: prima le pulizie generali, poi si sale ai piani verso le 9:00/9:15</li></ul></div>
+  <div class="g2">
+    <div class="card"><h3>Cameriera 3° piano</h3><p class="hint">Camere 301-311 (10 camere)</p><ul><li>Responsabile del 3° piano</li><li>Area relax esterna</li><li>Bagni piano terra uomo/donna</li><li>Supporto alla governante</li><li>Bike 1-2-3 e Bike Garage</li></ul></div>
+    <div class="card"><h3>Cameriera Komplett, 2° piano</h3><p class="hint">201-218 (da 205 a 218 quando l’hotel è pieno)</p><ul><li>Responsabile Komplett, inizio turno 7:00/7:15</li><li>Reception (esterno), bar, corridoio, entrata (vetri e tutto), zona relax inizio sala da pranzo</li></ul></div>
+    <div class="card"><h3>Cameriera Komplett, 1° piano esterna</h3><p class="hint">101-118 (da 105 a 118 quando l’hotel è pieno)</p><p>Di supporto alla responsabile Komplett.</p></div>
+    <div class="card"><h3>Cameriera Komplett jolly</h3><p class="hint">Esterna, part-time</p><p>Attiva solo nei giorni con moltissime partenze.</p></div>
+    <div class="card"><h3>Governante</h3><ul><li>In bassa stagione si occupa delle camere a Nord (101-104 e 201-204)</li><li>Responsabile lavanderia, spogliatoi, zone comuni dipendenti</li><li>Gestione carico lenzuola e asciugamani per le ragazze ai piani</li><li>Gestione guasti e macchinari lavanderia</li><li>Pulizia tovagliato</li></ul></div>
+  </div>
+  <div class="card blk"><h3>Calendario pulizie extra</h3>
+    <div class="scroll" style="border:0"><table><thead><tr><th>Giorno</th><th>Camere</th><th>Aree comuni</th></tr></thead><tbody>
+      <tr><td><b>Lun</b></td><td>Ragnatele; controllo teiere, tè e zucchero; docce e lavandini con disincrostante</td><td>Bagni piano terra di fino; interno sauna di fino (detergenti neutri per il legno); cambio acqua jacuzzi wellness</td></tr>
+      <tr><td><b>Mar</b></td><td>Terrazze di fino (sedie e tavoli, non usare aspiratore foglie); muri stanze e corridoi (spugnetta); mobili bagni e cassetti; infissi porte/finestre</td><td>Vetri reception ed entrata; spolvero scaffali reception di fino; pulizia corridoio piano terra</td></tr>
+      <tr><td><b>Mer</b></td><td>Ragnatele; scarichi docce (205-206); vetri bagni di fino; controllo piletta doccia; battiscopa</td><td>Pulizia poltroncine e divani bar e zona relax; bagni piano terra di fino</td></tr>
+      <tr><td><b>Gio</b></td><td>Lampade, lampadine, interruttori, termostati; ragnatele stanze; porta antincendio; termosifoni bagno</td><td>Wellness: pulizia di fino, ragnatele, vetri esterni ed interni; pulizia porte</td></tr>
+      <tr><td><b>Ven</b></td><td>Passare porte stanze; corridoi e vetri giroscale; vetri di fino; scarichi lavandini e docce</td><td>Pulizia accurata di corridoi e rampe scale; pulizia barca ingresso sala</td></tr>
+      <tr><td><b>Sab</b></td><td>Armadi e frigo di fino</td><td>Bagni piano terra di fino; reception di fino</td></tr>
+      <tr><td><b>Dom</b></td><td>Battiscopa; ragnatele; terrazze di fino (sedie, tavoli, ragnatele)</td><td>Bagni piano terra di fino; bar di fino</td></tr>
+    </tbody></table></div></div>
+</section>
+
+<!-- ============ CANCELLAZIONI ============ -->
+<section class="sec" id="cancellazioni">
+  <header><h2>Cancellazioni <span class="badge">Nuovo</span></h2><p class="lead">Siamo qui per guadagnare, ma anche per rendere felici i clienti. Se gestiamo bene una cancellazione, il cliente si ricorda di noi, parla bene di noi e magari ritorna.</p></header>
+
+  <div class="g2">
+    <div class="card rulecard ok"><span class="pill">Vecchio cliente</span><h3>Flessibili al 100%</h3>
+      <p>Se cancella un cliente che conosciamo (loyalty, Stammgast), restiamo flessibili senza discutere e <b>proponiamo un buono</b>.</p>
+      <div class="say"><span class="lab">Dì così</span><div class="row"><q>Nessun problema, capiamo benissimo. Non vi addebitiamo nulla e, se vi fa piacere, vi teniamo da parte un buono per venirci a trovare quando volete.</q><button class="copy" type="button" data-copy="Nessun problema, capiamo benissimo. Non vi addebitiamo nulla e, se vi fa piacere, vi teniamo da parte un buono per venirci a trovare quando volete.">Copia</button></div></div></div>
+    <div class="card rulecard eval"><span class="pill">Cliente che non conosciamo</span><h3>Pochi giorni prima: si valuta insieme</h3>
+      <p>Se cancella un paio di giorni prima dell’arrivo, valutiamo insieme cosa fare. <b>La decisione può prenderla la reception.</b> Ricorda: si guadagna, ma si fanno anche i clienti felici.</p>
+      <div class="say"><span class="lab">Dì così</span><div class="row"><q>Ci dispiace che non possiate venire. Vediamo insieme cosa possiamo fare e vi diamo risposta a breve.</q><button class="copy" type="button" data-copy="Ci dispiace che non possiate venire. Vediamo insieme cosa possiamo fare e vi diamo risposta a breve.">Copia</button></div></div></div>
+  </div>
+
+  <div class="card"><h3>Come decidere: quattro domande</h3>
+    <ol>
+      <li><b>Qual è la perdita reale?</b> Quante notti, che prezzo, quanto resta davvero perso per l’hotel</li>
+      <li><b>Possiamo rivendere la camera?</b> Guarda il piano camere: in bassa stagione o con tanta richiesta è più facile. Per le ultime ore c’è l’offerta Last minute (−10%)</li>
+      <li><b>Che cliente è?</b> Vecchio cliente: chiudiamo un occhio in più. Cliente OTA: più attenzione, perché il rischio di una recensione negativa pubblica è più alto</li>
+      <li><b>Vale la pena insistere?</b> A volte rischiare una recensione o un rapporto rovinato per una cifra minima non conviene</li></ol>
+    <div class="note tip"><span class="lab">Consiglio</span><span>Un no secco o un rimborso non sono le uniche risposte: spesso un <b>buono</b> o un <b>cambio data</b> lascia il cliente contento senza una perdita economica reale.</span></div>
+    <div class="note crit"><span class="lab">Attenzione</span><span>Se un cliente si approfitta ripetutamente della nostra flessibilità, va gestito diversamente. Gli sconti sul conto restano di Simone ed Emanuela: la reception decide su cancellazioni, buoni e cambi data.</span></div></div>
+
+  <h3 style="margin-top:6px">Gli scenari</h3>
+  <p class="hint" style="margin-top:-8px">Le prime due regole sono quelle dell’hotel. Gli altri scenari sono una proposta basata sulle pratiche del settore e sulle nostre politiche: correggili con il team.</p>
+  <div class="g2">
+    <div class="card"><h3><span class="tag">Con largo anticipo</span>Cancella oltre 14 giorni prima</h3>
+      <p>Cancellazione gratuita, come da tariffa “14 days cancellation”. Ringrazia per l’avviso e lascia la porta aperta, magari proponendo una nuova data.</p>
+      <div class="say"><span class="lab">Dì così</span><q>Grazie per averci avvisato. Se volete, vi proponiamo un’altra data: ci farebbe piacere ospitarvi.</q></div></div>
+    <div class="card"><h3><span class="tag">Motivo serio</span>Malattia, lutto, emergenza, maltempo, viaggio saltato</h3>
+      <p>Qui vale prima di tutto il buon senso. Non fare interrogatori: ascolta, dispiacetene e proponi una soluzione, di solito un buono o un cambio data. Se è un cliente nuovo e hai dubbi, confrontati con il team.</p>
+      <div class="say"><span class="lab">Dì così</span><q>Ci dispiace molto, pensate prima di tutto a voi. Troviamo noi una soluzione: quando andrà meglio ci fa piacere rivedervi.</q></div></div>
+    <div class="card"><h3><span class="tag">Tariffa Not Refundable</span>Il cliente vuole disdire, ma ha già pagato</h3>
+      <p>La tariffa non prevede il rimborso, ma possiamo valutare un buono o un cambio data. Il buono vale solo per il prezzo della camera. Valuta come per un cliente sconosciuto: perdita reale, rivendita, tipo di cliente.</p>
+      <div class="say"><span class="lab">Dì così</span><q>Capiamo. La tariffa non prevede il rimborso, ma possiamo proporvi un buono per un prossimo soggiorno.</q></div></div>
+    <div class="card"><h3><span class="tag">Il cliente non arriva</span>No-show</h3>
+      <p>Prima di considerarlo un no-show, scrivi o chiama il cliente: può essere in ritardo o avere un imprevisto. Se non risponde, annota tutto nel diario. Un addebito manuale sulla carta può essere contestato: prima di farlo confrontati con Simone ed Emanuela.</p>
+      <div class="say"><span class="lab">Dì così</span><q>Buonasera, siamo l’Hotel Baia Azzurra: vi aspettavamo oggi. Va tutto bene? Possiamo aiutarvi in qualcosa?</q></div></div>
+    <div class="card"><h3><span class="tag">Prenotazione da portale</span>Cancella un cliente Booking, Expedia o Trip.com</h3>
+      <p>La cancellazione va gestita nel canale da cui è arrivata, con le regole del portale. Se il cliente scrive a noi, rispondi con gentilezza e spiega cosa può fare. Attenzione alla recensione: tratta il cliente OTA con lo stesso riguardo di uno diretto.</p></div>
+    <div class="card"><h3><span class="tag">Più camere o soggiorni lunghi</span>Gruppi e prenotazioni multiple</h3>
+      <p>Una cancellazione toglie molte notti insieme: parlane subito con Simone ed Emanuela prima di rispondere al cliente.</p></div>
+    <div class="card"><h3><span class="tag">Parte prima del previsto</span>Partenza anticipata di 1 o 2 giorni</h3>
+      <p>Per i vecchi clienti confrontati con Simone; per gli altri, pagamento totale della prenotazione preventivata (vedi <a href="#tipologia">Regole generali sulle prenotazioni</a>).</p></div>
+    <div class="card"><h3><span class="tag">Dopo ogni cancellazione</span>Cosa fare subito</h3>
+      <ul class="chk">
+        <li>Rimettere la camera in vendita e guardare il piano camere</li>
+        <li>Se mancano pochi giorni, valutare l’offerta Last minute</li>
+        <li>Se si propone un buono, seguire la procedura <a href="#prenotazioni">Voucher e buoni</a> da SimpleBooking</li>
+        <li>Scrivere un messaggio gentile al cliente e, se possibile, chiedere il motivo: aiuta a capire cosa migliorare</li>
+        <li>Annotare la decisione nel campo NOTE e nel diario</li>
+      </ul></div>
+  </div>
+
+  <p class="hint">Spunti dalle linee guida del settore: <a href="https://mews.com/en/blog/hotel-cancellation-policy" target="_blank" rel="noopener">Mews</a>, <a href="https://www.hospitalitynet.org/news/4124422/how-to-prevent-hotel-no-show-and-last-minute-cancellations" target="_blank" rel="noopener">Hospitality Net</a>, <a href="https://www.missionline.it/cancellazioni-dellultimo-minuto/" target="_blank" rel="noopener">Missionline</a>.</p>
+</section>
+
+<!-- ============ RECLAMI ============ -->
+<section class="sec" id="reclami">
+  <header><h2>Reclami, richieste e problem solving</h2></header>
+  <div class="note warn"><span class="lab">Per qualsiasi problema</span><span>Scusati subito, interessati e confrontati subito con il cliente per risolvere, dimostrando impegno concreto. Scrivi sempre un biglietto di scuse, accompagnato da due aperitivi gratis o una bottiglia di vino in camera (costo minimo per noi, vedi anche Gift Box). Il cliente deve sentire che ci stiamo interessando a lui e che è ascoltato.</span></div>
+  <div class="note crit"><span class="lab">Il principio</span><span>Il cliente va ascoltato senza interromperlo. Davanti a un problema o a una lamentela ci si coinvolge al 100% e ci si attiva subito. Non si dice mai al cliente che si ha da fare e non lo si fa aspettare.</span></div>
+  <div class="say"><span class="lab">Omotenashi</span><q>Lo spirito giapponese dell’ospitalità: fornire un’ospitalità eccezionale va oltre l’essere un buon padrone di casa; significa trattare le persone come ospiti nella nostra casa, anticipando e soddisfacendo i bisogni prima che si manifestino. È empatia in azione: impegno e attenzione insuperabili per i nostri ospiti, il desiderio di far vivere loro un’esperienza senza eguali.</q></div>
+
+  <div class="note tip blk"><span class="lab">Cancellazioni e modifiche</span><span>Le regole e gli scenari sono nella sezione <a href="#cancellazioni">Cancellazioni</a>.</span></div>
+
+  <div class="g2">
+    <div class="card"><h3>Assenza della prenotazione</h3><p>Non agitarti. Trova subito una soluzione con le camere disponibili; controlla l’email del cliente (può essere un nostro errore o del cliente). L’importante è sistemare subito il cliente, poi risolvere con calma confrontandoti con i superiori.</p></div>
+    <div class="card"><h3>La camera non è di gradimento</h3><p>Capisci subito il motivo, ascoltando senza ribattere. Se altre camere della stessa categoria sono disponibili, proponile. La vendita è sempre limpida ma possono esserci fraintendimenti.</p></div>
+    <div class="card"><h3>Problemi di pulizia della camera</h3><p>Dai sempre ragione al cliente, ascolta e scusati. Manda subito qualcuno a ripulire la camera: se le ragazze ai piani hanno già finito, organizzati con le cameriere del bar. Il cliente non può aspettare.</p></div>
+    <div class="card"><h3>Problemi non risolvibili o clienti difficili</h3><p>Il cliente ha sempre ragione, ma non è possibile accontentare tutti: ognuno ha aspettative diverse. Offri sempre una soluzione a ogni problema e ascolta sempre il cliente.</p></div>
+  </div>
+
+  <details class="blk"><summary>Buone pratiche generali</summary><div class="in">
+    <p><b>Overbooking.</b> È tra le cose più temute dai clienti: arrivare dopo un lungo viaggio e trovarsi reindirizzati altrove è molto sgradevole, oltre che un inadempimento contrattuale da evitare sempre. Un cliente dirottato non è un cliente fidelizzabile e potrebbe lasciare recensioni negative senza aver soggiornato da noi.</p>
+    <p><b>Nessuna discriminazione tra canali.</b> Non assegnare ai clienti OTA camere meno confortevoli. Sia i clienti diretti sia quelli occasionali lasciano recensioni, parlano dell’hotel e, se si trovano bene, tornano. Le OTA restano un importante alleato per il massimo livello occupazionale.</p>
+    <p><b>Personalizzazione.</b> Una buona comunicazione pre-soggiorno aiuta a individuare l’offerta più adatta all’ospite. Sorprendere con gadget personalizzati e attenzioni (l’“effetto wow”) crea valore, ma senza abusarne: permette anche di fare upselling in modo intelligente.</p>
+    <p><b>Anagrafica clienti.</b> Registrare dati, abitudini di viaggio e dettagli del soggiorno permette un servizio migliore in loco e un’efficace azione di remarketing. Un “bentornato” suona sempre meglio di un semplice benvenuto.</p>
+    <p><b>Igiene.</b> Verifica sempre pulizia e ordine delle camere prima dell’arrivo dell’ospite: la cura dei dettagli migliora la soddisfazione degli ospiti.</p></div></details>
+
+  <details class="blk"><summary>Tipologie di clienti difficili</summary><div class="in">
+    <p><b>Ospiti rumorosi.</b> TV o musica alta, litigi notturni: intervieni, di solito senza che il cliente si sia reso conto del disturbo. Farlo notare con educazione porta buoni risultati; altrimenti insisti con gentilezza ma con fermezza.</p>
+    <p><b>Clienti ubriachi e molesti.</b> Spesso si sovrappongono ai rumorosi, con rischio di danni maggiori. Chiedi a bassa voce, senza imbarazzarlo ma con decisione, se desidera essere accompagnato in camera e se possiamo fare qualcosa per lui.</p>
+    <p><b>Genitori disattenti e bambini fastidiosi.</b> Il problema sono spesso i genitori poco attenti: intervieni senza mettere in dubbio le loro capacità educative. Fai leva sulle regole e sulla necessità di tranquillità degli altri ospiti, restando neutrale.</p>
+    <p><b>Richieste assurde.</b> Non perdere mai la pazienza e spiega con professionalità perché non è possibile accontentarli, anche quando sembra ovvio.</p>
+    <p><b>Clienti scontrosi.</b> Spesso hanno solo avuto una pessima giornata. Ascolto, sorriso, gentilezza e atteggiamento positivo bastano quasi sempre.</p></div></details>
+</section>
+
+<!-- ============ SICUREZZA ============ -->
+<section class="sec" id="sicurezza">
+  <header><h2>Sicurezza e gestione della struttura</h2></header>
+  <div class="note crit"><span class="lab">In caso di incendio o terremoto</span><span>La reception è tenuta a <b>stampare la lista dettagliata dei clienti alloggiati</b> in hotel.</span></div>
+  <div class="g2">
+    <div class="card"><h3>In caso di temporale</h3><p class="hint">I temporali sul lago possono essere molto violenti.</p>
+      <ol><li>Chiudi gli ombrelloni in terrazza, chiudi tutte le porte e blocca i ganci delle tende (attenzione all’ultima tenda grande)</li><li>Blocca l’ascensore: chiamalo a piano terra, copri la fotocellula con un pezzo di carta e scotch</li><li>Chiudi la porta scorrevole di entrata (evita il giro d’aria)</li><li>Fai rientrare tutti in hotel: nessuno deve restare in terrazza</li><li>Tira su tutto dai tavoli</li></ol></div>
+    <div class="card"><h3>Sblocchi</h3><ul>
+      <li><b>Cancello principale:</b> apri la piccola leva blu sul motore (facendo leva con un cacciavite) e apri a mano</li>
+      <li><b>Sbarra:</b> prendi la chiave che sblocca l’ingranaggio e apri la sbarra a mano</li>
+      <li><b>Ascensore:</b> se si sono bloccate solo le porte, nel quadro chiavi del back office c’è una chiave grande per lo sblocco. Se si blocca tutto l’ascensore, chiama l’assistenza e mantieni il contatto con i clienti all’interno</li></ul></div>
+  </div>
+  <details class="blk"><summary>Interruttori generali dell’energia elettrica</summary><div class="in"><ul>
+    <li><b>Quadro generale:</b> stanzino dietro la reception (gestisce gran parte dell’hotel)</li>
+    <li>Interruttori generali anche in cucina (dietro la porta) e in stireria (vicino alle lavatrici)</li>
+    <li>In sala, dentro l’armadio, c’è un quadro generale</li>
+    <li>In cantina c’è il generale dell’aria condizionata</li>
+    <li>Sotto le scale antincendio: generale dell’albergo, della zona ovest e dei pannelli solari</li>
+    <li>Nell’officina di Luigi (parcheggio, vicino alle Bike Rooms): generale dell’hotel e della ricarica auto elettriche (la chiave dell’officina è sopra la porta scorrevole)</li>
+    <li>Nelle camere: su ogni piano c’è un quadro elettrico con il generale di ogni singola stanza</li></ul></div></details>
+  <details class="blk" open><summary>Evacuazione e incendio</summary><div class="in">
+    <div class="note crit"><span class="lab">Priorità assoluta</span><span>Mantieni la calma, segui le mappe antincendio verso l’uscita di sicurezza e non rientrare in edificio finché non è dichiarato sicuro.</span></div>
+    <h4>In caso di incendio o altro pericolo</h4>
+    <ol><li>Mantieni la calma</li><li>Evita di trasmettere il panico ad altre persone</li><li>Attieniti al piano di evacuazione seguendo le mappe antincendio verso l’uscita di sicurezza</li><li>Presta assistenza a chi è in pericolo solo se hai garanzie di non mettere a rischio la tua incolumità</li><li>Non rientrare nell’edificio finché non vengono ripristinate le condizioni di normalità</li></ol>
+    <h4>Se è un incendio</h4>
+    <ol><li>Se è un principio di incendio, valuta se spegnerlo subito con i mezzi disponibili, senza creare pericolo per te o per altri. Assicurati sempre di avere una via di fuga</li><li>Non tentare lo spegnimento se non sei sicuro di riuscirci</li><li>Limita la propagazione chiudendo le porte d’accesso</li><li>Avvisa subito la direzione (Simone o Emanuela Nodari)</li><li>Dai l’allarme alle autorità (112) con le indicazioni adeguate</li><li>Il responsabile e ogni lavoratore devono assicurarsi che il proprio reparto venga evacuato (colleghi e clienti) dalle uscite di sicurezza, chiudendo le porte alle proprie spalle</li><li>Il responsabile deve intercettare e chiudere le alimentazioni di gas, luce, ecc.</li></ol>
+    <h4>Chiamata di soccorso: 112</h4>
+    <ul><li>Nome e cognome</li><li>Indirizzo del luogo</li><li>Tipo di emergenza</li><li>Eventuali persone coinvolte / feriti</li><li>Reparto coinvolto della struttura</li><li>Stadio dell’evento (in sviluppo, stabilizzato, ecc.)</li><li>Altre indicazioni utili (materiali coinvolti, presenza di gas, ecc.)</li><li>Eventuali indicazioni sul percorso per raggiungere il luogo</li></ul></div></details>
+  <div class="card blk"><h3>In caso di terremoto</h3><p>Ripàrati nel vano di una porta, vicino a un trave portante o sotto un tavolo. Non precipitarti verso uscite o scale: aspetta che l’evento sismico si esaurisca. Evita di usare i telefoni se non strettamente necessario per le emergenze.</p></div>
+</section>
+
+<!-- ============ CONTATTI ============ -->
+<section class="sec" id="contatti">
+  <header><h2>Contatti di emergenza <span class="badge">Nuovo</span></h2><p class="lead">Dal telefono basta toccare il numero per chiamare.</p></header>
+  <a class="sos" href="tel:112"><span>Emergenze</span><b>112</b></a>
+  <div class="g3">
+    <div class="card"><h3><span class="tag">Sicurezza</span>Polizia</h3><ul class="tels"><li class="tel"><a href="tel:0464900200"><b>Polizia Alto Garda</b><span>0464 900200</span></a></li></ul></div>
+    <div class="card"><h3><span class="tag">Salute</span>Medici</h3><ul class="tels"><li class="tel"><a href="tel:3482602408"><b>Dott. Borchert</b><span>348 2602408</span></a></li><li class="tel"><a href="tel:3403996963"><b>Dott.ssa Beate Gritschak</b><span>340 3996963</span></a></li></ul>
+      <p class="hint">Ambulatorio lun–ven 9:00–12:00 e 17:00–19:00, a Torbole (farmacia) e a Riva (Porto San Nicolò).</p></div>
+    <div class="card"><h3><span class="tag">Bambini</span>Pediatri</h3><ul class="tels"><li class="tel"><a href="tel:3381639365"><b>Pediatra Morbin</b><span>338 1639365</span></a></li><li class="tel"><a href="tel:3478154225"><b>Betta</b><span>347 8154225</span></a></li></ul></div>
+    <div class="card"><h3><span class="tag">Direzione e staff</span>Persone</h3><ul class="tels"><li class="tel"><a href="tel:3473792475"><b>Simone</b><span>347 3792475</span></a></li><li class="tel"><a href="tel:3285795473"><b>Lella</b><span>328 5795473</span></a></li><li class="tel"><a href="tel:3282931102"><b>Matteo</b><span>328 2931102</span></a></li><li class="tel"><a href="tel:3351796121"><b>Luigi</b><span>335 1796121</span></a></li><li class="tel"><a href="tel:3294495584"><b>Tullia</b><span>329 4495584</span></a></li></ul></div>
+    <div class="card"><h3><span class="tag">Strutture</span>Hotel</h3><ul class="tels"><li class="tel"><a href="tel:3885771597"><b>Cellulare Baia</b><span>388 5771597</span></a></li><li class="tel"><a href="tel:0464506209"><b>Hotel Glocal</b><span>0464 506209</span></a></li></ul></div>
+    <div class="card"><h3><span class="tag">Fornitori</span>Fiori</h3><p>Consegna fiori a domicilio da <b>Creti</b>, con un costo di <b>5 €</b>.</p></div>
+  </div>
+</section>
+
+<!-- ============ MERCATI ============ -->
+<section class="sec" id="mercati">
+  <header><h2>Mercati della zona <span class="badge">Nuovo</span></h2><p class="lead">Per consigliare gli ospiti. Il giorno di oggi è evidenziato; in grassetto colorato i mercati vicini (Torbole, Riva, Arco, Dro, Pietramurata).</p></header>
+  <div class="g3"><div class="card mday" data-dow="1"><h3><span class="tag">Montag · Monday</span>Lunedì</h3><ul class="mlist"><li><b>Peschiera</b> <span>(maggio–dicembre)</span></li><li><b>Sirmione</b> <span>(località Colombare)</span></li><li><b>Torri del Benaco</b></li><li><b>Moniga</b></li><li><b>Pozzolengo</b></li><li><b>San Zeno di Montagna</b></li></ul></div><div class="card mday" data-dow="2"><h3><span class="tag">Dienstag · Tuesday</span>Martedì</h3><ul class="mlist"><li class="near"><b>Torbole sul Garda</b> <span>(2° e 4° martedì del mese)</span></li><li class="near"><b>Arco</b> <span>(mercato contadino, maggio–dicembre)</span></li><li><b>Limone</b> <span>(aprile–dicembre)</span></li><li><b>Castelletto</b></li><li><b>Tignale</b></li><li><b>Desenzano</b></li><li><b>Cavaion</b></li><li><b>Rovereto</b></li></ul></div><div class="card mday" data-dow="3"><h3><span class="tag">Mittwoch · Wednesday</span>Mercoledì</h3><ul class="mlist"><li class="near"><b>Riva del Garda</b> <span>(2° e 4° mercoledì del mese)</span></li><li class="near"><b>Arco</b> <span>(1° e 3° mercoledì del mese)</span></li><li class="near"><b>Pietramurata</b></li><li><b>Gargnano</b> <span>(ogni 15 giorni)</span></li><li><b>Lazise</b></li></ul></div><div class="card mday" data-dow="4"><h3><span class="tag">Donnerstag · Thursday</span>Giovedì</h3><ul class="mlist"><li class="near"><b>Dro</b></li><li class="near"><b>Torbole sul Garda</b> <span>(mercato contadino, aprile–settembre)</span></li><li><b>Bardolino</b></li><li><b>Bussolengo</b></li><li><b>Mori</b></li><li><b>Pieve di Ledro</b></li><li><b>Toscolano</b></li><li><b>Trento</b></li></ul></div><div class="card mday" data-dow="5"><h3><span class="tag">Freitag · Friday</span>Venerdì</h3><ul class="mlist"><li class="near"><b>Riva del Garda</b> <span>(mercato contadino, tutti i venerdì tranne i festivi)</span></li><li><b>Garda</b> <span>(aprile–novembre)</span></li><li><b>Gardone Riviera</b></li><li><b>Lugana di Sirmione</b></li><li><b>Manerba del Garda</b></li><li><b>Merano</b></li><li><b>Soiano</b></li><li><b>Puegnago</b></li></ul></div><div class="card mday" data-dow="6"><h3><span class="tag">Samstag · Saturday</span>Sabato</h3><ul class="mlist"><li class="near"><b>Dro</b> <span>(mercato contadino, maggio–dicembre)</span></li><li><b>Bolzano</b></li><li><b>Brescia</b> <span>(piazza Loggia)</span></li><li><b>Malcesine</b></li><li><b>Salò</b></li><li><b>Valeggio sul Mincio</b></li><li><b>Verona</b> <span>(stadio comunale)</span></li></ul></div><div class="card mday" data-dow="0"><h3><span class="tag">Sonntag · Sunday</span>Domenica</h3><ul class="mlist"><li><b>Rivoltella</b> <span>(Desenzano)</span></li></ul></div></div>
+  <p class="hint">Date e stagioni possono cambiare: per i mercati contadini conviene verificare prima di consigliarli.</p>
+</section>
+
+<p class="empty" id="empty">Nessun risultato. Prova con un’altra parola.</p>
+</div></main>
+</div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+  /* Tab routine: apre il turno giusto in base all'ora */
+  var tabs=$$('.tab'), panels=$$('.panel');
+  function show(name){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',String(t.dataset.p===name))});
+    panels.forEach(function(p){p.hidden=p.dataset.panel!==name});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.p)})});
+  var h=new Date().getHours();
+  show(h>=0&&h<5?'notte':h<12?'mattina':h<18?'pomeriggio':'sera');
+
+  /* Checklist: spunte salvate solo su questo dispositivo, azzerate ogni giorno */
+  var today=new Date().toISOString().slice(0,10), KEY='baia-sop-2027-spunte', saved={};
+  try{var raw=localStorage.getItem(KEY); if(raw){var o=JSON.parse(raw); if(o&&o.d===today) saved=o.c||{}}}catch(e){}
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify({d:today,c:saved}))}catch(e){}}
+  $$('.chk').forEach(function(ul,ui){
+    var sec=ul.closest('.sec'); var sid=sec?sec.id:'x';
+    $$('li',ul).forEach(function(li,i){
+      var id=sid+'-'+ui+'-'+i;
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.id='c-'+id; cb.setAttribute('aria-label','Fatto');
+      var span=document.createElement('span');
+      while(li.firstChild) span.appendChild(li.firstChild);
+      li.appendChild(cb); li.appendChild(span);
+      function paint(){li.classList.toggle('done',cb.checked)}
+      if(saved[id]){cb.checked=true; paint()}
+      cb.addEventListener('change',function(){ if(cb.checked) saved[id]=1; else delete saved[id]; paint(); persist()});
+      li.addEventListener('click',function(e){ if(e.target.tagName==='A'||e.target===cb) return; cb.checked=!cb.checked; cb.dispatchEvent(new Event('change'))});
+    });
+  });
+  $('#reset').addEventListener('click',function(){
+    saved={}; persist();
+    $$('.chk input').forEach(function(c){c.checked=false; c.closest('li').classList.remove('done')});
+  });
+
+  /* Copia frasi */
+  $$('.copy').forEach(function(b){b.addEventListener('click',function(){
+    var t=b.dataset.copy, old=b.textContent;
+    function ok(){b.textContent='Copiato'; setTimeout(function(){b.textContent=old},1400)}
+    function fallback(){var q=b.parentElement.querySelector('q'); if(q){var r=document.createRange(); r.selectNodeContents(q); var s=getSelection(); s.removeAllRanges(); s.addRange(r)} b.textContent='Selezionato'; setTimeout(function(){b.textContent=old},1400)}
+    try{navigator.clipboard.writeText(t).then(ok,fallback)}catch(e){fallback()}
+  })});
+
+  /* Indice: evidenzia la sezione visibile */
+  var links=$$('#nav a'), secs=links.map(function(a){return $(a.getAttribute('href'))});
+  function spy(){
+    var y=window.scrollY+160, cur=0;
+    secs.forEach(function(s,i){ if(s&&s.offsetTop<=y) cur=i });
+    links.forEach(function(a,i){a.classList.toggle('on',i===cur)});
+  }
+  window.addEventListener('scroll',spy,{passive:true}); spy();
+  links.forEach(function(a){a.addEventListener('click',function(){
+    var t=$(a.getAttribute('href')); var d=t&&$('details',t); /* niente: restano come sono */
+  })});
+  /* apre i dettagli quando si arriva da un link interno */
+  $$('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){
+    var t=$(a.getAttribute('href')); if(t&&t.tagName==='DETAILS') t.open=true;
+  })});
+
+  /* Mappa camere: piani e schede */
+  var ftabs=$$('.ftab'), fpanels=$$('.fpanel'), curFloor='1';
+  function showFloor(f){ curFloor=f;
+    ftabs.forEach(function(t){t.setAttribute('aria-selected',String(t.dataset.f===f))});
+    fpanels.forEach(function(p){p.hidden=p.dataset.fp!==f});
+  }
+  ftabs.forEach(function(t){t.addEventListener('click',function(){showFloor(t.dataset.f)})});
+  $$('.rm[data-room]').forEach(function(b){b.addEventListener('click',function(){
+    var c=$('#r'+b.dataset.room); if(!c) return;
+    c.scrollIntoView({behavior:'smooth',block:'center'});
+    c.classList.add('flash'); setTimeout(function(){c.classList.remove('flash')},1600);
+  })});
+
+  /* Mercati: evidenzia il giorno */
+  var dow=String(new Date().getDay());
+  $$('.mday').forEach(function(c){ if(c.dataset.dow===dow) c.classList.add('today') });
+
+  /* Ricerca */
+  var q=$('#q'), UNIT='.card, details, .note, .say, .scroll, .step, .rule', empty=$('#empty');
+  function norm(s){return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+  function run(){
+    var v=norm(q.value.trim()); document.body.classList.toggle('searching',!!v);
+    var any=false;
+    $$('.sec').forEach(function(sec){
+      var all=$$(UNIT,sec).filter(function(e){return !e.parentElement.closest(UNIT)});
+      var hits=0;
+      all.forEach(function(e){
+        var m=!v||norm(e.textContent).indexOf(v)>-1;
+        e.hidden=!m; if(m){hits++; if(v&&e.tagName==='DETAILS') e.open=true}
+      });
+      if(v){ $$('.panel',sec).forEach(function(p){p.hidden=false}); $$('.fpanel',sec).forEach(function(p){p.hidden=false}); }
+      sec.hidden=!!v&&hits===0; if(!sec.hidden) any=true;
+    });
+    if(!v){ var cur=$('.tab[aria-selected="true"]'); show(cur?cur.dataset.p:'mattina'); showFloor(curFloor); }
+    $('#regole').hidden=!!v;
+    $('.hero').hidden=!!v;
+    empty.classList.toggle('show',!any);
+  }
+  q.addEventListener('input',run);
+})();
+</script>
+</body>
+</html>
