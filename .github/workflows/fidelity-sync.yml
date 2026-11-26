@@ -35,7 +35,7 @@ jobs:
           IMAP_HOST: ${{ secrets.IMAP_HOST }}
           IMAP_PORT: ${{ secrets.IMAP_PORT }}
           IMAP_USER: ${{ secrets.IMAP_USER }}
-          IMAP_PASS: ${{ secrets.IMAP_PASS }}
-          SUPA_URL: ${{ secrets.SUPA_FIDELITY_URL }}
-          SUPA_KEY: ${{ secrets.SUPA_FIDELITY_SERVICE_KEY }}
+          IMAP_PASS: ${{ secrets.IMAP_PASSWORD }}
+          SUPA_URL: ${{ secrets.SUPABASE_URL }}
+          SUPA_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node sync.mjs --days ${{ github.event.inputs.days || '7' }}
