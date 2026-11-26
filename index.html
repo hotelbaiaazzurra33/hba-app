@@ -61,6 +61,9 @@ textarea{resize:vertical;min-height:54px}
 .ffilts{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
 .ftab{padding:4px 12px;border-radius:2px;font-size:11px;cursor:pointer;border:1px solid var(--bord2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .12s}
 .ftab.active{background:var(--green);border-color:var(--gd);color:#fff}
+.fid-tab{padding:7px 12px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-family:var(--font);transition:all .12s}
+.fid-tab.active{color:var(--green);border-bottom-color:var(--green)}
+.fid-tab-pane{min-height:60px}
 .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
 .sc{background:#FFFFFF;border:1px solid var(--bord);border-radius:var(--rl2);padding:14px 12px;text-align:center}
 .sn{font-family:var(--font-disp);font-size:26px;font-weight:400;line-height:1.1;color:var(--text)}
@@ -810,13 +813,26 @@ textarea{resize:vertical;min-height:54px}
 <!-- FIDELITY -->
 <div id="tFidelity" class="tc hidden"><div class="page">
 
+  <!-- Arrivi di oggi -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-size:14px;font-weight:600">🛬 Arrivi</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="fidArriviNav(-1)">‹</button>
+        <span id="fidArriviLabel" style="font-size:12px;font-weight:500;min-width:80px;text-align:center"></span>
+        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="fidArriviNav(+1)">›</button>
+      </div>
+    </div>
+    <div id="fidArriviList" style="font-size:12px;color:var(--muted)">Caricamento…</div>
+  </div>
+
   <!-- Barra ricerca ospiti -->
   <div class="card" style="padding:12px 14px;margin-bottom:8px">
-    <h2 style="font-size:14px;font-weight:600;margin-bottom:10px">🎖 Fidelity — Database Ospiti</h2>
+    <h2 style="font-size:14px;font-weight:600;margin-bottom:10px">🔍 Cerca Ospite</h2>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <input type="text" id="fidQ" placeholder="Nome, email, telefono…" style="flex:1;min-width:160px"
         oninput="fidSearchDebounce()" onkeydown="if(event.key==='Enter')fidDoSearch()">
-      <button class="btn btn-g" style="font-size:12px" onclick="fidDoSearch()">🔍 Cerca</button>
+      <button class="btn btn-g" style="font-size:12px" onclick="fidDoSearch()">Cerca</button>
     </div>
     <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap">
       <button class="ftab active" data-ft="all" onclick="fidSetType(this,'all')">Tutti</button>
@@ -826,76 +842,65 @@ textarea{resize:vertical;min-height:54px}
     </div>
   </div>
 
-  <!-- Alert pre-arrivo -->
-  <div id="fidAlertsBar" class="hidden">
-    <div class="card" style="border-left:3px solid var(--amber);padding:10px 14px;margin-bottom:8px">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="font-size:12px;font-weight:600;color:var(--at)">🔔 Ospiti noti in arrivo oggi/domani</div>
-        <button class="btn" style="font-size:11px;padding:3px 8px" onclick="document.getElementById('fidAlertsBar').classList.add('hidden')">✕</button>
-      </div>
-      <div id="fidAlertsBarList" style="margin-top:6px;font-size:12px"></div>
-    </div>
-  </div>
-
-  <!-- Coda approvazione -->
-  <div id="fidQueueBar" class="hidden">
-    <div class="card" style="border-left:3px solid var(--red);padding:10px 14px;margin-bottom:8px">
-      <div style="font-size:12px;font-weight:600;color:var(--rt)">📋 Note in attesa di approvazione: <span id="fidQueueCount">0</span></div>
-      <div id="fidQueueList" style="margin-top:8px"></div>
-    </div>
-  </div>
-
   <!-- Risultati ricerca -->
   <div id="fidResults">
-    <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px">
+    <div style="text-align:center;padding:30px 20px;color:var(--muted);font-size:13px">
       Digita un nome, email o telefono per cercare un ospite
     </div>
   </div>
 
   <!-- Scheda ospite -->
   <div id="fidCard" class="hidden">
-    <div class="card" style="border-left:3px solid var(--green)">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
-        <div>
-          <div id="fidCardName" style="font-size:17px;font-weight:600"></div>
-          <div id="fidCardMeta" style="font-size:12px;color:var(--muted);margin-top:3px"></div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <!-- Header scheda -->
+      <div style="background:var(--green);padding:14px 16px;color:#fff">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+          <div>
+            <div id="fidCardName" style="font-size:18px;font-weight:700;line-height:1.2"></div>
+            <div id="fidCardMeta" style="font-size:12px;opacity:.85;margin-top:3px"></div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span id="fidCardBadge" style="background:rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap"></span>
+            <button onclick="fidCloseCard()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+          </div>
         </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
-          <span id="fidCardBadge" class="badge bg-g"></span>
-          <button class="btn" style="font-size:11px;padding:4px 10px" onclick="fidCloseCard()">✕</button>
-        </div>
+        <!-- Statistiche rapide -->
+        <div id="fidCardStats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px"></div>
       </div>
-      <div id="fidCardInfo" style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;font-size:12px"></div>
-      <div style="margin-top:12px;border-top:1px solid var(--bord);padding-top:10px">
-        <details class="std-details" open>
-          <summary>🛏 Soggiorni</summary>
-          <div class="std-details-body"><div id="fidCardSoggiorni" style="font-size:12px"></div></div>
-        </details>
-        <details class="std-details" open>
-          <summary>📝 Note</summary>
-          <div class="std-details-body">
-            <div id="fidCardNote" style="font-size:12px;margin-bottom:10px"></div>
-            <div style="border-top:1px solid var(--bord);padding-top:8px">
-              <label class="lbl">Aggiungi nota → va in coda approvazione</label>
-              <select id="fidNoteType" style="margin-bottom:6px;font-size:12px">
-                <option value="preferenza">Preferenza</option>
-                <option value="vip">⭐ VIP</option>
-                <option value="attenzione">⚠ Attenzione</option>
-                <option value="compleanno">🎂 Compleanno</option>
-                <option value="anniversario">💍 Anniversario</option>
-                <option value="generale">Generale</option>
-              </select>
-              <div style="display:flex;gap:6px;align-items:flex-start">
-                <textarea id="fidNoteText" placeholder="Testo della nota…" style="flex:1;min-height:56px;font-size:12px"></textarea>
-                <button class="btn btn-g" style="flex-shrink:0;font-size:12px" onclick="fidAddNote()">Invia</button>
-              </div>
+      <!-- Body scheda -->
+      <div style="padding:14px 16px">
+        <!-- Info contatti -->
+        <div id="fidCardInfo" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;font-size:12px"></div>
+        <!-- Tabs -->
+        <div style="display:flex;gap:0;border-bottom:1px solid var(--bord);margin-bottom:12px">
+          <button class="fid-tab active" data-tab="soggiorni" onclick="fidTabSwitch(this,'soggiorni')">🛏 Soggiorni</button>
+          <button class="fid-tab" data-tab="note" onclick="fidTabSwitch(this,'note')">📝 Note</button>
+          <button class="fid-tab" data-tab="ricorrenze" onclick="fidTabSwitch(this,'ricorrenze')">📅 Ricorrenze</button>
+        </div>
+        <div id="fidTabSoggiorni" class="fid-tab-pane">
+          <div id="fidCardSoggiorni" style="font-size:12px"></div>
+        </div>
+        <div id="fidTabNote" class="fid-tab-pane hidden">
+          <div id="fidCardNote" style="font-size:12px;margin-bottom:12px"></div>
+          <div style="border-top:1px solid var(--bord);padding-top:10px">
+            <label class="lbl">Aggiungi nota</label>
+            <select id="fidNoteType" style="margin-bottom:6px;font-size:12px;width:100%">
+              <option value="preferenza">Preferenza</option>
+              <option value="vip">⭐ VIP</option>
+              <option value="attenzione">⚠ Attenzione</option>
+              <option value="compleanno">🎂 Compleanno</option>
+              <option value="anniversario">💍 Anniversario</option>
+              <option value="generale">Generale</option>
+            </select>
+            <div style="display:flex;gap:6px;align-items:flex-start">
+              <textarea id="fidNoteText" placeholder="Testo della nota…" style="flex:1;min-height:56px;font-size:12px"></textarea>
+              <button class="btn btn-g" style="flex-shrink:0;font-size:12px" onclick="fidAddNote()">Invia</button>
             </div>
           </div>
-        </details>
-        <details class="std-details">
-          <summary>📅 Ricorrenze</summary>
-          <div class="std-details-body"><div id="fidCardRicorrenze" style="font-size:12px"></div></div>
-        </details>
+        </div>
+        <div id="fidTabRicorrenze" class="fid-tab-pane hidden">
+          <div id="fidCardRicorrenze" style="font-size:12px"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -8702,16 +8707,88 @@ create policy "insert_all" on note_ospite for insert with check (true);
 var fidFilterType = 'all';
 var fidCurrentOspiteId = null;
 var fidSearchTimer = null;
+var fidArriviOffset = 0; // 0=oggi, -1=ieri, +1=domani
 
 // Inizializza pannello Fidelity
 function fidInit(){
-  // Mostra SQL nel blocco
   var el = document.getElementById('fidSqlBlock');
   if(el) el.textContent = FID_SQL;
-  // Pre-arrivo auto
-  fidCheckPreArrivo();
-  // Coda pendente
+  fidArriviOffset = 0;
+  fidLoadArrivi();
   fidLoadQueueBadge();
+}
+
+// Navigazione arrivi
+function fidArriviNav(delta){
+  fidArriviOffset += delta;
+  fidLoadArrivi();
+}
+
+async function fidLoadArrivi(){
+  var lbl = document.getElementById('fidArriviLabel');
+  var lst = document.getElementById('fidArriviList');
+  if(!lbl||!lst) return;
+  var d = new Date(); d.setDate(d.getDate()+fidArriviOffset);
+  var iso = d.toISOString().slice(0,10);
+  var giorni = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+  var mesi = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+  var label = fidArriviOffset===0?'Oggi'
+    :fidArriviOffset===1?'Domani'
+    :fidArriviOffset===-1?'Ieri'
+    :(giorni[d.getDay()]+' '+d.getDate()+' '+mesi[d.getMonth()]);
+  lbl.textContent = label;
+  lst.innerHTML='<span style="color:var(--muted)">Caricamento…</span>';
+
+  // Cerca soggiorni con check_in = data selezionata, porta nome ospite
+  var sogg = await sbFid('soggiorni','select=id,check_in,check_out,camera,canale,note,ospiti(id,nome,email,telefono,n_soggiorni,tags)&check_in=eq.'+iso+'&order=camera.asc&limit=20');
+
+  if(sogg===null){
+    lst.innerHTML='<span style="color:var(--red);font-size:12px">Errore connessione DB</span>';
+    return;
+  }
+  if(sogg.length===0){
+    lst.innerHTML='<span style="color:var(--muted);font-size:12px">Nessun arrivo in questa data</span>';
+    return;
+  }
+
+  lst.innerHTML = sogg.map(function(s){
+    var o = s.ospiti||{};
+    var tags = o.tags||[];
+    var isVip = tags.includes('vip');
+    var isAtt = tags.includes('attenzione');
+    var nSogg = o.n_soggiorni||0;
+    var livello = nSogg>=10?'🏠 Famiglia Baia'
+      :nSogg>=5?'💙 Amico di Baia'
+      :nSogg>=2?'🔄 Ritorno'
+      :'👋 Benvenuto';
+    var camNotti = '';
+    if(s.camera) camNotti+='📍 Cam.'+s.camera+' ';
+    if(s.check_out){
+      var ci=new Date(s.check_in); var co=new Date(s.check_out);
+      var notti=Math.round((co-ci)/86400000);
+      camNotti+=notti+'n';
+    }
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bord);cursor:pointer" onclick="fidOpenCard(\''+o.id+'\')">'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">'
+      +escHtml(o.nome||'—')
+      +(isVip?'<span style="color:#f59e0b;font-size:11px">⭐</span>':'')
+      +(isAtt?'<span style="color:var(--red);font-size:11px">⚠</span>':'')
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--muted)">'+camNotti+(s.canale?' · '+s.canale:'')+'</div>'
+      +'</div>'
+      +'<div style="font-size:11px;color:var(--muted);white-space:nowrap">'+livello+'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// Tab switch nella scheda ospite
+function fidTabSwitch(btn, tab){
+  document.querySelectorAll('.fid-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.fid-tab-pane').forEach(function(p){p.classList.add('hidden');});
+  var pane = document.getElementById('fidTab'+tab.charAt(0).toUpperCase()+tab.slice(1));
+  if(pane) pane.classList.remove('hidden');
 }
 
 function fidCopySql(){
@@ -8803,19 +8880,39 @@ async function fidOpenCard(id){
   document.getElementById('fidCardName').textContent = o.nome;
   document.getElementById('fidCardMeta').textContent = (o.email||'') + (o.telefono?' · '+o.telefono:'') + ' · '+flagLang(o.lingua);
 
-  var badge = document.getElementById('fidCardBadge');
   var tags = o.tags||[];
-  if(tags.includes('vip')){ badge.textContent='⭐ VIP'; badge.className='badge bg-p'; }
-  else if(tags.includes('attenzione')){ badge.textContent='⚠ Attenzione'; badge.className='badge bg-r'; }
-  else if(o.n_soggiorni>4){ badge.textContent='Ospite abituale'; badge.className='badge bg-g'; }
-  else{ badge.textContent=o.n_soggiorni+' soggiorni'; badge.className='badge bg-gr'; }
+  var badge = document.getElementById('fidCardBadge');
+  var nSogg = o.n_soggiorni||0;
+  if(tags.includes('vip')){ badge.textContent='⭐ VIP'; }
+  else if(tags.includes('attenzione')){ badge.textContent='⚠ Attenzione'; }
+  else if(nSogg>=10){ badge.textContent='🏠 Famiglia Baia'; }
+  else if(nSogg>=5){ badge.textContent='💙 Amico di Baia'; }
+  else if(nSogg>=2){ badge.textContent='🔄 Ritorno'; }
+  else{ badge.textContent='👋 Prima volta'; }
 
+  // Statistiche rapide nell'header
+  var stats = document.getElementById('fidCardStats');
+  if(stats) stats.innerHTML =
+    '<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
+    +'<div style="font-size:18px;font-weight:700">'+nSogg+'</div>'
+    +'<div style="font-size:10px;opacity:.8">Soggiorni</div></div>'
+    +'<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
+    +'<div style="font-size:14px;font-weight:600">'+(o.primo_soggiorno?o.primo_soggiorno.slice(0,4):'—')+'</div>'
+    +'<div style="font-size:10px;opacity:.8">Dal</div></div>'
+    +'<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
+    +'<div style="font-size:14px;font-weight:600">'+(o.ultimo_soggiorno||'—')+'</div>'
+    +'<div style="font-size:10px;opacity:.8">Ultimo</div></div>';
+
+  // Info contatti (chips)
   var info = document.getElementById('fidCardInfo');
-  info.innerHTML =
-    '<div><span style="color:var(--muted)">Primo soggiorno: </span>'+(o.primo_soggiorno||'—')+'</div>'
-    +'<div><span style="color:var(--muted)">Ultimo: </span>'+(o.ultimo_soggiorno||'—')+'</div>'
-    +'<div><span style="color:var(--muted)">Soggiorni totali: </span>'+o.n_soggiorni+'</div>'
-    +'<div><span style="color:var(--muted)">Lingua: </span>'+flagLang(o.lingua)+'</div>';
+  info.innerHTML = ''
+    +(o.email?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">✉ '+escHtml(o.email)+'</span>':'')
+    +(o.telefono?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">📞 '+escHtml(o.telefono)+'</span>':'')
+    +(o.lingua?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">'+flagLang(o.lingua)+'</span>':'');
+
+  // Reset tabs
+  document.querySelectorAll('.fid-tab').forEach(function(b,i){b.classList.toggle('active',i===0);});
+  document.querySelectorAll('.fid-tab-pane').forEach(function(p,i){p.classList.toggle('hidden',i!==0);});
 
   // Soggiorni
   var sogg = await sbFid('soggiorni','select=*&ospite_id=eq.'+id+'&order=check_in.desc&limit=10');

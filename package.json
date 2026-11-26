@@ -1,0 +1,16 @@
+{
+  "name": "hba-fidelity-sync",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Sync email IMAP → Supabase Fidelity DB per Hotel Baia Azzurra",
+  "scripts": {
+    "sync": "node sync.mjs",
+    "sync:30": "node sync.mjs --days 30",
+    "sync:all": "node sync.mjs --days 365"
+  },
+  "dependencies": {
+    "imap": "^0.8.19",
+    "mailparser": "^3.6.5",
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

@@ -1,0 +1,41 @@
+name: Fidelity Email Sync
+
+on:
+  schedule:
+    # Ogni giorno alle 06:00 UTC (08:00 ora italiana)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Quanti giorni di email analizzare'
+        required: false
+        default: '7'
+        type: string
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installa dipendenze
+        run: npm install
+
+      - name: Esegui sync email → Fidelity DB
+        env:
+          IMAP_HOST: ${{ secrets.IMAP_HOST }}
+          IMAP_PORT: ${{ secrets.IMAP_PORT }}
+          IMAP_USER: ${{ secrets.IMAP_USER }}
+          IMAP_PASS: ${{ secrets.IMAP_PASS }}
+          SUPA_URL: ${{ secrets.SUPA_FIDELITY_URL }}
+          SUPA_KEY: ${{ secrets.SUPA_FIDELITY_SERVICE_KEY }}
+        run: node sync.mjs --days ${{ github.event.inputs.days || '7' }}
