@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>HBA — Hotel Baia Azzurra</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   /* ── Alpine Minimal palette ── */
@@ -64,6 +64,151 @@ textarea{resize:vertical;min-height:54px}
 .fid-tab{padding:7px 12px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-family:var(--font);transition:all .12s}
 .fid-tab.active{color:var(--green);border-bottom-color:var(--green)}
 .fid-tab-pane{min-height:60px}
+/* ── Fidelity premium UI ── */
+:root{
+  --fid-lake:#1F3A4D;--fid-azure:#3A7CA5;--fid-azure-soft:#E3EEF5;
+  --fid-sand:#F6F2EC;--fid-line:#E4DED5;--fid-gold:#B08D57;
+  --fid-ok:#2E7D5B;--fid-warn:#B4532A;
+}
+.fid-wrap{font-family:'DM Sans',system-ui,sans-serif}
+.fid-brand{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;color:var(--fid-lake);letter-spacing:.3px}
+/* Arrivi */
+.fid-arr-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.fid-arr-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;line-height:1.1;color:var(--fid-lake);font-weight:600;margin:0}
+.fid-arr-sub{display:block;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--muted);font-weight:400;margin-top:3px}
+.fid-datenav{display:flex;gap:5px;align-items:center;margin-bottom:4px}
+.fid-datenav button{border:1px solid var(--fid-line);background:#fff;color:var(--fid-lake);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+.fid-datenav button.on,.fid-datenav button:hover{background:var(--fid-lake);color:#fff;border-color:var(--fid-lake)}
+.fid-arr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.fid-arr-card{background:#fff;border:1px solid var(--fid-line);border-radius:12px;box-shadow:0 1px 3px rgba(31,58,77,.06),0 4px 12px rgba(31,58,77,.06);padding:14px 15px;display:flex;flex-direction:column;gap:7px}
+.fid-arr-top{display:flex;gap:10px;align-items:center}
+.fid-avatar{flex:none;border-radius:50%;display:grid;place-items:center;font-weight:600;color:#fff}
+.fid-arr-name-btn{border:0;background:none;padding:0;font-weight:600;font-size:15px;color:var(--fid-lake);text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif}
+.fid-arr-name-btn:hover{color:var(--fid-azure);text-decoration:underline}
+.fid-arr-sub-txt{font-size:11.5px;color:var(--muted)}
+.fid-visit{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.fid-visit.first{background:#E8F4EE;color:var(--fid-ok)}
+.fid-visit.again{background:var(--fid-azure-soft);color:var(--fid-azure)}
+.fid-visit.habit{background:var(--fid-lake);color:#F3E7CF}
+.fid-arr-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.fid-arr-req{background:#FFF8EC;border:1px solid #F3E2C2;border-radius:8px;padding:6px 9px;font-size:12.5px}
+.fid-arr-req .s{font-size:10px;color:#8A5A12;font-weight:600;margin-right:3px}
+.fid-arr-pref{font-size:12.5px;color:var(--fid-lake)}
+.fid-arr-last{font-size:11.5px;color:var(--muted)}
+.fid-chip{background:var(--fid-azure-soft);color:var(--fid-lake);font-size:12px;padding:4px 9px;border-radius:999px;display:inline-block}
+.fid-chip.kitchen{background:#FBEFE9;color:var(--fid-warn)}
+.fid-arr-empty{background:#fff;border:1px dashed var(--fid-line);border-radius:12px;padding:20px;text-align:center;color:var(--muted);font-size:13px}
+/* Search */
+.fid-search-wrap{position:relative;background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(31,58,77,.05),0 4px 12px rgba(31,58,77,.06);display:flex;align-items:center;padding:5px 5px 5px 14px;border:1px solid var(--fid-line);margin-bottom:5px}
+.fid-search-wrap input{flex:1;border:0;outline:0;font:inherit;font-size:16px;padding:10px 10px;background:transparent;color:var(--fid-lake)}
+.fid-search-wrap input::placeholder{color:var(--muted)}
+.fid-search-clear{border:0;background:transparent;color:var(--muted);padding:7px 9px;border-radius:8px;display:none;cursor:pointer}
+/* Grid ospiti */
+.fid-grid{display:grid;grid-template-columns:320px 1fr;gap:14px;margin-top:14px;align-items:start}
+@media(max-width:820px){.fid-grid{grid-template-columns:1fr}}
+.fid-results-box{background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(31,58,77,.06),0 4px 12px rgba(31,58,77,.06);border:1px solid var(--fid-line);overflow:hidden}
+.fid-res-head{padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--fid-line);font-weight:600}
+.fid-res-btn{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:transparent;padding:11px 14px;border-bottom:1px solid var(--fid-line);cursor:pointer;transition:background .1s}
+.fid-res-btn:last-child{border-bottom:0}
+.fid-res-btn:hover,.fid-res-btn.active{background:var(--fid-azure-soft)}
+.fid-tier{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.fid-tier.t1{background:#EEF2F5;color:#4A5A68}
+.fid-tier.t2{background:var(--fid-azure-soft);color:var(--fid-azure)}
+.fid-tier.t3{background:#F3EBDD;color:#8C6A35}
+.fid-tier.t4{background:var(--fid-lake);color:#F3E7CF}
+/* Scheda ospite */
+.fid-detail-wrap{min-width:0}
+.fid-back-btn{display:none;align-items:center;gap:5px;border:0;background:transparent;color:var(--fid-azure);padding:4px 0 10px;font-weight:500;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif}
+.fid-card{background:#fff;border-radius:12px;box-shadow:0 1px 2px rgba(31,58,77,.06),0 4px 12px rgba(31,58,77,.06);border:1px solid var(--fid-line);margin-bottom:14px;overflow:hidden}
+.fid-hero{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:18px 20px 0}
+.fid-hero h2{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1.05;margin:0;color:var(--fid-lake);font-weight:600}
+.fid-hero-line{color:var(--muted);font-size:13px;margin-top:3px;display:flex;flex-wrap:wrap;gap:3px 12px}
+.fid-hero-line a{color:var(--fid-azure);text-decoration:none}
+.fid-flags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.fid-flag{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--fid-line);color:var(--muted);background:#fff}
+.fid-flag.ok{border-color:#BFE0CF;color:var(--fid-ok);background:#F1F9F5}
+.fid-flag.next{border-color:#BBD3E3;color:var(--fid-azure);background:var(--fid-azure-soft)}
+.fid-stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:14px 20px}
+@media(max-width:600px){.fid-stats-row{grid-template-columns:repeat(2,1fr)}}
+.fid-stat{background:var(--fid-sand);border-radius:10px;padding:11px}
+.fid-stat .v{font-size:19px;font-weight:600;color:var(--fid-lake);line-height:1.1}
+.fid-stat .l{font-size:10.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+.fid-tabs-bar{display:flex;border-bottom:1px solid var(--fid-line);padding:0 20px}
+.fid-tabb{padding:9px 13px;font-size:12.5px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-family:'DM Sans',sans-serif;transition:all .12s}
+.fid-tabb.active{color:var(--fid-azure);border-bottom-color:var(--fid-azure)}
+.fid-tab-body{padding:16px 20px;min-height:60px}
+/* Timeline */
+.fid-tl{list-style:none;padding:0;position:relative}
+.fid-tl:before{content:"";position:absolute;left:13px;top:5px;bottom:5px;width:2px;background:var(--fid-line)}
+.fid-tl li{position:relative;padding:0 0 16px 40px}
+.fid-tl li:last-child{padding-bottom:0}
+.fid-tl .dot{position:absolute;left:3px;top:1px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:#fff;border:2px solid var(--fid-azure);color:var(--fid-azure)}
+.fid-tl .dot.ok{border-color:var(--fid-ok);color:var(--fid-ok)}
+.fid-tl .dot.warn{border-color:var(--fid-warn);color:var(--fid-warn)}
+.fid-tl .dot.muted{border-color:var(--muted);color:var(--muted)}
+.fid-tl .tit{font-weight:600;font-size:13px}
+.fid-tl .tit .when{font-weight:400;color:var(--muted);font-size:12px;margin-left:5px}
+.fid-tl .desc{color:var(--muted);font-size:12px;margin-top:1px}
+.fid-tl .req-box{margin-top:5px;background:var(--fid-sand);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--fid-lake)}
+.fid-src{font-size:10px;font-weight:600;padding:1px 6px;border-radius:5px;background:#EEF2F5;color:#4A5A68;margin-left:5px;vertical-align:1px}
+/* Filtri TL */
+.fid-filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.fid-filters button{border:1px solid var(--fid-line);background:#fff;color:var(--muted);padding:4px 10px;border-radius:999px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.fid-filters button.on{background:var(--fid-lake);border-color:var(--fid-lake);color:#fff}
+/* Note staff */
+.fid-note-area{width:100%;min-height:80px;border:1px solid var(--fid-line);border-radius:9px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;resize:vertical;background:#fff;color:var(--fid-lake)}
+.fid-note-area:focus{outline:2px solid var(--fid-azure-soft);border-color:var(--fid-azure)}
+.fid-save-btn{border:0;background:var(--fid-lake);color:#fff;padding:8px 15px;border-radius:9px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px}
+.fid-welcome{text-align:center;padding:44px 20px;color:var(--muted);background:#fff;border-radius:12px;border:1px solid var(--fid-line)}
+.fid-welcome h2{font-family:'Cormorant Garamond',Georgia,serif;color:var(--fid-lake);font-size:28px;margin:0 0 6px}
+.fid-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.fid-two{grid-template-columns:1fr}}
+/* Arrivi card */
+.fid-arr-card{background:#fff;border:1px solid var(--fid-line);border-radius:12px;padding:14px;cursor:pointer;transition:box-shadow .15s,transform .1s}
+.fid-arr-card:hover{box-shadow:0 4px 16px rgba(31,58,77,.12);transform:translateY(-1px)}
+.fid-arr-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.fid-arr-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0}
+.fid-arr-info{flex:1;min-width:0}
+.fid-arr-name{font-weight:600;font-size:14px;color:var(--fid-lake);line-height:1.3}
+.fid-arr-meta{font-size:12px;color:var(--fid-lake);opacity:.6;margin-top:2px}
+.fid-arr-req{font-size:12px;color:var(--fid-lake);opacity:.8;background:var(--fid-azure-soft);border-radius:6px;padding:5px 8px;margin-bottom:8px}
+.fid-arr-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fid-arr-chip{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--fid-azure-soft);color:var(--fid-lake);font-size:14px;text-decoration:none;border:none;cursor:pointer}
+/* Result list */
+.fid-res-btn{display:flex;align-items:center;gap:10px;width:100%;background:none;border:none;border-bottom:1px solid var(--fid-line);padding:10px 12px;cursor:pointer;text-align:left;transition:background .12s}
+.fid-res-btn:hover,.fid-res-btn.active{background:var(--fid-azure-soft)}
+.fid-res-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0}
+.fid-res-info{flex:1;min-width:0}
+.fid-res-name{font-size:13px;font-weight:600;color:var(--fid-lake)}
+.fid-res-sub{font-size:11px;color:var(--fid-lake);opacity:.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fid-res-empty{padding:24px 16px;text-align:center;font-size:13px;color:var(--fid-lake);opacity:.5}
+/* Detail card */
+.fid-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--fid-line)}
+.fid-hero{padding:20px;color:#fff}
+.fid-hero-avatar{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;color:#fff;flex-shrink:0}
+.fid-hero-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;margin:0;font-weight:600}
+.fid-stats-row{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--fid-line)}
+.fid-stat{padding:12px 8px;text-align:center}
+.fid-stat-n{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;color:var(--fid-lake);line-height:1}
+.fid-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--fid-lake);opacity:.6;margin-top:3px}
+.fid-tabb{background:none;border:none;border-bottom:2px solid transparent;padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--fid-lake);opacity:.6;cursor:pointer;white-space:nowrap}
+.fid-tabb.active{opacity:1;border-bottom-color:var(--fid-azure);font-weight:600}
+.fid-dtab{padding:0}
+/* Timeline */
+.fid-tl{padding:14px 16px}
+.fid-tl-item{display:flex;gap:12px;padding-bottom:16px;position:relative}
+.fid-tl-item:before{content:'';position:absolute;left:7px;top:16px;bottom:0;width:1px;background:var(--fid-line)}
+.fid-tl-item:last-child:before{display:none}
+.fid-tl-dot{width:14px;height:14px;border-radius:50%;background:var(--fid-azure);border:2px solid #fff;box-shadow:0 0 0 1px var(--fid-azure);flex-shrink:0;margin-top:3px}
+.fid-tl-dot.first{background:var(--fid-gold)}
+.fid-tl-body{flex:1;min-width:0}
+.fid-tl-date{font-size:13px;font-weight:600;color:var(--fid-lake)}
+.fid-tl-meta{font-size:12px;color:var(--fid-lake);opacity:.7;margin-top:2px}
+.fid-tl-note{font-size:12px;background:var(--fid-sand);border-radius:6px;padding:5px 8px;margin-top:6px}
+.fid-tl-empty{padding:24px 16px;text-align:center;font-size:13px;color:var(--fid-lake);opacity:.5}
+.fid-sec{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 10px;font-weight:600}
+.fid-divider{height:1px;background:var(--fid-line);margin:4px 0 16px}
+.fid-hint{color:var(--muted);font-size:12px;margin:5px 3px 0}
 .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
 .sc{background:#FFFFFF;border:1px solid var(--bord);border-radius:var(--rl2);padding:14px 12px;text-align:center}
 .sn{font-family:var(--font-disp);font-size:26px;font-weight:400;line-height:1.1;color:var(--text)}
@@ -811,98 +956,48 @@ textarea{resize:vertical;min-height:54px}
 </div></div>
 
 <!-- FIDELITY -->
-<div id="tFidelity" class="tc hidden"><div class="page">
+<div id="tFidelity" class="tc hidden"><div class="page fid-wrap">
 
-  <!-- Arrivi di oggi -->
-  <div class="card" style="margin-bottom:10px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div style="font-size:14px;font-weight:600">🛬 Arrivi</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="fidArriviNav(-1)">‹</button>
-        <span id="fidArriviLabel" style="font-size:12px;font-weight:500;min-width:80px;text-align:center"></span>
-        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="fidArriviNav(+1)">›</button>
+  <!-- ── Arrivi del giorno ── -->
+  <section style="margin-bottom:6px">
+    <div class="fid-arr-head">
+      <h2 class="fid-arr-title"><span id="fidArrTitle">Arrivi di oggi</span><small class="fid-arr-sub" id="fidArrSub"></small></h2>
+      <div class="fid-datenav">
+        <button id="fidDPrev" onclick="fidArriviNav(-1)" aria-label="Giorno precedente">‹</button>
+        <button id="fidDToday" class="on" onclick="fidArriviNav(0,true)">Oggi</button>
+        <button id="fidDTomorrow" onclick="fidArriviNav(0,false,1)">Domani</button>
+        <button id="fidDNext" onclick="fidArriviNav(+1)" aria-label="Giorno successivo">›</button>
       </div>
     </div>
-    <div id="fidArriviList" style="font-size:12px;color:var(--muted)">Caricamento…</div>
-  </div>
+    <div id="fidArriviList" class="fid-arr-grid"><div class="fid-arr-empty">Caricamento…</div></div>
+  </section>
 
-  <!-- Barra ricerca ospiti -->
-  <div class="card" style="padding:12px 14px;margin-bottom:8px">
-    <h2 style="font-size:14px;font-weight:600;margin-bottom:10px">🔍 Cerca Ospite</h2>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <input type="text" id="fidQ" placeholder="Nome, email, telefono…" style="flex:1;min-width:160px"
-        oninput="fidSearchDebounce()" onkeydown="if(event.key==='Enter')fidDoSearch()">
-      <button class="btn btn-g" style="font-size:12px" onclick="fidDoSearch()">Cerca</button>
-    </div>
-    <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap">
-      <button class="ftab active" data-ft="all" onclick="fidSetType(this,'all')">Tutti</button>
-      <button class="ftab" data-ft="vip" onclick="fidSetType(this,'vip')">⭐ VIP</button>
-      <button class="ftab" data-ft="ricorrenza" onclick="fidSetType(this,'ricorrenza')">📅 Ricorrenze</button>
-      <button class="ftab" data-ft="attenzione" onclick="fidSetType(this,'attenzione')">⚠ Attenzione</button>
-    </div>
-  </div>
+  <div class="fid-divider"></div>
 
-  <!-- Risultati ricerca -->
-  <div id="fidResults">
-    <div style="text-align:center;padding:30px 20px;color:var(--muted);font-size:13px">
-      Digita un nome, email o telefono per cercare un ospite
-    </div>
+  <!-- ── Ricerca ── -->
+  <div class="fid-search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--muted);flex:none"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="fidQ" type="search" placeholder="Cerca per nome, cognome, email o telefono…" autocomplete="off"
+      oninput="fidSearchDebounce()" onkeydown="if(event.key==='Enter')fidDoSearch()">
+    <button id="fidClearBtn" class="fid-search-clear" onclick="fidClearSearch()" aria-label="Cancella">✕</button>
   </div>
+  <div class="fid-hint">Puoi scrivere solo una parte: «ross», «+49 172». Maiuscole e accenti non contano.</div>
 
-  <!-- Scheda ospite -->
-  <div id="fidCard" class="hidden">
-    <div class="card" style="padding:0;overflow:hidden">
-      <!-- Header scheda -->
-      <div style="background:var(--green);padding:14px 16px;color:#fff">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
-          <div>
-            <div id="fidCardName" style="font-size:18px;font-weight:700;line-height:1.2"></div>
-            <div id="fidCardMeta" style="font-size:12px;opacity:.85;margin-top:3px"></div>
-          </div>
-          <div style="display:flex;gap:6px;align-items:center">
-            <span id="fidCardBadge" style="background:rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap"></span>
-            <button onclick="fidCloseCard()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
-          </div>
-        </div>
-        <!-- Statistiche rapide -->
-        <div id="fidCardStats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px"></div>
+  <!-- ── Griglia risultati + scheda ── -->
+  <div id="fidGrid" class="fid-grid">
+    <aside class="fid-results-box">
+      <div class="fid-res-head" id="fidResHead">Ospiti</div>
+      <div id="fidResults">
+        <div style="padding:28px 16px;text-align:center;color:var(--muted);font-size:13px">Scrivi almeno una lettera per cercare.</div>
       </div>
-      <!-- Body scheda -->
-      <div style="padding:14px 16px">
-        <!-- Info contatti -->
-        <div id="fidCardInfo" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;font-size:12px"></div>
-        <!-- Tabs -->
-        <div style="display:flex;gap:0;border-bottom:1px solid var(--bord);margin-bottom:12px">
-          <button class="fid-tab active" data-tab="soggiorni" onclick="fidTabSwitch(this,'soggiorni')">🛏 Soggiorni</button>
-          <button class="fid-tab" data-tab="note" onclick="fidTabSwitch(this,'note')">📝 Note</button>
-          <button class="fid-tab" data-tab="ricorrenze" onclick="fidTabSwitch(this,'ricorrenze')">📅 Ricorrenze</button>
-        </div>
-        <div id="fidTabSoggiorni" class="fid-tab-pane">
-          <div id="fidCardSoggiorni" style="font-size:12px"></div>
-        </div>
-        <div id="fidTabNote" class="fid-tab-pane hidden">
-          <div id="fidCardNote" style="font-size:12px;margin-bottom:12px"></div>
-          <div style="border-top:1px solid var(--bord);padding-top:10px">
-            <label class="lbl">Aggiungi nota</label>
-            <select id="fidNoteType" style="margin-bottom:6px;font-size:12px;width:100%">
-              <option value="preferenza">Preferenza</option>
-              <option value="vip">⭐ VIP</option>
-              <option value="attenzione">⚠ Attenzione</option>
-              <option value="compleanno">🎂 Compleanno</option>
-              <option value="anniversario">💍 Anniversario</option>
-              <option value="generale">Generale</option>
-            </select>
-            <div style="display:flex;gap:6px;align-items:flex-start">
-              <textarea id="fidNoteText" placeholder="Testo della nota…" style="flex:1;min-height:56px;font-size:12px"></textarea>
-              <button class="btn btn-g" style="flex-shrink:0;font-size:12px" onclick="fidAddNote()">Invia</button>
-            </div>
-          </div>
-        </div>
-        <div id="fidTabRicorrenze" class="fid-tab-pane hidden">
-          <div id="fidCardRicorrenze" style="font-size:12px"></div>
-        </div>
+    </aside>
+
+    <main class="fid-detail-wrap" id="fidDetail">
+      <div class="fid-welcome">
+        <h2>Cerca un ospite</h2>
+        <div style="font-size:13px">Inserisci nome, cognome o email per vedere soggiorni, richieste e preferenze.</div>
       </div>
-    </div>
+    </main>
   </div>
 
 </div></div><!-- end tFidelity -->
@@ -8692,7 +8787,18 @@ create policy "insert_all" on note_ospite for insert with check (true);
 var fidFilterType = 'all';
 var fidCurrentOspiteId = null;
 var fidSearchTimer = null;
-var fidArriviOffset = 0; // 0=oggi, -1=ieri, +1=domani
+var fidArriviOffset = 0;
+var fidTlFilter = 'all';
+var FID_GIORNI=['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+var FID_MESI=['gennaio','febbraio','marzo','aprile','maggio','giugno','luglio','agosto','settembre','ottobre','novembre','dicembre'];
+var FID_MESI_S=['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
+var FID_COLORS=['#1F3A4D','#3A7CA5','#B08D57','#5B8C7A','#8A6FA8','#C0704F'];
+function fidColor(id){ var s=String(id);var n=0;for(var i=0;i<s.length;i++)n+=s.charCodeAt(i);return FID_COLORS[n%FID_COLORS.length]; }
+function fidInitials(nome){ var p=(nome||'').split(' ');return ((p[0]||'')[0]||'').toUpperCase()+((p[1]||'')[0]||'').toUpperCase(); }
+function fidFmtD(d){ if(!d)return'—';var x=new Date(d+'T00:00:00');return x.getDate()+' '+FID_MESI_S[x.getMonth()]+' '+x.getFullYear(); }
+function fidFmtShort(d){ var x=new Date(d+'T00:00:00');return x.getDate()+' '+FID_MESI_S[x.getMonth()]; }
+function fidNotti(ci,co){ return Math.round((new Date(co+'T00:00:00')-new Date(ci+'T00:00:00'))/86400000); }
+function fidTierFor(n){ if(n>=10)return{key:'t4',icon:'◆',label:'Famiglia Baia'}; if(n>=5)return{key:'t3',icon:'★',label:'Amico di Baia'}; if(n>=2)return{key:'t2',icon:'↺',label:'Ritorno'}; return{key:'t1',icon:'•',label:'Nuovo'}; }
 
 // Inizializza pannello Fidelity
 function fidInit(){
@@ -8704,25 +8810,30 @@ function fidInit(){
 }
 
 // Navigazione arrivi
-function fidArriviNav(delta){
-  fidArriviOffset += delta;
+function fidArriviNav(delta, goToday, goTomorrow){
+  if(goToday) fidArriviOffset=0;
+  else if(goTomorrow) fidArriviOffset=1;
+  else fidArriviOffset += delta;
   fidLoadArrivi();
 }
 
 async function fidLoadArrivi(){
-  var lbl = document.getElementById('fidArriviLabel');
   var lst = document.getElementById('fidArriviList');
-  if(!lbl||!lst) return;
+  var title = document.getElementById('fidArrTitle');
+  var sub = document.getElementById('fidArrSub');
+  if(!lst) return;
   var d = new Date(); d.setDate(d.getDate()+fidArriviOffset);
-  var iso = d.toISOString().slice(0,10);
-  var giorni = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
-  var mesi = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
-  var label = fidArriviOffset===0?'Oggi'
-    :fidArriviOffset===1?'Domani'
-    :fidArriviOffset===-1?'Ieri'
-    :(giorni[d.getDay()]+' '+d.getDate()+' '+mesi[d.getMonth()]);
-  lbl.textContent = label;
-  lst.innerHTML='<span style="color:var(--muted)">Caricamento…</span>';
+  var iso = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  var diff = fidArriviOffset;
+  var titleTxt = diff===0?'Arrivi di oggi':diff===1?'Arrivi di domani':diff===-1?'Arrivi di ieri':'Arrivi';
+  if(title) title.textContent = titleTxt;
+  var subTxt = FID_GIORNI[d.getDay()]+' '+d.getDate()+' '+FID_MESI[d.getMonth()]+' '+d.getFullYear();
+  // aggiorna bottoni nav
+  var dToday=document.getElementById('fidDToday'),dTomorrow=document.getElementById('fidDTomorrow');
+  if(dToday) dToday.classList.toggle('on',diff===0);
+  if(dTomorrow) dTomorrow.classList.toggle('on',diff===1);
+  if(sub) sub.textContent = ' · '+subTxt;
+  lst.innerHTML='<div class="fid-arr-empty">Caricamento…</div>';
 
   // Cerca soggiorni con check_in = data selezionata, porta nome ospite
   var sogg = await sbFid('soggiorni','select=id,check_in,check_out,camera,canale,note,ospiti(id,nome,email,telefono,n_soggiorni,tags)&check_in=eq.'+iso+'&order=camera.asc&limit=20');
@@ -8742,38 +8853,33 @@ async function fidLoadArrivi(){
     var isVip = tags.includes('vip');
     var isAtt = tags.includes('attenzione');
     var nSogg = o.n_soggiorni||0;
-    var livello = nSogg>=10?'🏠 Famiglia Baia'
-      :nSogg>=5?'💙 Amico di Baia'
-      :nSogg>=2?'🔄 Ritorno'
-      :'👋 Benvenuto';
-    var camNotti = '';
-    if(s.camera) camNotti+='📍 Cam.'+s.camera+' ';
-    if(s.check_out){
-      var ci=new Date(s.check_in); var co=new Date(s.check_out);
-      var notti=Math.round((co-ci)/86400000);
-      camNotti+=notti+'n';
-    }
-    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bord);cursor:pointer" onclick="fidOpenCard(\''+o.id+'\')">'
-      +'<div style="flex:1;min-width:0">'
-      +'<div style="font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">'
-      +escHtml(o.nome||'—')
-      +(isVip?'<span style="color:#f59e0b;font-size:11px">⭐</span>':'')
-      +(isAtt?'<span style="color:var(--red);font-size:11px">⚠</span>':'')
+    var tier = fidTierFor(nSogg);
+    var notti = s.check_out ? fidNotti(s.check_in, s.check_out) : 0;
+    var visitCls = nSogg===0?'first':nSogg<5?'again':'habit';
+    var visitLabel = nSogg===0?'Prima visita':nSogg<5?'Ritorno':'Habitué';
+    var color = fidColor(o.id||s.id);
+    var initials = fidInitials(o.nome||'?');
+    return '<div class="fid-arr-card" onclick="fidOpenCard(\''+o.id+'\')">'
+      +'<div class="fid-arr-top">'
+      +'<div class="fid-arr-avatar" style="background:'+color+'">'+initials+'</div>'
+      +'<div class="fid-arr-info">'
+      +'<div class="fid-arr-name">'+escHtml(o.nome||'—')
+        +(isVip?' <span style="color:#B08D57">⭐</span>':'')
+        +(isAtt?' <span style="color:#B4532A">⚠</span>':'')+'</div>'
+      +'<div class="fid-arr-meta">'
+        +(s.camera?'Cam. '+s.camera+' · ':'')+notti+'n · '+fidFmtShort(s.check_in)+' → '+fidFmtShort(s.check_out)
       +'</div>'
-      +'<div style="font-size:11px;color:var(--muted)">'+camNotti+(s.canale?' · '+s.canale:'')+'</div>'
       +'</div>'
-      +'<div style="font-size:11px;color:var(--muted);white-space:nowrap">'+livello+'</div>'
+      +'<span class="fid-visit '+visitCls+'">'+visitLabel+'</span>'
+      +'</div>'
+      +(s.note?'<div class="fid-arr-req">📋 '+escHtml(s.note)+'</div>':'')
+      +'<div class="fid-arr-footer">'
+      +'<span class="fid-tier '+tier.key+'">'+tier.icon+' '+tier.label+'</span>'
+      +(o.email?'<a href="mailto:'+escHtml(o.email)+'" class="fid-arr-chip" onclick="event.stopPropagation()">✉</a>':'')
+      +(o.telefono?'<a href="tel:'+escHtml(o.telefono)+'" class="fid-arr-chip" onclick="event.stopPropagation()">📞</a>':'')
+      +'</div>'
       +'</div>';
   }).join('');
-}
-
-// Tab switch nella scheda ospite
-function fidTabSwitch(btn, tab){
-  document.querySelectorAll('.fid-tab').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  document.querySelectorAll('.fid-tab-pane').forEach(function(p){p.classList.add('hidden');});
-  var pane = document.getElementById('fidTab'+tab.charAt(0).toUpperCase()+tab.slice(1));
-  if(pane) pane.classList.remove('hidden');
 }
 
 function fidCopySql(){
@@ -8783,184 +8889,251 @@ function fidCopySql(){
   });
 }
 
-function fidSetType(btn, type){
-  document.querySelectorAll('[data-ft]').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  fidFilterType = type;
-  var q = (document.getElementById('fidQ')||{}).value||'';
-  if(q.length >= 2) fidDoSearch();
+function fidClearSearch(){
+  var q = document.getElementById('fidQ');
+  if(q) q.value = '';
+  var clr = document.getElementById('fidClearBtn');
+  if(clr) clr.style.display='none';
+  var res = document.getElementById('fidResults');
+  var head = document.getElementById('fidResHead');
+  if(res) res.innerHTML='<div class="fid-res-empty">Digita almeno 2 caratteri</div>';
+  if(head) head.textContent='Ospiti';
+  fidRestoreWelcome();
 }
 
 function fidSearchDebounce(){
+  var q = (document.getElementById('fidQ')||{}).value||'';
+  var clr = document.getElementById('fidClearBtn');
+  if(clr) clr.style.display = q.length>0?'flex':'none';
   clearTimeout(fidSearchTimer);
-  fidSearchTimer = setTimeout(fidDoSearch, 400);
+  fidSearchTimer = setTimeout(fidDoSearch, 350);
 }
 
 async function fidDoSearch(){
   var q = (document.getElementById('fidQ')||{}).value||'';
   var res = document.getElementById('fidResults');
+  var head = document.getElementById('fidResHead');
   if(!res) return;
   if(q.length < 2){
-    res.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:13px">Digita almeno 2 caratteri</div>';
+    res.innerHTML = '<div class="fid-res-empty">Digita almeno 2 caratteri</div>';
+    if(head) head.textContent='Ospiti';
     return;
   }
-  res.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">Ricerca in corso…</div>';
+  res.innerHTML = '<div class="fid-res-empty">Ricerca in corso…</div>';
 
   var qEnc = encodeURIComponent(q);
-  var filter = '';
-  if(fidFilterType === 'vip') filter = '&tags=cs.%7Bvip%7D';
-  else if(fidFilterType === 'attenzione') filter = '&tags=cs.%7Battenzione%7D';
-
-  // Cerca per nome, email, telefono con OR
-  var params = 'select=*&or=(nome.ilike.*'+qEnc+'*,email.ilike.*'+qEnc+'*,telefono.ilike.*'+qEnc+'*)'+filter+'&limit=20&order=ultimo_soggiorno.desc.nullslast';
-
+  var params = 'select=*&or=(nome.ilike.*'+qEnc+'*,email.ilike.*'+qEnc+'*,telefono.ilike.*'+qEnc+'*)&limit=25&order=ultimo_soggiorno.desc.nullslast';
   var data = await sbFid('ospiti', params);
 
   if(data === null){
-    res.innerHTML = '<div style="text-align:center;padding:30px;color:var(--red);font-size:13px">Errore connessione Fidelity DB.<br><span style="font-size:11px;color:var(--muted)">'+escHtml(_fidLastError||'Errore sconosciuto')+'</span></div>';
+    res.innerHTML = '<div class="fid-res-empty" style="color:var(--fid-warn)">Errore connessione DB</div>';
     return;
   }
   if(data.length === 0){
-    res.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px">Nessun ospite trovato per "'+q+'"</div>';
+    res.innerHTML = '<div class="fid-res-empty">Nessun ospite trovato</div>';
+    if(head) head.textContent='0 risultati';
     return;
   }
+  if(head) head.textContent=data.length+' ospite'+(data.length===1?'':'i');
 
-  // Se cerco per tipo nota devo filtrare lato client (nota)
-  var html = '';
-  data.forEach(function(o){
-    var tags = (o.tags||[]);
-    var tagHtml = tags.map(function(t){
-      var cls = t==='vip'?'bg-p':t==='attenzione'?'bg-r':'bg-gr';
-      return '<span class="badge '+cls+'" style="font-size:10px">'+t+'</span>';
-    }).join(' ');
-    var sogLabel = o.n_soggiorni>0
-      ? o.n_soggiorni+' sogg. · ultimo '+(o.ultimo_soggiorno||'—')
-      : 'Nessun soggiorno registrato';
-    html += '<div class="card" style="padding:10px 14px;cursor:pointer;margin-bottom:6px" onclick="fidOpenCard(\''+o.id+'\')">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
-      +'<div>'
-      +'<div style="font-size:13px;font-weight:600">'+escHtml(o.nome)+'</div>'
-      +'<div style="font-size:11px;color:var(--muted);margin-top:2px">'+(o.email||'')+(o.telefono?' · '+o.telefono:'')+'</div>'
+  res.innerHTML = data.map(function(o){
+    var nSogg = o.n_soggiorni||0;
+    var tier = fidTierFor(nSogg);
+    var tags = o.tags||[];
+    var isVip = tags.includes('vip');
+    var isAtt = tags.includes('attenzione');
+    var color = fidColor(o.id);
+    var initials = fidInitials(o.nome);
+    return '<button class="fid-res-btn" onclick="fidOpenCard(\''+o.id+'\')">'
+      +'<div class="fid-res-avatar" style="background:'+color+'">'+initials+'</div>'
+      +'<div class="fid-res-info">'
+      +'<div class="fid-res-name">'+escHtml(o.nome)
+        +(isVip?' ⭐':'')+(isAtt?' ⚠':'')+'</div>'
+      +'<div class="fid-res-sub">'+(o.email||o.telefono||'—')+'</div>'
       +'</div>'
-      +'<div style="text-align:right;flex-shrink:0">'
-      +(tagHtml?'<div style="margin-bottom:3px">'+tagHtml+'</div>':'')
-      +'<div style="font-size:11px;color:var(--muted)">'+sogLabel+'</div>'
-      +'</div>'
-      +'</div>'
-      +'</div>';
-  });
-  res.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-bottom:6px">'+data.length+' risultat'+(data.length===1?'o':'i')+'</div>'+html;
+      +'<span class="fid-tier '+tier.key+'">'+tier.icon+'</span>'
+      +'</button>';
+  }).join('');
+}
+
+function fidRestoreWelcome(){
+  var detail = document.getElementById('fidDetail');
+  if(detail) detail.innerHTML='<div class="fid-welcome"><h2>Cerca un ospite</h2><p>Digita nome, cognome, email o numero di telefono nella barra di ricerca per trovare la scheda di un ospite e visualizzare soggiorni, note e preferenze.</p></div>';
+  // remove active from results
+  document.querySelectorAll('.fid-res-btn').forEach(function(b){b.classList.remove('active');});
+  fidCurrentOspiteId = null;
 }
 
 async function fidOpenCard(id){
   fidCurrentOspiteId = id;
-  document.getElementById('fidResults').style.opacity = '0.4';
-  document.getElementById('fidCard').classList.remove('hidden');
+  // mark active in results
+  document.querySelectorAll('.fid-res-btn').forEach(function(b){b.classList.remove('active');});
+  var active = document.querySelector('.fid-res-btn[onclick*="\''+id+'\'"]');
+  if(active) active.classList.add('active');
 
-  // Carica ospite
-  var ospiti = await sbFid('ospiti','select=*&id=eq.'+id);
+  var detail = document.getElementById('fidDetail');
+  if(detail) detail.innerHTML='<div class="fid-welcome"><p style="color:var(--fid-azure)">Caricamento…</p></div>';
+
+  // Carica ospite + soggiorni + note + ricorrenze in parallelo
+  var [ospiti, sogg, note, ric] = await Promise.all([
+    sbFid('ospiti','select=*&id=eq.'+id),
+    sbFid('soggiorni','select=*&ospite_id=eq.'+id+'&order=check_in.desc&limit=50'),
+    sbFid('note_ospite','select=*&ospite_id=eq.'+id+'&stato=eq.approvata&order=data.desc&limit=30'),
+    sbFid('ricorrenze','select=*&ospite_id=eq.'+id+'&order=data_ricorrenza.asc')
+  ]);
+
   var o = ospiti && ospiti[0];
-  if(!o){ document.getElementById('fidCardName').textContent='Errore caricamento'; return; }
-
-  document.getElementById('fidCardName').textContent = o.nome;
-  document.getElementById('fidCardMeta').textContent = (o.email||'') + (o.telefono?' · '+o.telefono:'') + ' · '+flagLang(o.lingua);
+  if(!o){ if(detail) detail.innerHTML='<div class="fid-welcome"><p style="color:var(--fid-warn)">Errore caricamento ospite.</p></div>'; return; }
 
   var tags = o.tags||[];
-  var badge = document.getElementById('fidCardBadge');
   var nSogg = o.n_soggiorni||0;
-  if(tags.includes('vip')){ badge.textContent='⭐ VIP'; }
-  else if(tags.includes('attenzione')){ badge.textContent='⚠ Attenzione'; }
-  else if(nSogg>=10){ badge.textContent='🏠 Famiglia Baia'; }
-  else if(nSogg>=5){ badge.textContent='💙 Amico di Baia'; }
-  else if(nSogg>=2){ badge.textContent='🔄 Ritorno'; }
-  else{ badge.textContent='👋 Prima volta'; }
+  var tier = fidTierFor(nSogg);
+  var color = fidColor(o.id);
+  var initials = fidInitials(o.nome);
 
-  // Statistiche rapide nell'header
-  var stats = document.getElementById('fidCardStats');
-  if(stats) stats.innerHTML =
-    '<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
-    +'<div style="font-size:18px;font-weight:700">'+nSogg+'</div>'
-    +'<div style="font-size:10px;opacity:.8">Soggiorni</div></div>'
-    +'<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
-    +'<div style="font-size:14px;font-weight:600">'+(o.primo_soggiorno?o.primo_soggiorno.slice(0,4):'—')+'</div>'
-    +'<div style="font-size:10px;opacity:.8">Dal</div></div>'
-    +'<div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px;text-align:center">'
-    +'<div style="font-size:14px;font-weight:600">'+(o.ultimo_soggiorno||'—')+'</div>'
-    +'<div style="font-size:10px;opacity:.8">Ultimo</div></div>';
+  // Calcola notti totali
+  var totNotti = (sogg||[]).reduce(function(acc,s){ return acc + (s.check_out?fidNotti(s.check_in,s.check_out):0); }, 0);
+  // Anni come ospite
+  var anni = o.primo_soggiorno ? (new Date().getFullYear() - new Date(o.primo_soggiorno+'T00:00:00').getFullYear()) : 0;
 
-  // Info contatti (chips)
-  var info = document.getElementById('fidCardInfo');
-  var chipStyle = 'background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px;text-decoration:none;color:inherit;display:inline-block';
-  info.innerHTML = ''
-    +(o.email?'<a href="mailto:'+escHtml(o.email)+'" style="'+chipStyle+'">✉ '+escHtml(o.email)+'</a>':'')
-    +(o.telefono?'<a href="tel:'+escHtml(o.telefono)+'" style="'+chipStyle+'">📞 '+escHtml(o.telefono)+'</a>':'')
-    +(o.lingua?'<span style="'+chipStyle+'">'+flagLang(o.lingua)+'</span>':'');
+  var chipStyle2 = 'display:inline-flex;align-items:center;gap:5px;background:var(--fid-azure-soft);color:var(--fid-lake);border-radius:20px;padding:4px 12px;font-size:12px;text-decoration:none;border:none';
 
-  // Reset tabs
-  document.querySelectorAll('.fid-tab').forEach(function(b,i){b.classList.toggle('active',i===0);});
-  document.querySelectorAll('.fid-tab-pane').forEach(function(p,i){p.classList.toggle('hidden',i!==0);});
+  var html = '<div class="fid-card">'
+    // Hero
+    +'<div class="fid-hero" style="background:'+color+'">'
+    +'<div style="display:flex;align-items:center;gap:14px">'
+    +'<div class="fid-hero-avatar">'+initials+'</div>'
+    +'<div>'
+    +'<h2 class="fid-hero-name">'+escHtml(o.nome)+'</h2>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">'
+    +(tags.includes('vip')?'<span class="fid-tier t4" style="background:rgba(255,255,255,.2)">⭐ VIP</span>':'')
+    +(tags.includes('attenzione')?'<span class="fid-tier t1" style="background:rgba(255,100,50,.35)">⚠ Attenzione</span>':'')
+    +'<span class="fid-tier '+tier.key+'" style="background:rgba(255,255,255,.2)">'+tier.icon+' '+tier.label+'</span>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    // Stats bar
+    +'<div class="fid-stats-row">'
+    +'<div class="fid-stat"><div class="fid-stat-n">'+nSogg+'</div><div class="fid-stat-l">Soggiorni</div></div>'
+    +'<div class="fid-stat"><div class="fid-stat-n">'+totNotti+'</div><div class="fid-stat-l">Notti</div></div>'
+    +'<div class="fid-stat"><div class="fid-stat-n">'+(o.primo_soggiorno?o.primo_soggiorno.slice(0,4):'—')+'</div><div class="fid-stat-l">Dal</div></div>'
+    +'<div class="fid-stat"><div class="fid-stat-n">'+(o.ultimo_soggiorno?fidFmtShort(o.ultimo_soggiorno):'—')+'</div><div class="fid-stat-l">Ultimo</div></div>'
+    +'<div class="fid-stat"><div class="fid-stat-n">'+(anni>0?anni+'a':'—')+'</div><div class="fid-stat-l">Fedeltà</div></div>'
+    +'</div>'
+    // Contatti
+    +'<div style="padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--fid-line)">'
+    +(o.email?'<a href="mailto:'+escHtml(o.email)+'" style="'+chipStyle2+'">✉ '+escHtml(o.email)+'</a>':'')
+    +(o.telefono?'<a href="tel:'+escHtml(o.telefono)+'" style="'+chipStyle2+'">📞 '+escHtml(o.telefono)+'</a>':'')
+    +(o.lingua?'<span style="'+chipStyle2+'">'+flagLang(o.lingua)+'</span>':'')
+    +'</div>'
+    // Tabs
+    +'<div class="fid-tabs-bar">'
+    +'<button class="fid-tabb active" onclick="fidDetailTab(this,\'storico\')">Storico</button>'
+    +'<button class="fid-tabb" onclick="fidDetailTab(this,\'note\')">Note'+(note&&note.length?' ('+note.length+')':'')+'</button>'
+    +'<button class="fid-tabb" onclick="fidDetailTab(this,\'ricorrenze\')">Ricorrenze'+(ric&&ric.length?' ('+ric.length+')':'')+'</button>'
+    +'<button class="fid-tabb" onclick="fidDetailTab(this,\'aggiungi\')">+ Nota</button>'
+    +'</div>'
+    // Tab storico
+    +'<div id="fidDTabStorico" class="fid-dtab">'
+    +(fidRenderStorico(sogg||[]))
+    +'</div>'
+    // Tab note
+    +'<div id="fidDTabNote" class="fid-dtab hidden">'
+    +(fidRenderNote(note||[]))
+    +'</div>'
+    // Tab ricorrenze
+    +'<div id="fidDTabRicorrenze" class="fid-dtab hidden">'
+    +(fidRenderRicorrenze(ric||[]))
+    +'</div>'
+    // Tab aggiungi nota
+    +'<div id="fidDTabAggiungi" class="fid-dtab hidden" style="padding:16px">'
+    +'<div style="font-size:13px;font-weight:600;color:var(--fid-lake);margin-bottom:10px">Aggiungi nota</div>'
+    +'<select id="fidNoteType" style="width:100%;padding:8px;border:1px solid var(--fid-line);border-radius:8px;margin-bottom:8px;font-size:13px">'
+    +'<option value="preferenza">Preferenza</option><option value="allergia">Allergia</option>'
+    +'<option value="compleanno">Compleanno</option><option value="anniversario">Anniversario</option>'
+    +'<option value="vip">VIP</option><option value="attenzione">Attenzione</option><option value="altro">Altro</option>'
+    +'</select>'
+    +'<textarea id="fidNoteText" placeholder="Testo della nota…" style="width:100%;padding:8px;border:1px solid var(--fid-line);border-radius:8px;font-size:13px;min-height:80px;resize:vertical;box-sizing:border-box"></textarea>'
+    +'<button onclick="fidAddNote()" style="margin-top:10px;padding:8px 20px;background:var(--fid-lake);color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit">Invia nota</button>'
+    +'<div id="fidNoteMsg" style="margin-top:8px;font-size:12px"></div>'
+    +'</div>'
+    +'</div>';
 
-  // Soggiorni
-  var sogg = await sbFid('soggiorni','select=*&ospite_id=eq.'+id+'&order=check_in.desc&limit=10');
-  var sEl = document.getElementById('fidCardSoggiorni');
-  if(!sogg||sogg.length===0){ sEl.innerHTML='<span style="color:var(--muted)">Nessun soggiorno registrato</span>'; }
-  else{
-    sEl.innerHTML = sogg.map(function(s){
-      return '<div style="padding:5px 0;border-bottom:1px solid var(--bord)">'
-        +'<span style="font-weight:500">'+s.check_in+' → '+s.check_out+'</span>'
-        +(s.camera?' &nbsp;📍 Cam. '+s.camera:'')
-        +' &nbsp;<span class="badge bg-gr" style="font-size:10px">'+s.canale+'</span>'
-        +(s.note?'<br><span style="color:var(--muted);font-size:11px">'+escHtml(s.note)+'</span>':'')
-        +'</div>';
-    }).join('');
-  }
+  if(detail) detail.innerHTML = html;
+}
 
-  // Note approvate
-  var note = await sbFid('note_ospite','select=*&ospite_id=eq.'+id+'&stato=eq.approvata&order=data.desc&limit=20');
-  var nEl = document.getElementById('fidCardNote');
-  if(!note||note.length===0){ nEl.innerHTML='<span style="color:var(--muted)">Nessuna nota</span>'; }
-  else{
-    nEl.innerHTML = note.map(function(n){
-      var cls = n.tipo==='attenzione'?'bg-r':n.tipo==='vip'?'bg-p':n.tipo==='compleanno'||n.tipo==='anniversario'?'bg-a':'bg-gr';
-      return '<div style="padding:5px 0;border-bottom:1px solid var(--bord)">'
-        +'<span class="badge '+cls+'" style="font-size:10px;margin-right:6px">'+n.tipo+'</span>'
-        +escHtml(n.testo)
-        +'<span style="font-size:10px;color:var(--muted);margin-left:6px">'+n.data+'</span>'
-        +'</div>';
-    }).join('');
-  }
+function fidDetailTab(btn, name){
+  document.querySelectorAll('.fid-tabb').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.fid-dtab').forEach(function(p){p.classList.add('hidden');});
+  var el = document.getElementById('fidDTab'+name.charAt(0).toUpperCase()+name.slice(1));
+  if(el) el.classList.remove('hidden');
+}
 
-  // Ricorrenze
-  var ric = await sbFid('ricorrenze','select=*&ospite_id=eq.'+id+'&order=data_ricorrenza.asc');
-  var rEl = document.getElementById('fidCardRicorrenze');
-  if(!ric||ric.length===0){ rEl.innerHTML='<span style="color:var(--muted)">Nessuna ricorrenza registrata</span>'; }
-  else{
-    rEl.innerHTML = ric.map(function(r){
-      var today = new Date(); var d = new Date(r.data_ricorrenza);
-      var diff = Math.round((d-today)/86400000);
-      var prox = diff>=0&&diff<=14?'<span class="badge bg-a" style="font-size:10px;margin-left:6px">tra '+diff+'g</span>':'';
-      return '<div style="padding:5px 0;border-bottom:1px solid var(--bord)">'
-        +'<span style="font-weight:500">'+r.tipo+'</span> — '+r.data_ricorrenza+prox
-        +(r.note?'<br><span style="font-size:11px;color:var(--muted)">'+escHtml(r.note)+'</span>':'')
-        +'</div>';
-    }).join('');
-  }
+function fidRenderStorico(sogg){
+  if(!sogg||sogg.length===0) return '<div class="fid-tl-empty">Nessun soggiorno registrato</div>';
+  return '<div class="fid-tl">'+sogg.map(function(s,i){
+    var notti = s.check_out?fidNotti(s.check_in,s.check_out):0;
+    var isFirst = i===sogg.length-1;
+    return '<div class="fid-tl-item">'
+      +'<div class="fid-tl-dot'+(isFirst?' first':'')+'"></div>'
+      +'<div class="fid-tl-body">'
+      +'<div class="fid-tl-date">'+fidFmtD(s.check_in)+' → '+fidFmtD(s.check_out)+'</div>'
+      +'<div class="fid-tl-meta">'
+        +(s.camera?'📍 Camera '+s.camera+' · ':'')+notti+' nott'+(notti===1?'e':'i')
+        +(s.canale?' · '+s.canale:'')
+      +'</div>'
+      +(s.note?'<div class="fid-tl-note">'+escHtml(s.note)+'</div>':'')
+      +'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+}
 
-  // Scroll to card
-  document.getElementById('fidCard').scrollIntoView({behavior:'smooth',block:'start'});
+function fidRenderNote(note){
+  if(!note||note.length===0) return '<div class="fid-tl-empty">Nessuna nota approvata</div>';
+  var tipoStyle = {attenzione:'background:#FDF0EC;color:#B4532A',vip:'background:#F5F0FF;color:#6B46C1',compleanno:'background:#FFF9EC;color:#B08D57',anniversario:'background:#FFF9EC;color:#B08D57'};
+  return '<div style="padding:12px 16px">'+note.map(function(n){
+    var st = tipoStyle[n.tipo]||'background:var(--fid-azure-soft);color:var(--fid-lake)';
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--fid-line)">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'
+      +'<span style="'+st+';border-radius:12px;padding:2px 10px;font-size:11px;font-weight:600">'+n.tipo+'</span>'
+      +'<span style="font-size:11px;color:var(--fid-lake);opacity:.6">'+n.data+'</span>'
+      +'</div>'
+      +'<div style="font-size:13px">'+escHtml(n.testo)+'</div>'
+      +'</div>';
+  }).join('')+'</div>';
+}
+
+function fidRenderRicorrenze(ric){
+  if(!ric||ric.length===0) return '<div class="fid-tl-empty">Nessuna ricorrenza</div>';
+  var today = new Date();
+  return '<div style="padding:12px 16px">'+ric.map(function(r){
+    var d = new Date(r.data_ricorrenza+'T00:00:00');
+    var diff = Math.round((d-today)/86400000);
+    var prossima = diff>=0&&diff<=30?'<span style="background:#FFF9EC;color:#B08D57;border-radius:12px;padding:2px 10px;font-size:11px;margin-left:8px">tra '+diff+'g</span>':'';
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--fid-line)">'
+      +'<div style="display:flex;align-items:center">'
+      +'<span style="font-weight:600;color:var(--fid-lake)">'+r.tipo+'</span>'
+      +prossima
+      +'</div>'
+      +'<div style="font-size:12px;color:var(--fid-lake);opacity:.7;margin-top:2px">'+r.data_ricorrenza+'</div>'
+      +(r.note?'<div style="font-size:12px;margin-top:4px">'+escHtml(r.note)+'</div>':'')
+      +'</div>';
+  }).join('')+'</div>';
 }
 
 function fidCloseCard(){
-  document.getElementById('fidCard').classList.add('hidden');
-  document.getElementById('fidResults').style.opacity = '1';
-  fidCurrentOspiteId = null;
+  fidRestoreWelcome();
 }
 
 async function fidAddNote(){
   if(!fidCurrentOspiteId){ flash('Apri prima una scheda ospite','var(--red)'); return; }
-  var tipo = document.getElementById('fidNoteType').value;
-  var testo = (document.getElementById('fidNoteText').value||'').trim();
-  if(!testo){ flash('Scrivi il testo della nota','var(--red)'); return; }
+  var tipo = (document.getElementById('fidNoteType')||{}).value||'altro';
+  var testo = ((document.getElementById('fidNoteText')||{}).value||'').trim();
+  var msg = document.getElementById('fidNoteMsg');
+  if(!testo){ if(msg) msg.innerHTML='<span style="color:var(--fid-warn)">Scrivi il testo della nota</span>'; return; }
+  if(msg) msg.innerHTML='<span style="color:var(--fid-azure)">Invio…</span>';
 
   var res = await sbFidPost('note_ospite',{
     ospite_id: fidCurrentOspiteId,
@@ -8970,11 +9143,11 @@ async function fidAddNote(){
     stato: 'da_approvare'
   });
   if(res){
-    flash('Nota inviata in coda approvazione','var(--green)');
-    document.getElementById('fidNoteText').value = '';
+    if(msg) msg.innerHTML='<span style="color:var(--fid-ok)">✓ Nota inviata — in attesa di approvazione</span>';
+    var nt = document.getElementById('fidNoteText'); if(nt) nt.value='';
     fidLoadQueueBadge();
   } else {
-    flash('Errore invio nota','var(--red)');
+    if(msg) msg.innerHTML='<span style="color:var(--fid-warn)">Errore invio nota</span>';
   }
 }
 
