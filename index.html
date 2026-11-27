@@ -1147,23 +1147,8 @@ textarea{resize:vertical;min-height:54px}
 <div id="tStandard" class="tc hidden">
 <div class="page">
 
-  <!-- LOGIN STANDARD (default visibile) -->
-  <div id="sopLoginBlock" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:16px;min-height:300px">
-    <div style="font-size:48px">📋</div>
-    <div style="font-size:18px;font-weight:700;color:var(--text)">Standard Hotel Baia Azzurra</div>
-    <p style="font-size:13px;color:var(--muted);text-align:center;max-width:300px;line-height:1.6">
-      Accedi con il codice per leggere le procedure operative del team.
-    </p>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input type="password" id="sopPwdInput" placeholder="Codice staff" style="width:150px;font-size:16px;text-align:center;letter-spacing:0.2em" onkeydown="if(event.key==='Enter')sopLogin()">
-      <button onclick="sopLogin()" style="background:var(--accent);color:#FFFAF5;border:none;border-radius:var(--r);padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer">Entra →</button>
-    </div>
-    <div id="sopLoginErr" style="color:var(--red);font-size:12px;display:none">Codice non corretto.</div>
-    <div style="margin-top:8px;font-size:11px;color:var(--muted)">Chiedilo al tuo responsabile se non lo conosci.</div>
-  </div>
-
-  <!-- AREA SOP (nascosta fino al login) -->
-  <div id="sopArea" style="display:none">
+  <!-- AREA SOP (accessibile direttamente — l'app richiede già login) -->
+  <div id="sopArea">
     <!-- Link Standard Reception -->
     <div style="background:var(--g50);border:1px solid var(--bord2);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
       <div>
@@ -8905,10 +8890,11 @@ async function fidOpenCard(id){
 
   // Info contatti (chips)
   var info = document.getElementById('fidCardInfo');
+  var chipStyle = 'background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px;text-decoration:none;color:inherit;display:inline-block';
   info.innerHTML = ''
-    +(o.email?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">✉ '+escHtml(o.email)+'</span>':'')
-    +(o.telefono?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">📞 '+escHtml(o.telefono)+'</span>':'')
-    +(o.lingua?'<span style="background:var(--bg2);border:1px solid var(--bord);border-radius:20px;padding:3px 10px">'+flagLang(o.lingua)+'</span>':'');
+    +(o.email?'<a href="mailto:'+escHtml(o.email)+'" style="'+chipStyle+'">✉ '+escHtml(o.email)+'</a>':'')
+    +(o.telefono?'<a href="tel:'+escHtml(o.telefono)+'" style="'+chipStyle+'">📞 '+escHtml(o.telefono)+'</a>':'')
+    +(o.lingua?'<span style="'+chipStyle+'">'+flagLang(o.lingua)+'</span>':'');
 
   // Reset tabs
   document.querySelectorAll('.fid-tab').forEach(function(b,i){b.classList.toggle('active',i===0);});
@@ -9943,12 +9929,6 @@ function renderMagDelta(){
 
 /* ===== STANDARD RECEPTION 2027 ===== */
 async function initStandard(){
-  if(!_sopLoggedIn && typeof role!=='undefined' && role==='rec'){
-    _sopLoggedIn=true;
-    var lb=document.getElementById('sopLoginBlock'), ar=document.getElementById('sopArea');
-    if(lb) lb.style.display='none';
-    if(ar) ar.style.display='block';
-  }
   if(_sopLoggedIn){
     if(!_sopScreenDocs||!_sopScreenDocs.length){
       var docs=await supaGetKey('sopDocs');
@@ -10153,23 +10133,11 @@ function renderTodos(){
 // STANDARD / SOP
 // ══════════════════════════════════════
 var SOP_PWD='Gardesana33';
-var _sopLoggedIn=false;
+var _sopLoggedIn=true; // login rimosso — l'app richiede già autenticazione
 var _sopIsAdmin=false;
 var _sopScreenDocs=[];
 async function sopLogin(){
-  var v=document.getElementById('sopPwdInput').value;
-  if(v===SOP_PWD||v===ADMIN_PWD){
-    _sopLoggedIn=true;
-    _sopIsAdmin=(v===ADMIN_PWD);
-    document.getElementById('sopLoginBlock').style.display='none';
-    document.getElementById('sopArea').style.display='block';
-    if(_sopIsAdmin){var ab=document.getElementById('sopAdminBlock');if(ab)ab.style.display='block';}
-    var docs=await supaGetKey('sopDocs');
-    _sopScreenDocs=docs||[];
-    renderSopDocs('tutti');
-  } else {
-    document.getElementById('sopLoginErr').style.display='block';
-  }
+  // mantenuto per compatibilità — non più in uso
 }
 var _sopCurCat='tutti';
 function sopCat(cat,btn){
