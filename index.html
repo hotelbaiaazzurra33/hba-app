@@ -9981,6 +9981,23 @@ function renderQr(){
 }
 
 /* ── Recensioni ── */
+function _getReviewUrl(id){
+  var inp=document.getElementById('qrurl_'+id);
+  var s=st(); var saved=s.qrReviewUrls||{};
+  var p=QR_REVIEWS.find(function(x){return x.id===id;})||{};
+  return (inp?inp.value.trim():'')||saved[id]||p.defaultUrl||'';
+}
+function previewReview(id){
+  var u=_getReviewUrl(id);
+  if(u) window.open(u,'_blank');
+  else alert('Imposta prima l\'URL');
+}
+function openReviewQr(id){
+  var p=QR_REVIEWS.find(function(x){return x.id===id;})||{name:id};
+  var u=_getReviewUrl(id);
+  if(u) openQrModal(p.name, u);
+  else alert('Imposta prima l\'URL');
+}
 function _renderQrReviews(){
   var el=document.getElementById('qrPresetList'); if(!el) return;
   var s=st(); var saved=s.qrReviewUrls||{};
@@ -9989,8 +10006,8 @@ function _renderQrReviews(){
     var d='<div style="background:var(--bg);border:1px solid var(--bord);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">';
     d+='<div style="display:flex;align-items:center;gap:8px">';
     d+='<div style="flex:1;font-size:13px;font-weight:500">'+escHtml(p.name)+'</div>';
-    d+='<button class="btn" style="font-size:11px" onclick="var u=document.getElementById(\'qrurl_'+p.id+'\').value||'+JSON.stringify(url)+';if(u)window.open(u,\'_blank\');else alert(\'Imposta prima l\\\'URL\')">👁 Vedi</button>';
-    d+='<button class="btn btn-b" style="font-size:11px" onclick="openQrModal('+JSON.stringify(p.name)+', document.getElementById(\'qrurl_'+p.id+'\').value||'+JSON.stringify(url)+')">QR</button>';
+    d+='<button class="btn" style="font-size:11px" onclick="previewReview('+JSON.stringify(p.id)+')">👁 Vedi</button>';
+    d+='<button class="btn btn-b" style="font-size:11px" onclick="openReviewQr('+JSON.stringify(p.id)+')">QR</button>';
     d+='</div>';
     d+='<div style="display:flex;gap:6px;align-items:center">';
     d+='<input id="qrurl_'+p.id+'" type="url" value="'+escHtml(url)+'" placeholder="https://..." style="flex:1;font-size:11px;padding:4px 8px;border:1px solid var(--bord);border-radius:6px;background:var(--bg2);color:var(--text)">';
