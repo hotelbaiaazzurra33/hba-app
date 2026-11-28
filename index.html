@@ -3102,14 +3102,6 @@ function pollRec(){updateStatusBar();updateTabBadges();
   });
   if(ch){sv(s);renderRec();}
 }
-  const s=st();
-  if(s.calls[role]) s.calls[role].active=false;
-  sv(s);
-  document.getElementById('callBanner').classList.remove('on');
-  var overlay=document.getElementById('urgentOverlay');
-  if(overlay) overlay.classList.remove('on');
-  stopNotifSound();
-}
 
 // ══ FLASH ══
 function flash(msg,bg){
@@ -3709,7 +3701,8 @@ function markReady(){
   renderCam();
 }
 
-// ══ CHIAMATE ══function callAll(){
+// ══ CHIAMATE ══
+function callAll(){
   const s=st(); const msg=document.getElementById('callMsg').value||'La reception ti chiama!';
   ['p1','p2','p3'].forEach(f=>s.calls[f]={active:true,msg}); sv(s);
   sendSlackIfOn('n_chiamata','📣 Avviso a *tutti i piani* — '+msg);
