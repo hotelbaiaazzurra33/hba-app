@@ -61,6 +61,7 @@ textarea{resize:vertical;min-height:54px}
 .ffilts{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
 .ftab{padding:4px 12px;border-radius:2px;font-size:11px;cursor:pointer;border:1px solid var(--bord2);color:var(--muted);background:transparent;font-family:var(--font);transition:all .12s}
 .ftab.active{background:var(--green);border-color:var(--gd);color:#fff}
+.std-cat-block{background:var(--surf,var(--bg));border:1px solid var(--bord);border-radius:10px;padding:12px 14px;margin-bottom:12px}
 .fid-tab{padding:7px 12px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;font-family:var(--font);transition:all .12s}
 .fid-tab.active{color:var(--green);border-bottom-color:var(--green)}
 .fid-tab-pane{min-height:60px}
@@ -515,6 +516,7 @@ textarea{resize:vertical;min-height:54px}
   <button class="tab" onclick="rTab('ev',this)"><span id="evTabLabel">EV</span></button>
   <button class="tab" onclick="rTab('email',this)">Email</button>
   <button class="tab" onclick="rTab('standard',this)">Standard</button>
+  <button class="tab" onclick="rTab('menu',this)">🍽 Menu</button>
   <button class="tab" onclick="rTab('qr',this)">📱 QR</button>
 </div>
 
@@ -538,6 +540,7 @@ textarea{resize:vertical;min-height:54px}
   <button class="nav-item" id="snav-standard" onclick="rTab('standard',this)">📋 Standard</button>
   <button class="nav-item" id="snav-fidelity" onclick="rTab('fidelity',this)">⭐ Fidelity</button>
   <button class="nav-item" id="snav-impost" onclick="rTab('impost',this)">⚙️ Impostazioni</button>
+  <button class="nav-item" id="snav-menu" onclick="rTab('menu',this)">🍽 Menu Ristorante</button>
   <button class="nav-item" id="snav-qr" onclick="rTab('qr',this)">📱 QR Code</button>
 </div>
 <div class="rec-content" id="recContent">
@@ -1090,6 +1093,25 @@ textarea{resize:vertical;min-height:54px}
 
 </div></div>
 
+<!-- ══ MENU RISTORANTE ══ -->
+<div id="tMenu" class="tc hidden"><div class="page">
+  <h1 class="page-title">🍽 Menu Ristorante</h1>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Seleziona un menu per visualizzarlo o scaricarlo. Clicca <strong>QR</strong> per generare il codice da mostrare al cliente.</p>
+
+  <div id="menuPageList" style="display:flex;flex-direction:column;gap:10px"></div>
+
+  <!-- Modal anteprima inline -->
+  <div id="menuPreviewModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:998;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:var(--bg);border-radius:14px;width:100%;max-width:900px;height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.3)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bord)">
+        <div id="menuPreviewTitle" style="font-size:15px;font-weight:600;color:var(--text)"></div>
+        <button onclick="closeMenuPreview()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:0 4px">✕</button>
+      </div>
+      <iframe id="menuPreviewFrame" src="" style="flex:1;border:none;width:100%;background:#fff"></iframe>
+    </div>
+  </div>
+</div></div>
+
 <!-- ══ QR CODE ══ -->
 <div id="tQr" class="tc hidden"><div class="page">
   <h1 class="page-title">📱 QR Code</h1>
@@ -1170,74 +1192,113 @@ textarea{resize:vertical;min-height:54px}
 <div id="tStandard" class="tc hidden">
 <div class="page">
 
-  <!-- AREA SOP (accessibile direttamente — l'app richiede già login) -->
-  <div id="sopArea">
-    <!-- Link Standard Reception -->
-    <div style="background:var(--g50);border:1px solid var(--bord2);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text)">📖 Standard Reception 2027</div>
-        <div style="font-size:11px;color:var(--muted)">Manuale completo procedure di reception</div>
+  <!-- Link manuale reception -->
+  <div style="background:var(--g50);border:1px solid var(--bord2);border-radius:var(--r);padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--text)">📖 Standard Reception 2027</div>
+      <div style="font-size:11px;color:var(--muted)">Manuale completo procedure di reception</div>
+    </div>
+    <button onclick="window.open('Standard_Reception_2027.html','_blank')" style="background:var(--green);color:#fff;border:none;border-radius:var(--r);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer">🔗 Scopri Standard</button>
+  </div>
+
+  <!-- Spinner caricamento -->
+  <div id="stdLoading" style="text-align:center;padding:30px;color:var(--muted);font-size:13px">⏳ Caricamento documenti…</div>
+
+  <!-- Sezioni per categoria — popolate da JS -->
+  <div id="stdSections" style="display:none">
+
+    <!-- SOP (procedure testuali) -->
+    <div style="margin-bottom:24px">
+      <h2 style="font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text)">📋 Procedure SOP</h2>
+      <!-- Filtro categorie SOP -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="ftab active" onclick="sopCat('tutti',this)">Tutti</button>
+        <button class="ftab" onclick="sopCat('reception',this)">🛎 Reception</button>
+        <button class="ftab" onclick="sopCat('cucina',this)">👨‍🍳 Cucina</button>
+        <button class="ftab" onclick="sopCat('servizio',this)">🍽 Servizio</button>
+        <button class="ftab" onclick="sopCat('generali',this)">🏨 Generali</button>
       </div>
-      <button onclick="window.open('Standard_Reception_2027.html','_blank')" style="background:var(--green);color:#fff;border:none;border-radius:var(--r);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer">🔗 Scopri Standard</button>
-    </div>
-
-    <!-- Categorie SOP -->
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-      <button class="ftab active" onclick="sopCat('tutti',this)">Tutti</button>
-      <button class="ftab" onclick="sopCat('reception',this)">🛎 Reception</button>
-      <button class="ftab" onclick="sopCat('cucina',this)">👨‍🍳 Cucina</button>
-      <button class="ftab" onclick="sopCat('servizio',this)">🍽 Servizio</button>
-      <button class="ftab" onclick="sopCat('generali',this)">🏨 Generali</button>
-    </div>
-    <div id="sopDocList"></div>
-
-    <!-- ADMIN: carica nuovo SOP -->
-    <div id="sopAdminBlock" style="display:none;margin-top:20px;border-top:2px solid var(--bord2);padding-top:16px">
-      <h3 style="font-size:14px;font-weight:600;margin-bottom:12px">⚙️ Gestione SOP (Admin)</h3>
-      <div style="display:grid;gap:8px;margin-bottom:12px">
-        <div><label class="lbl">Titolo SOP</label><input id="sopTitle" type="text" placeholder="Es: Procedura check-in"></div>
-        <div>
-          <label class="lbl">Categoria</label>
-          <select id="sopCatSel">
-            <option value="reception">Reception</option>
-            <option value="cucina">Cucina</option>
-            <option value="servizio">Servizio</option>
-            <option value="generali">Generali</option>
-          </select>
-        </div>
-        <div><label class="lbl">Contenuto / Testo</label><textarea id="sopContent" style="min-height:120px" placeholder="Descrivi la procedura step by step..."></textarea></div>
-        <button class="btn btn-g btn-full" onclick="saveSopDoc()">💾 Salva SOP</button>
-      </div>
-    </div>
-
-    <!-- MANUALI & FILE per categoria -->
-    <div style="margin-top:20px;border-top:2px solid var(--bord2);padding-top:16px">
-      <h3 style="font-size:14px;font-weight:600;margin-bottom:12px">📂 Manuali & File</h3>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Documenti PDF o HTML caricati per categoria. Clicca per aprire.</p>
-      <div id="sopFileList"></div>
-      <!-- Upload admin -->
-      <div id="sopFileAdminBlock" style="display:none;margin-top:12px">
-        <div style="display:grid;gap:8px">
-          <div><label class="lbl">Nome documento</label><input id="sopFileName" type="text" placeholder="Es: Procedura antincendio"></div>
-          <div><label class="lbl">Categoria</label>
-            <select id="sopFileCat">
-              <option value="reception">🛎 Reception</option>
-              <option value="cucina">👨‍🍳 Cucina</option>
-              <option value="servizio">🍽 Servizio</option>
-              <option value="generali">🏨 Generali</option>
-            </select>
+      <div id="sopDocList"></div>
+      <!-- ADMIN: aggiungi SOP testuale -->
+      <div id="sopAdminBlock" style="display:none;margin-top:12px">
+        <details style="border:1px solid var(--bord2);border-radius:var(--r)">
+          <summary style="padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)">⚙️ Aggiungi nuova procedura SOP</summary>
+          <div style="padding:12px 14px;display:grid;gap:8px">
+            <div><label class="lbl">Titolo</label><input id="sopTitle" type="text" placeholder="Es: Procedura check-in"></div>
+            <div><label class="lbl">Categoria</label>
+              <select id="sopCatSel">
+                <option value="reception">🛎 Reception</option>
+                <option value="cucina">👨‍🍳 Cucina</option>
+                <option value="servizio">🍽 Servizio</option>
+                <option value="generali">🏨 Generali</option>
+              </select>
+            </div>
+            <div><label class="lbl">Contenuto</label><textarea id="sopContent" style="min-height:100px" placeholder="Descrivi la procedura step by step…"></textarea></div>
+            <button class="btn btn-g" onclick="saveSopDoc()">💾 Salva SOP</button>
           </div>
-          <div><label class="lbl">File (PDF o HTML)</label>
-            <input type="file" id="sopFileInput" accept=".pdf,.html,.htm" style="font-size:13px">
-          </div>
-          <button class="btn btn-g" onclick="sopUploadFile()">📤 Carica file</button>
-          <div id="sopFileUploadStatus" style="font-size:12px;color:var(--muted)"></div>
-        </div>
+        </details>
       </div>
+    </div>
+
+    <!-- FILE per categoria -->
+    <div>
+      <h2 style="font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text)">📂 Manuali & Documenti</h2>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:14px">PDF e HTML caricati per reparto. Clicca <strong>Apri</strong> per visualizzare.</p>
+
+      <!-- Reception -->
+      <div class="std-cat-block">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">🛎 Reception</span>
+          <label id="stdUploadBtn-reception" class="btn" style="font-size:12px;cursor:pointer;display:none">
+            ➕ Carica file
+            <input type="file" accept=".pdf,.html,.htm" multiple style="display:none" onchange="sopUploadFiles(this,'reception')">
+          </label>
+        </div>
+        <div id="stdFiles-reception" style="min-height:28px"></div>
+      </div>
+
+      <!-- Cucina -->
+      <div class="std-cat-block">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">👨‍🍳 Cucina</span>
+          <label id="stdUploadBtn-cucina" class="btn" style="font-size:12px;cursor:pointer;display:none">
+            ➕ Carica file
+            <input type="file" accept=".pdf,.html,.htm" multiple style="display:none" onchange="sopUploadFiles(this,'cucina')">
+          </label>
+        </div>
+        <div id="stdFiles-cucina" style="min-height:28px"></div>
+      </div>
+
+      <!-- Servizio -->
+      <div class="std-cat-block">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">🍽 Servizio</span>
+          <label id="stdUploadBtn-servizio" class="btn" style="font-size:12px;cursor:pointer;display:none">
+            ➕ Carica file
+            <input type="file" accept=".pdf,.html,.htm" multiple style="display:none" onchange="sopUploadFiles(this,'servizio')">
+          </label>
+        </div>
+        <div id="stdFiles-servizio" style="min-height:28px"></div>
+      </div>
+
+      <!-- Generali -->
+      <div class="std-cat-block">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase">🏨 Generali</span>
+          <label id="stdUploadBtn-generali" class="btn" style="font-size:12px;cursor:pointer;display:none">
+            ➕ Carica file
+            <input type="file" accept=".pdf,.html,.htm" multiple style="display:none" onchange="sopUploadFiles(this,'generali')">
+          </label>
+        </div>
+        <div id="stdFiles-generali" style="min-height:28px"></div>
+      </div>
+
+      <!-- Status upload globale -->
+      <div id="stdUploadStatus" style="font-size:12px;color:var(--muted);margin-top:8px;display:none"></div>
     </div>
 
     <!-- ══ STORICO E BACKUP ══ -->
-    <div style="margin-top:20px;border-top:2px solid var(--bord2);padding-top:16px">
+    <div style="margin-top:24px;border-top:2px solid var(--bord2);padding-top:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <h2 style="font-size:15px;font-weight:500">📁 Storico e Backup</h2>
         <button class="btn btn-g" style="font-size:12px" onclick="saveBackup(true)">💾 Salva backup ora</button>
@@ -1253,7 +1314,7 @@ textarea{resize:vertical;min-height:54px}
       </div>
     </div>
 
-  </div><!-- end sopArea -->
+  </div><!-- end stdSections -->
 
   <!-- ══ SEZIONE ADMIN FIDELITY ══ (sempre visibile, fuori sopArea) -->
   <div style="margin-top:24px;border-top:2px solid var(--bord2);padding-top:16px">
@@ -3175,6 +3236,7 @@ function rTab(t,btn){
   if(t==='lostFound') renderLostFound();
   if(t==='email'){renderEmailTemplates();renderEmailOfferTemplates();renderBlocchi();fetchEmailHtmlCache();}
   if(t==='standard') initStandard();
+  if(t==='menu') renderMenuPage();
   if(t==='qr') renderQr();
 }
 // ══ RECEPTION CAMERE ══ (gestita da Slope PMS + app pulizie dedicata)
@@ -9526,15 +9588,34 @@ function renderMagDelta(){
 
 /* ===== STANDARD RECEPTION 2027 ===== */
 async function initStandard(){
-  if(_sopLoggedIn){
-    if(!_sopScreenDocs||!_sopScreenDocs.length){
-      var docs=await supaGetKey('sopDocs');
-      _sopScreenDocs=docs||[];
-    }
-    if(_sopIsAdmin){var ab=document.getElementById('sopAdminBlock');if(ab)ab.style.display='block';}
-    renderSopDocs(_sopCurCat);
-    sopLoadFiles();
+  // Mostra subito le sezioni (con placeholder) — non aspettare Supabase
+  var loading=document.getElementById('stdLoading');
+  var sections=document.getElementById('stdSections');
+  if(loading) loading.style.display='block';
+  if(sections) sections.style.display='none';
+
+  // Render immediato con dati già in cache (se presenti)
+  renderSopDocs(_sopCurCat);
+  renderSopFiles();
+
+  // Mostra sezioni subito, nascondi spinner
+  if(loading) loading.style.display='none';
+  if(sections) sections.style.display='block';
+
+  // Admin block
+  if(_sopIsAdmin){
+    var ab=document.getElementById('sopAdminBlock'); if(ab) ab.style.display='block';
+    var cats=['reception','cucina','servizio','generali'];
+    cats.forEach(function(c){var b=document.getElementById('stdUploadBtn-'+c);if(b)b.style.display='';});
   }
+
+  // Poi carica da Supabase in background e aggiorna
+  if(!_sopScreenDocs||!_sopScreenDocs.length){
+    var docs=await supaGetKey('sopDocs');
+    _sopScreenDocs=docs||[];
+    renderSopDocs(_sopCurCat);
+  }
+  await sopLoadFiles();
 }
 
 // ══ STANDARD SCREEN (login page) ══
@@ -9804,37 +9885,35 @@ async function sopLoadFiles(){
 }
 
 function renderSopFiles(){
-  var el=document.getElementById('sopFileList');
-  if(!el) return;
   var files=(_sopFiles||[]).slice();
-  // Raggruppa per categoria
   var cats=['reception','cucina','servizio','generali'];
-  var out='';
   cats.forEach(function(cat){
+    var el=document.getElementById('stdFiles-'+cat);
+    if(!el) return;
     var catFiles=files.filter(function(f){return f.cat===cat;});
-    out+='<div style="margin-bottom:14px">';
-    out+='<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">'+(_SOP_FILE_CAT_EMOJI[cat]||'')+'  '+(_SOP_FILE_CAT_LABEL[cat]||cat)+'</div>';
     if(!catFiles.length){
-      out+='<p style="font-size:12px;color:var(--muted);padding:4px 0">Nessun file caricato.</p>';
+      el.innerHTML='<p style="font-size:12px;color:var(--muted);padding:4px 0;margin:0">Nessun file caricato.</p>';
     } else {
-      catFiles.forEach(function(f){
+      el.innerHTML=catFiles.map(function(f){
         var ext=(f.name||'').split('.').pop().toLowerCase();
         var icon=ext==='pdf'?'📄':'🌐';
-        out+='<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surf);border:1px solid var(--bord2);border-radius:var(--r);margin-bottom:6px">'
-          +icon+' <span style="flex:1;font-size:13px;font-weight:500">'+escHtml(f.title||f.name)+'</span>'
-          +'<a href="'+escHtml(f.url)+'" target="_blank" style="font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 10px;text-decoration:none;font-weight:600">Apri</a>';
+        var row='<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surf,var(--bg));border:1px solid var(--bord2,var(--bord));border-radius:8px;margin-bottom:6px">';
+        row+=icon+' <span style="flex:1;font-size:13px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+escHtml(f.title||f.name)+'</span>';
+        row+='<a href="'+escHtml(f.url)+'" target="_blank" style="font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 10px;text-decoration:none;font-weight:600;white-space:nowrap">Apri</a>';
         if(_sopIsAdmin){
-          out+='<button onclick="sopDelFile(\''+f.id+'\')" style="font-size:11px;color:var(--red);border:none;background:none;cursor:pointer;padding:4px">🗑</button>';
+          row+='<button onclick="sopDelFile(\''+f.id+'\')" style="font-size:11px;color:var(--red);border:none;background:none;cursor:pointer;padding:4px 6px" title="Elimina">🗑</button>';
         }
-        out+='</div>';
-      });
+        row+='</div>';
+        return row;
+      }).join('');
     }
-    out+='</div>';
+    // Mostra pulsante upload per admin
+    var btn=document.getElementById('stdUploadBtn-'+cat);
+    if(btn) btn.style.display=_sopIsAdmin?'':'none';
   });
-  el.innerHTML=out;
-  // Mostra blocco upload se admin
-  var adminBlock=document.getElementById('sopFileAdminBlock');
-  if(adminBlock) adminBlock.style.display=_sopIsAdmin?'block':'none';
+  // Mostra status upload
+  var st2=document.getElementById('stdUploadStatus');
+  if(st2) st2.style.display='none';
 }
 
 async function sopUploadFile(){
@@ -9875,6 +9954,47 @@ async function sopUploadFile(){
   }
 }
 
+/* Upload multiplo per categoria (nuovo layout per-category) */
+async function sopUploadFiles(input, cat){
+  var files=Array.from(input.files||[]);
+  if(!files.length) return;
+  var statusEl=document.getElementById('stdUploadStatus');
+  if(statusEl){statusEl.textContent='⏳ Caricamento '+files.length+' file…';statusEl.style.display='block';}
+  var SB_URL='https://nfyijmfoqcivgplvdnyc.supabase.co';
+  var SB_KEY=typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:(typeof _sbKey!=='undefined'?_sbKey:SUPA_KEY||'');
+  var bucket='sop-files';
+  var errors=[];
+  for(var i=0;i<files.length;i++){
+    var file=files[i];
+    if(file.size>30*1024*1024){errors.push(file.name+': troppo grande (max 30 MB)');continue;}
+    var safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    var storagePath=cat+'/'+Date.now()+'_'+safeName;
+    try{
+      var resp=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+storagePath,{
+        method:'POST',
+        headers:{'Authorization':'Bearer '+SB_KEY,'apikey':SB_KEY,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+        body:file
+      });
+      if(!resp.ok){var tt=await resp.text();throw new Error(resp.status+': '+tt.substring(0,80));}
+      var publicUrl=SB_URL+'/storage/v1/object/public/'+bucket+'/'+storagePath;
+      if(!_sopFiles) _sopFiles=[];
+      _sopFiles.push({id:'sf_'+Date.now()+'_'+i,title:file.name.replace(/\.[^.]+$/,''),name:file.name,cat:cat,url:publicUrl,ts:new Date().toISOString()});
+    }catch(e){
+      errors.push(file.name+': '+e.message);
+    }
+  }
+  await supaSetKey('sopFiles',_sopFiles);
+  input.value='';
+  renderSopFiles();
+  if(errors.length){
+    if(statusEl){statusEl.textContent='⚠️ Errori: '+errors.join(' | ');statusEl.style.display='block';}
+    flash('Alcuni file non caricati','var(--red)');
+  } else {
+    if(statusEl){statusEl.style.display='none';}
+    flash('✓ '+files.length+' file caricato'+(files.length>1?'i':''),'var(--green)');
+  }
+}
+
 async function sopDelFile(id){
   _sopFiles=(_sopFiles||[]).filter(function(f){return f.id!==id;});
   await supaSetKey('sopFiles',_sopFiles);
@@ -9890,6 +10010,82 @@ function stdCopy(text,btn){
   function ok(){btn.textContent='✓';setTimeout(function(){btn.textContent=old;},1500);}
   function fb(){var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){}document.body.removeChild(ta);}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok,fb);}else{fb();}
+}
+
+// ══ MENU RISTORANTE PAGE ══
+async function renderMenuPage(){
+  var el=document.getElementById('menuPageList'); if(!el) return;
+  el.innerHTML='<p style="font-size:13px;color:var(--muted)">⏳ Caricamento…</p>';
+  var supaMenus=await supaGetKey('menus')||{};
+  var s=st(); var localMenus=s.menus||{};
+  var menus=Object.assign({},localMenus,supaMenus);
+
+  if(!MENU_CATS.length){el.innerHTML='<p style="color:var(--muted)">Nessun menu configurato.</p>';return;}
+
+  el.innerHTML=MENU_CATS.map(function(cat){
+    var d=menus[cat.id]||{};
+    var hasFile=!!(d.fileUrl||d.fileData);
+    var menuUrl=d.fileUrl||'';
+    var fileName=d.fileName||'';
+
+    var row='<div style="background:var(--bg);border:1px solid var(--bord);border-radius:12px;overflow:hidden">';
+    // Header categoria
+    row+='<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:'+(hasFile?'pointer':'default')+'" '+(hasFile?'onclick="menuPageOpen(\''+cat.id+'\')"':'')+' >';
+    // Estrai emoji e testo dal nome
+    var emojiMatch=(cat.name||'').match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*/u);
+    var catEmoji=emojiMatch?emojiMatch[0].trim():'🍽';
+    var catLabel=(cat.name||'').replace(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic})\s*/u,'');
+    // Icona grande
+    row+='<div style="width:48px;height:48px;background:var(--g100);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">'+catEmoji+'</div>';
+    row+='<div style="flex:1;min-width:0">';
+    row+='<div style="font-size:15px;font-weight:600;color:var(--text)">'+escHtml(catLabel)+'</div>';
+    if(hasFile){
+      row+='<div style="font-size:11px;color:var(--green);margin-top:2px">✓ '+escHtml(fileName||'File allegato')+'</div>';
+    } else {
+      row+='<div style="font-size:11px;color:var(--muted);margin-top:2px">Nessun menu caricato</div>';
+    }
+    row+='</div>';
+    // Pulsanti azione
+    row+='<div style="display:flex;gap:6px;flex-shrink:0">';
+    if(hasFile){
+      row+='<button class="btn" style="font-size:12px" onclick="event.stopPropagation();menuPageOpen(\''+cat.id+'\')">👁 Apri</button>';
+      if(menuUrl){row+='<button class="btn btn-b" style="font-size:12px" onclick="event.stopPropagation();menuOpenQr(\''+cat.id+'\')">QR</button>';}
+    }
+    row+='</div>';
+    row+='</div>';
+    row+='</div>';
+    return row;
+  }).join('');
+}
+
+async function menuPageOpen(catId){
+  var supaMenus=await supaGetKey('menus')||{};
+  var s=st(); var localMenus=s.menus||{};
+  var d=Object.assign({},localMenus[catId]||{},supaMenus[catId]||{});
+  var cat=MENU_CATS.find(function(c){return c.id===catId;})||{name:catId};
+  var url=d.fileUrl||'';
+  if(!url&&d.fileData){
+    try{var blob=_dataUriToBlob(d.fileData);url=URL.createObjectURL(blob);}catch(e){}
+  }
+  if(!url){flash('Nessun file allegato','var(--amber)');return;}
+  // Prova iframe inline
+  var modal=document.getElementById('menuPreviewModal');
+  var frame=document.getElementById('menuPreviewFrame');
+  var title=document.getElementById('menuPreviewTitle');
+  if(modal&&frame&&title){
+    title.textContent=cat.name||catId;
+    frame.src=url;
+    modal.style.display='flex';
+  } else {
+    window.open(url,'_blank');
+  }
+}
+
+function closeMenuPreview(){
+  var modal=document.getElementById('menuPreviewModal');
+  if(modal){modal.style.display='none';}
+  var frame=document.getElementById('menuPreviewFrame');
+  if(frame) frame.src='';
 }
 
 // ══ QR CODE ══
@@ -9926,6 +10122,7 @@ function _renderQrReviews(){
     var d='<div style="background:var(--bg);border:1px solid var(--bord);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">';
     d+='<div style="display:flex;align-items:center;gap:8px">';
     d+='<div style="flex:1;font-size:13px;font-weight:500">'+escHtml(p.name)+'</div>';
+    d+='<button class="btn" style="font-size:11px" onclick="var u=document.getElementById(\'qrurl_'+p.id+'\').value||'+JSON.stringify(url)+';if(u)window.open(u,\'_blank\');else alert(\'Imposta prima l\\\'URL\')">👁 Vedi</button>';
     d+='<button class="btn btn-b" style="font-size:11px" onclick="openQrModal('+JSON.stringify(p.name)+', document.getElementById(\'qrurl_'+p.id+'\').value||'+JSON.stringify(url)+')">QR</button>';
     d+='</div>';
     d+='<div style="display:flex;gap:6px;align-items:center">';
@@ -9971,7 +10168,7 @@ async function _renderQrMenus(){
     row+='<button class="btn" style="font-size:11px;white-space:nowrap" onclick="menuAttachClick(\''+cat.id+'\')">📎 Allega</button>';
     row+='<input type="file" id="menuFile_'+cat.id+'" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/*" style="display:none" onchange="menuFileSelected(\''+cat.id+'\',this)">';
     if(hasFile){
-      row+='<button class="btn btn-b" style="font-size:11px" onclick="menuOpenFile(\''+cat.id+'\')">👁</button>';
+      row+='<button class="btn" style="font-size:11px" onclick="menuOpenPreview(\''+cat.id+'\')">👁 Vedi</button>';
       row+='<button class="btn btn-r" style="font-size:11px;padding:5px 8px" onclick="menuDeleteFile(\''+cat.id+'\')">✕</button>';
     }
     // Tasto QR attivo solo se c'è file
@@ -10074,10 +10271,12 @@ async function menuDeleteFile(catId){
   flash('File rimosso','var(--accent)');
 }
 
-function menuOpenQr(catId){
-  var s=st(); var d=(s.menus||{})[catId]||{};
+async function menuOpenQr(catId){
   var cat=MENU_CATS.find(function(c){return c.id===catId;})||{name:catId};
-  // Preferisci URL pubblico (linkabile dal sito)
+  // Leggi prima da Supabase (fonte primaria), poi localStorage
+  var supaMenus=await supaGetKey('menus')||{};
+  var s=st(); var localMenus=s.menus||{};
+  var d=Object.assign({},localMenus[catId]||{},supaMenus[catId]||{});
   if(d.fileUrl){openQrModal(cat.name, d.fileUrl);return;}
   if(!d.fileData){flash('Nessun file allegato','var(--amber)');return;}
   try{
@@ -10087,6 +10286,19 @@ function menuOpenQr(catId){
   }catch(e){
     flash('Errore apertura file','var(--red)');
   }
+}
+
+async function menuOpenPreview(catId){
+  var cat=MENU_CATS.find(function(c){return c.id===catId;})||{name:catId};
+  var supaMenus=await supaGetKey('menus')||{};
+  var s=st(); var localMenus=s.menus||{};
+  var d=Object.assign({},localMenus[catId]||{},supaMenus[catId]||{});
+  if(d.fileUrl){window.open(d.fileUrl,'_blank');return;}
+  if(!d.fileData){flash('Nessun file allegato','var(--amber)');return;}
+  try{
+    var blob=_dataUriToBlob(d.fileData);
+    window.open(URL.createObjectURL(blob),'_blank');
+  }catch(e){flash('Errore apertura file','var(--red)');}
 }
 
 function menuCopyLink(url){
