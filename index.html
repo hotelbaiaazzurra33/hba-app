@@ -466,7 +466,6 @@ textarea{resize:vertical;min-height:54px}
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px" id="sopCatBar">
     <button class="ftab active" onclick="sopScreenCat('tutti',this)">Tutti</button>
     <button class="ftab" onclick="sopScreenCat('reception',this)">🛎 Reception</button>
-    <button class="ftab" onclick="sopScreenCat('camere',this)">🛏 Camere</button>
     <button class="ftab" onclick="sopScreenCat('cucina',this)">👨‍🍳 Cucina</button>
     <button class="ftab" onclick="sopScreenCat('servizio',this)">🍽 Servizio</button>
     <button class="ftab" onclick="sopScreenCat('generali',this)">🏨 Generali</button>
@@ -1186,7 +1185,6 @@ textarea{resize:vertical;min-height:54px}
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
       <button class="ftab active" onclick="sopCat('tutti',this)">Tutti</button>
       <button class="ftab" onclick="sopCat('reception',this)">🛎 Reception</button>
-      <button class="ftab" onclick="sopCat('camere',this)">🛏 Camere</button>
       <button class="ftab" onclick="sopCat('cucina',this)">👨‍🍳 Cucina</button>
       <button class="ftab" onclick="sopCat('servizio',this)">🍽 Servizio</button>
       <button class="ftab" onclick="sopCat('generali',this)">🏨 Generali</button>
@@ -1202,7 +1200,6 @@ textarea{resize:vertical;min-height:54px}
           <label class="lbl">Categoria</label>
           <select id="sopCatSel">
             <option value="reception">Reception</option>
-            <option value="camere">Camere</option>
             <option value="cucina">Cucina</option>
             <option value="servizio">Servizio</option>
             <option value="generali">Generali</option>
@@ -1210,6 +1207,32 @@ textarea{resize:vertical;min-height:54px}
         </div>
         <div><label class="lbl">Contenuto / Testo</label><textarea id="sopContent" style="min-height:120px" placeholder="Descrivi la procedura step by step..."></textarea></div>
         <button class="btn btn-g btn-full" onclick="saveSopDoc()">💾 Salva SOP</button>
+      </div>
+    </div>
+
+    <!-- MANUALI & FILE per categoria -->
+    <div style="margin-top:20px;border-top:2px solid var(--bord2);padding-top:16px">
+      <h3 style="font-size:14px;font-weight:600;margin-bottom:12px">📂 Manuali & File</h3>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Documenti PDF o HTML caricati per categoria. Clicca per aprire.</p>
+      <div id="sopFileList"></div>
+      <!-- Upload admin -->
+      <div id="sopFileAdminBlock" style="display:none;margin-top:12px">
+        <div style="display:grid;gap:8px">
+          <div><label class="lbl">Nome documento</label><input id="sopFileName" type="text" placeholder="Es: Procedura antincendio"></div>
+          <div><label class="lbl">Categoria</label>
+            <select id="sopFileCat">
+              <option value="reception">🛎 Reception</option>
+              <option value="cucina">👨‍🍳 Cucina</option>
+              <option value="servizio">🍽 Servizio</option>
+              <option value="generali">🏨 Generali</option>
+            </select>
+          </div>
+          <div><label class="lbl">File (PDF o HTML)</label>
+            <input type="file" id="sopFileInput" accept=".pdf,.html,.htm" style="font-size:13px">
+          </div>
+          <button class="btn btn-g" onclick="sopUploadFile()">📤 Carica file</button>
+          <div id="sopFileUploadStatus" style="font-size:12px;color:var(--muted)"></div>
+        </div>
       </div>
     </div>
 
@@ -2928,7 +2951,7 @@ const ISP=[
 const SK='hba_v5', HK='hba_v5_hist';
 const SUPA_URL='https://nfyijmfoqcivgplvdnyc.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5meWlqbWZvcWNpdmdwbHZkbnljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5MjIzMjUsImV4cCI6MjA5NDQ5ODMyNX0.Io4L1eiEutg3Jmjn7ZJDUjf_i6w6yakHIK1nX5CcKH0';
-const SUPA_KEYS=['rooms','calls','notes','ev','bici','lavExtra','sauna','speciali','diario','manutenzioni','commissioni','cookingClass','massaggi','isp','lavIspezioni','flussaggi','cambioAcqua','rapLog','diarioNotifs','saunaOn','saunaLog','saunaAccensioni','sopDocs','todos','emailTemplates','lostFound','emailOfferTemplates','blocchi','settings'];
+const SUPA_KEYS=['rooms','calls','notes','ev','bici','lavExtra','sauna','speciali','diario','manutenzioni','commissioni','cookingClass','massaggi','isp','lavIspezioni','flussaggi','cambioAcqua','rapLog','diarioNotifs','saunaOn','saunaLog','saunaAccensioni','sopDocs','sopFiles','todos','emailTemplates','lostFound','emailOfferTemplates','blocchi','settings'];
 
 let _cache=null;
 var _emailHtmlCache={};
@@ -3070,7 +3093,7 @@ function go(r){
     setTimeout(function(){var btn=document.getElementById('snav-home');rTab('home',btn||{classList:{add:function(){},remove:function(){}}});renderHome();},100);
     document.getElementById('recDate').textContent=fd();
     document.getElementById('repDate').textContent=td();
-    document.getElementById('lavDate').textContent=td();
+    var _lavDateEl=document.getElementById('lavDate'); if(_lavDateEl) _lavDateEl.textContent=td();
     renderRec(); renderStorico(); updateSlackDot(); startSupaSync(); startBackupTimer(); updateTabBadges();
     polling=setInterval(pollRec,2500);
     saunaPolling=setInterval(()=>{checkSaunaNotifs();renderSauna();checkSpecialiNotifs();checkDiarioNotifs();checkCommissioniNotifs();checkMassaggiNotifs();checkSaunaOnReminder();},60000);
@@ -9510,6 +9533,7 @@ async function initStandard(){
     }
     if(_sopIsAdmin){var ab=document.getElementById('sopAdminBlock');if(ab)ab.style.display='block';}
     renderSopDocs(_sopCurCat);
+    sopLoadFiles();
   }
 }
 
@@ -9556,8 +9580,8 @@ async function supaSetKey(key,val){
     await fetch(SUPA_URL+'/rest/v1/hba_state',{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify({key:key,val:val})});
   }catch(e){}
 }
-var _sopCatEmoji={reception:'🛎',camere:'🛏',cucina:'👨‍🍳',servizio:'🍽',generali:'🏨'};
-var _sopCatLabel={reception:'Reception',camere:'Camere',cucina:'Cucina',servizio:'Servizio',generali:'Generali'};
+var _sopCatEmoji={reception:'🛎',cucina:'👨‍🍳',servizio:'🍽',generali:'🏨'};
+var _sopCatLabel={reception:'Reception',cucina:'Cucina',servizio:'Servizio',generali:'Generali'};
 function sopScreenCat(cat,btn){
   _sopScreenCat=cat;
   document.querySelectorAll('#sopCatBar .ftab').forEach(function(b){b.classList.remove('active');});
@@ -9726,11 +9750,11 @@ function renderSopDocs(cat){
   var el=document.getElementById('sopDocList');
   if(!el) return;
   if(!docs.length){
-    var catLabel={'reception':'Reception','camere':'Camere','cucina':'Cucina','servizio':'Servizio','generali':'Generali'};
+    var catLabel={'reception':'Reception','cucina':'Cucina','servizio':'Servizio','generali':'Generali'};
     el.innerHTML='<p style="font-size:12px;color:var(--muted);text-align:center;padding:20px">Nessun SOP caricato'+(cat&&cat!=='tutti'?' per '+catLabel[cat]:'')+'. Usare il pannello Admin per aggiungerne.</p>';
     return;
   }
-  var catEmoji={'reception':'🛎','camere':'🛏','cucina':'👨‍🍳','servizio':'🍽','generali':'🏨'};
+  var catEmoji={'reception':'🛎','cucina':'👨‍🍳','servizio':'🍽','generali':'🏨'};
   var out='';
   docs.forEach(function(d){
     out+='<details style="border:1px solid var(--bord2);border-radius:var(--r);margin-bottom:8px;overflow:hidden">'
@@ -9764,6 +9788,98 @@ async function delSopDoc(id){
   await supaSetKey('sopDocs',_sopScreenDocs);
   renderSopDocs(_sopCurCat);
   flash('Eliminato','var(--accent)');
+}
+
+// ══ SOP FILE (PDF/HTML per categoria) ══
+var _sopFiles=null;
+var _SOP_FILE_CAT_EMOJI={'reception':'🛎','cucina':'👨‍🍳','servizio':'🍽','generali':'🏨'};
+var _SOP_FILE_CAT_LABEL={'reception':'Reception','cucina':'Cucina','servizio':'Servizio','generali':'Generali'};
+
+async function sopLoadFiles(){
+  if(!_sopFiles){
+    var v=await supaGetKey('sopFiles');
+    _sopFiles=v||[];
+  }
+  renderSopFiles();
+}
+
+function renderSopFiles(){
+  var el=document.getElementById('sopFileList');
+  if(!el) return;
+  var files=(_sopFiles||[]).slice();
+  // Raggruppa per categoria
+  var cats=['reception','cucina','servizio','generali'];
+  var out='';
+  cats.forEach(function(cat){
+    var catFiles=files.filter(function(f){return f.cat===cat;});
+    out+='<div style="margin-bottom:14px">';
+    out+='<div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px">'+(_SOP_FILE_CAT_EMOJI[cat]||'')+'  '+(_SOP_FILE_CAT_LABEL[cat]||cat)+'</div>';
+    if(!catFiles.length){
+      out+='<p style="font-size:12px;color:var(--muted);padding:4px 0">Nessun file caricato.</p>';
+    } else {
+      catFiles.forEach(function(f){
+        var ext=(f.name||'').split('.').pop().toLowerCase();
+        var icon=ext==='pdf'?'📄':'🌐';
+        out+='<div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surf);border:1px solid var(--bord2);border-radius:var(--r);margin-bottom:6px">'
+          +icon+' <span style="flex:1;font-size:13px;font-weight:500">'+escHtml(f.title||f.name)+'</span>'
+          +'<a href="'+escHtml(f.url)+'" target="_blank" style="font-size:12px;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 10px;text-decoration:none;font-weight:600">Apri</a>';
+        if(_sopIsAdmin){
+          out+='<button onclick="sopDelFile(\''+f.id+'\')" style="font-size:11px;color:var(--red);border:none;background:none;cursor:pointer;padding:4px">🗑</button>';
+        }
+        out+='</div>';
+      });
+    }
+    out+='</div>';
+  });
+  el.innerHTML=out;
+  // Mostra blocco upload se admin
+  var adminBlock=document.getElementById('sopFileAdminBlock');
+  if(adminBlock) adminBlock.style.display=_sopIsAdmin?'block':'none';
+}
+
+async function sopUploadFile(){
+  var nameEl=document.getElementById('sopFileName');
+  var catEl=document.getElementById('sopFileCat');
+  var fileEl=document.getElementById('sopFileInput');
+  var statusEl=document.getElementById('sopFileUploadStatus');
+  var title=(nameEl&&nameEl.value.trim())||'';
+  var cat=catEl?catEl.value:'generali';
+  var file=fileEl&&fileEl.files&&fileEl.files[0];
+  if(!title){flash('Inserisci un nome per il documento','var(--red)');return;}
+  if(!file){flash('Seleziona un file PDF o HTML','var(--red)');return;}
+  if(statusEl) statusEl.textContent='Caricamento in corso…';
+  // Carica su Supabase Storage bucket "sop-files"
+  var SB_URL='https://nfyijmfoqcivgplvdnyc.supabase.co';
+  var SB_KEY=typeof SUPABASE_KEY!=='undefined'?SUPABASE_KEY:(typeof _sbKey!=='undefined'?_sbKey:'');
+  var bucket='sop-files';
+  var fileName=Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  try{
+    var resp=await fetch(SB_URL+'/storage/v1/object/'+bucket+'/'+fileName,{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+SB_KEY,'Content-Type':file.type||'application/octet-stream','x-upsert':'true'},
+      body:file
+    });
+    if(!resp.ok){var t=await resp.text();throw new Error(t);}
+    var publicUrl=SB_URL+'/storage/v1/object/public/'+bucket+'/'+fileName;
+    if(!_sopFiles) _sopFiles=[];
+    _sopFiles.push({id:'sf_'+Date.now(),title:title,name:file.name,cat:cat,url:publicUrl,ts:new Date().toISOString()});
+    await supaSetKey('sopFiles',_sopFiles);
+    if(nameEl) nameEl.value='';
+    if(fileEl) fileEl.value='';
+    if(statusEl) statusEl.textContent='';
+    flash('File caricato ✓','var(--green)');
+    renderSopFiles();
+  }catch(e){
+    if(statusEl) statusEl.textContent='Errore: '+e.message;
+    flash('Errore upload: '+e.message,'var(--red)');
+  }
+}
+
+async function sopDelFile(id){
+  _sopFiles=(_sopFiles||[]).filter(function(f){return f.id!==id;});
+  await supaSetKey('sopFiles',_sopFiles);
+  renderSopFiles();
+  flash('File eliminato','var(--accent)');
 }
 
 function stdClearSearch(){}
