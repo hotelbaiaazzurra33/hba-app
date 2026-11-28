@@ -8274,9 +8274,39 @@ async function fidDoSearch(){
   }
   res.innerHTML = '<div class="fid-res-empty">Ricerca in corso…</div>';
 
-  var qEnc = encodeURIComponent(q);
-  var params = 'select=*&or=(nome.ilike.*'+qEnc+'*,email.ilike.*'+qEnc+'*,telefono.ilike.*'+qEnc+'*)&limit=25&order=ultimo_soggiorno.desc.nullslast';
-  var data = await sbFid('ospiti', params);
+  // Divide la query in parole e cerca per ognuna
+  var words = q.trim().split(/\s+/).filter(function(w){return w.length>=2;});
+  var data = null;
+  if(words.length > 1){
+    // Cerca parola per parola e interseca i risultati
+    var sets = [];
+    for(var wi=0;wi<words.length;wi++){
+      var wEnc = encodeURIComponent(words[wi]);
+      var wp = 'select=*&or=(nome.ilike.*'+wEnc+'*,email.ilike.*'+wEnc+'*,telefono.ilike.*'+wEnc+'*)&limit=100';
+      var wd = await sbFid('ospiti', wp);
+      if(wd===null){data=null;break;}
+      sets.push(wd);
+    }
+    if(data!==null){
+      // Intersect: ospiti che compaiono in tutti i set
+      var ids = sets[0].map(function(o){return o.id;});
+      for(var si=1;si<sets.length;si++){
+        var sids = sets[si].map(function(o){return o.id;});
+        ids = ids.filter(function(id){return sids.indexOf(id)>=0;});
+      }
+      data = sets[0].filter(function(o){return ids.indexOf(o.id)>=0;});
+      // Ordina per ultimo_soggiorno desc
+      data.sort(function(a,b){
+        var da=a.ultimo_soggiorno||''; var db=b.ultimo_soggiorno||'';
+        return da<db?1:-1;
+      });
+      data = data.slice(0,25);
+    }
+  } else {
+    var qEnc = encodeURIComponent(q);
+    var params = 'select=*&or=(nome.ilike.*'+qEnc+'*,email.ilike.*'+qEnc+'*,telefono.ilike.*'+qEnc+'*)&limit=25&order=ultimo_soggiorno.desc.nullslast';
+    data = await sbFid('ospiti', params);
+  }
 
   if(data === null){
     res.innerHTML = '<div class="fid-res-empty" style="color:var(--fid-warn)">Errore connessione DB</div>';
